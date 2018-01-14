@@ -29,6 +29,8 @@ class Script():
                 showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1))
                 pygame.quit()
                 return 0
+        else:
+            return 1
 
     def walk(self, nb = 1):
         if self.robot.direction == 0:

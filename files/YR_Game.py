@@ -64,7 +64,7 @@ class Game():
 				pygame.display.update()
 			else:
 				self.done = False
-		if self.result != 0:
+		if self.result >= 1:
 			return self.result
 		else:
 			return self.level
