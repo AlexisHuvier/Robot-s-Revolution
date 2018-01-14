@@ -1,4 +1,4 @@
 walk(100)
 sayConsole("TRANSFORMATION")
-setSprite("files/smile.png")
+setSprite("scripts/smile.png")
 sayConsole("ET VOILA !")

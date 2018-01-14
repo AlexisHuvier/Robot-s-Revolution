@@ -1,4 +1,3 @@
 walk(100)
-setSprite("files/smile.png")
+setSprite("scripts/smile.png")
 walk(100)
-setSprite("files/pyweb.png")
