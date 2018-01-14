@@ -1,9 +1,10 @@
-import pygame, random, sys, glob
+import pygame, random, sys
 from tkinter import *
 from files.YR_Game import *
 from tkinter.messagebox import *
 
 
+level = 1
 
 def Quitter():    
     global Fenetre
@@ -11,7 +12,7 @@ def Quitter():
     Fenetre.destroy()
 
 def Jouer():
-    global ENom
+    global ENom, level, LTitre
     
     if ENom.get() == "" :
         showerror("Your Robot","Veuillez écrire quelque chose !")
@@ -24,17 +25,27 @@ def Jouer():
         except IOError:
             showerror("Fichier inconnu", "Le fichier n'a pas pu être ouvert.")
         else:
-            game = Game("scripts/"+ENom.get()+".yr", "Parcours")
+            game = Game("scripts/"+ENom.get()+".yr", "Parcours", level)
+            level = game.launch()
+            try:
+                with open("levels/"+str(level)+".yr"):
+                    pass
+            except IOError:
+                showinfo("Bravo !", "Vous avez fini tous les niveaux de ce mode !")
+                Solo()
+            else:
+                showinfo("Suivant", "C'est parti pour le niveau "+str(level))
+                LTitre['text'] = "Level "+str(level)
 
 def FenScriptP():
-    global ENom, Fenetre
+    global ENom, Fenetre, LTitre
     Fenetre.destroy()
     
     Fenetre = Tk()
     Fenetre.title("Your Robot")
     Fenetre.geometry("180x180")
 
-    LTitre = Label(Fenetre,text="Your Robot",font=("Comic Sans MS",14,"bold"))
+    LTitre = Label(Fenetre,text="Level "+str(level),font=("Comic Sans MS",14,"bold"))
     ENom = Entry(Fenetre)
     ENom.insert(END,"Nom du script")
     BQuitterF = Button(Fenetre,text="Quitter",width = 9,command = Solo)
@@ -51,8 +62,9 @@ def FenScriptVersus():
     showerror("Coming Soon","Le mode Versus IA viendra plus tard")
 
 def Solo():
-    global Fenetre
+    global Fenetre, level
     Fenetre.destroy()
+    level = 1
     
     Fenetre = Tk()
     Fenetre.title("Your Robot")

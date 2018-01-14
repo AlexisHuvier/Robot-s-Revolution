@@ -2,7 +2,7 @@ import pygame
 from files.YR_language import *
 
 class Player(pygame.sprite.Sprite):
-	def __init__(self, fichier):
+	def __init__(self, fichier, level):
 		super(Player, self).__init__()
 		
 		self.strImage = "files/FlammyD.png"
@@ -13,6 +13,7 @@ class Player(pygame.sprite.Sprite):
 		self.script = Script(self, fichier)
 		self.direction = 0
 		self.timer = 30
+		self.level = level
 	
 	def update(self, collidable = pygame.sprite.Group(), collidable2 = pygame.sprite.Group()):
 		self.timer -= 1
@@ -28,7 +29,7 @@ class Player(pygame.sprite.Sprite):
 		collision_list_2 = pygame.sprite.spritecollide(self, collidable2, False, None)
 		for collided_object in collision_list_2:
 			pygame.quit()
-			result = 0
+			result = self.level + 1
 			showinfo("Gagné", "Votre robot a atteint le point final !")
 		return result
 
