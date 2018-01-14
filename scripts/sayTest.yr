@@ -1,0 +1,4 @@
+walk(100)
+sayConsole("TRANSFORMATION")
+setSprite("files/smile.png")
+sayConsole("ET VOILA !")

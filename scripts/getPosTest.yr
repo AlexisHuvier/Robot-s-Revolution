@@ -1,0 +1,1 @@
+sayConsole("Pos X : "+str(self.getPosX())+", Pos Y : "+str(self.getPosY()))

@@ -1,0 +1,4 @@
+walk(100)
+setSprite("files/smile.png")
+walk(100)
+setSprite("files/pyweb.png")

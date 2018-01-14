@@ -1,0 +1,3 @@
+loop("walk(100)", 5)
+right()
+loop("walk(100)", 5)
