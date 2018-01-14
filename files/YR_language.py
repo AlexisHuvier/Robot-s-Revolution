@@ -25,6 +25,9 @@ class Script():
                 eval("self."+self.instruction[self.avancement])
                 self.avancement += 1
                 return 1
+            elif self.instruction[self.avancement] == "":
+                self.avancement += 1
+                return 1
             else:
                 showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1))
                 pygame.quit()
