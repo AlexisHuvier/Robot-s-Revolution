@@ -37,14 +37,13 @@ class Script():
 
     def walk(self):
         if self.robot.direction == 0:
-            self.robot.rect.x += nb
+            self.robot.rect.x += 60
         elif self.robot.direction == 1:
-            self.robot.rect.y += nb
+            self.robot.rect.y += 60
         elif self.robot.direction == 2:
-            self.robot.rect.x -= nb
+            self.robot.rect.x -= 60
         elif self.robot.direction == 3:
-            self.robot.rect.y -= nb
-    
+            self.robot.rect.y -= 60
     
     def right(self):
         self.robot.direction += 1

@@ -58,6 +58,7 @@ class Game():
 			if self.result == 1:
 				self.screen.fill((0,0,0))
 				self.clock.tick(60)
+				self.screen.blit(pygame.image.load("files/background.png"), [0,0])
 				self.player_list.draw(self.screen)
 				self.rock_list.draw(self.screen)
 				self.finish_list.draw(self.screen)
