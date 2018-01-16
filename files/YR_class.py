@@ -12,9 +12,9 @@ class Player(pygame.sprite.Sprite):
 		self.rect.y = 10
 		self.script = Script(self, fichier)
 		self.direction = 0
-		self.timer = 30
 		self.posX = 1
 		self.posY = 1
+		self.timer = 10
 		self.level = level
 	
 	def update(self, collidable = pygame.sprite.Group(), collidable2 = pygame.sprite.Group()):
@@ -22,7 +22,7 @@ class Player(pygame.sprite.Sprite):
 		result = 1
 		if self.timer == 0:
 			result = self.script.launch()
-			self.timer = 30
+			self.timer = 10
 		collision_list = pygame.sprite.spritecollide(self, collidable, False, None)
 		for collided_object in collision_list:
 			pygame.quit()
