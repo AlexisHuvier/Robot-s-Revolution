@@ -1,7 +1,7 @@
 import pygame, sys
 from tkinter.messagebox import *
 
-instructions = ["walk", "go", "left", "right", "setSprite","loop", "sayConsole","if_", "getPosX", "getPosY"]
+instructions = ["walk", "left", "right", "setSprite","loop", "sayConsole","if_", "getPosX", "getPosY"]
 
 class Script():
     def __init__(self, robot, fichier):
@@ -45,9 +45,6 @@ class Script():
         elif self.robot.direction == 3:
             self.robot.rect.y -= nb
     
-    def go(self, x = 10, y = 10):
-        self.robot.rect.x = x
-        self.robot.rect.y = y
     
     def right(self):
         self.robot.direction += 1
