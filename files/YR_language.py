@@ -35,7 +35,7 @@ class Script():
         else:
             return 1
 
-    def walk(self, nb = 1):
+    def walk(self):
         if self.robot.direction == 0:
             self.robot.rect.x += nb
         elif self.robot.direction == 1:
@@ -102,7 +102,7 @@ class Script():
     def sayConsole(self, txt = "Bonjour"):
         print(txt)
     
-    def loop(self, instruction = "walk(0)", nb = 1):
+    def loop(self, instruction = "walk()", nb = 1):
         if self.temp_boucle_a_faire == 0:
             self.temp_boucle_a_faire = -1
         elif self.temp_boucle_a_faire == -1:
