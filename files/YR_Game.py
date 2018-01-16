@@ -47,11 +47,9 @@ class Game():
 				if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
 					self.done = False
 					self.result = 0
-					pygame.quit()
 				if event.type == pygame.QUIT:
 					self.done = False
 					self.result = 0
-					pygame.quit()
 
 			self.result = self.player.update(self.rock_list, self.finish_list)
             
@@ -65,6 +63,7 @@ class Game():
 				pygame.display.update()
 			else:
 				self.done = False
+		pygame.quit()
 		if self.result >= 1:
 			return self.result
 		else:
