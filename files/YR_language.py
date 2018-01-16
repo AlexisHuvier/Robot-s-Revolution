@@ -38,12 +38,16 @@ class Script():
     def walk(self):
         if self.robot.direction == 0:
             self.robot.rect.x += 60
+            self.robot.posX += 1
         elif self.robot.direction == 1:
             self.robot.rect.y += 60
+            self.robot.posY += 1
         elif self.robot.direction == 2:
             self.robot.rect.x -= 60
+            self.robot.posX -= 1
         elif self.robot.direction == 3:
             self.robot.rect.y -= 60
+            self.robot.posY -= 1
     
     def right(self):
         self.robot.direction += 1
@@ -93,10 +97,10 @@ class Script():
         self.robot.image = pygame.image.load(sprite)
     
     def getPosX(self):
-        return self.robot.rect.x
+        return self.robot.posX
     
     def getPosY(self):
-        return self.robot.rect.y
+        return self.robot.posY
     
     def sayConsole(self, txt = "Bonjour"):
         print(txt)

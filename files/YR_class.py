@@ -13,6 +13,8 @@ class Player(pygame.sprite.Sprite):
 		self.script = Script(self, fichier)
 		self.direction = 0
 		self.timer = 30
+		self.posX = 1
+		self.posY = 1
 		self.level = level
 	
 	def update(self, collidable = pygame.sprite.Group(), collidable2 = pygame.sprite.Group()):
