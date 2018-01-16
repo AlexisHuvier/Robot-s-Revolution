@@ -1,5 +1,5 @@
 if_("sayConsole('Cette condition est toujours vraie !')", "True")
 if_("sayConsole('Cette condition est vrai pour x < 11')", "getPosX() < 11")
-go(100,100)
+loop("walk()",12)
 if_("sayConsole('Cette condition est vrai pour x < 11')", "getPosX() < 11")
 if_("sayConsole('Cette condition est vrai pour x > 11')", "getPosX() > 11")
