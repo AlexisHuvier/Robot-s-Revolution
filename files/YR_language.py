@@ -1,7 +1,7 @@
 import pygame, sys
 from tkinter.messagebox import *
 
-instructions = ["walk", "left", "right", "setSprite", "loopif", "loop", "sayConsole","if_", "getPosX", "getPosY"]
+instructions = ["walk", "left", "right", "setSprite", "setVar", "getVar", "loopif", "loop", "sayConsole","if_", "getPosX", "getPosY"]
 
 class Script():
     def __init__(self, robot, fichier):
@@ -9,6 +9,7 @@ class Script():
         self.robot = robot
         self.avancement = 0
         self.temp_boucle_a_faire = -1
+        self.variables = {}
         try:
             with open(self.fichier):
                 pass
@@ -101,6 +102,13 @@ class Script():
     
     def getPosY(self):
         return self.robot.posY
+    
+    def getVar(self, name):
+        if name in self.variables.keys():
+            return self.variables[name]
+        else:
+            showerror("ERREUR","Erreur sur l'instruction de la ligne n°"+str(self.avancement+1)+"\nLa variable "+name+" n'est pas définie")
+            pygame.quit()
     
     def sayConsole(self, txt = "Bonjour"):
         print(txt)
