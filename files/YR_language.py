@@ -110,6 +110,29 @@ class Script():
             showerror("ERREUR","Erreur sur l'instruction de la ligne n°"+str(self.avancement+1)+"\nLa variable "+name+" n'est pas définie")
             pygame.quit()
     
+    def setVar(self, name, value, sorte = "str"):
+        if sorte == "str":
+            try:
+                self.variables[name] = str(value)
+            except:
+                showerror("ERREUR","Erreur sur l'instruction de la ligne n°"+str(self.avancement+1)+"\nLa variable "+name+" n'est pas une chaine de caractères")
+                pygame.quit()
+        elif sorte == "int":
+            try:
+                self.variables[name] = int(value)
+            except:
+                showerror("ERREUR","Erreur sur l'instruction de la ligne n°"+str(self.avancement+1)+"\nLa variable "+name+" n'est pas un entier")
+                pygame.quit()
+        elif sorte == "float":
+            try:
+                self.variables[name] = float(value)
+            except:
+                showerror("ERREUR","Erreur sur l'instruction de la ligne n°"+str(self.avancement+1)+"\nLa variable "+name+" n'est pas un flottant")
+                pygame.quit()
+        else:
+            showerror("ERREUR","Erreur sur l'instruction de la ligne n°"+str(self.avancement+1)+"\nLa variable "+name+" n'a pas un type connu")
+            pygame.quit()
+    
     def sayConsole(self, txt = "Bonjour"):
         print(txt)
     
