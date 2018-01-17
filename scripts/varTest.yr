@@ -1,0 +1,5 @@
+setVar("test","ceci est une variable string")
+setVar("nb", "1", "int")
+setVar("nb2", "2", "int")
+sayConsole(self.getVar('test'))
+sayConsole("1 + 2 = "+str(self.getVar("nb")+self.getVar("nb2")))
