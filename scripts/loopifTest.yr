@@ -1,0 +1,1 @@
+loopif("walk()", "getPosX() < 11")
