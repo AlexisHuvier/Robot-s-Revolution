@@ -19,6 +19,8 @@ This Game uses Python and PyGame.
 - Add a empty script for testing levels
 - Add management of changing level after win
 - Add management of a empty instruction
+- Add "loopif()" instruction
+- Add "loopifTest" script
 - Delete Solution of Level 1
 - Delete "go()" instruction
 - Delete "walk()" parameters
