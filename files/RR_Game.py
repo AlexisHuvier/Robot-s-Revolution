@@ -1,5 +1,5 @@
 import pygame, random, sys
-from files.YR_class import *
+from RR_class import *
 from tkinter.messagebox import *
 
 
@@ -25,7 +25,7 @@ class Game():
 			self.finish_list = pygame.sprite.Group()
 			self.rock_list = pygame.sprite.Group()
 			try:
-				with open("levels/"+str(self.level)+".yr", 'r') as fichier:
+				with open("levels/"+str(self.level)+".rev", 'r') as fichier:
 					lignes = fichier.read().split("\n")
 					self.player.rect.x = int(lignes[0].split(",")[0])
 					self.player.rect.y = int(lignes[0].split(",")[1])

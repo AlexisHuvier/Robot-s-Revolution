@@ -1,5 +1,5 @@
 import pygame
-from files.YR_language import *
+from RR_language import *
 
 class Player(pygame.sprite.Sprite):
 	def __init__(self, fichier, level):
@@ -12,6 +12,7 @@ class Player(pygame.sprite.Sprite):
 		self.rect.y = 10
 		self.script = Script(self, fichier)
 		self.direction = 0
+		self.attack = False
 		self.posX = 1
 		self.posY = 1
 		self.timer = 10

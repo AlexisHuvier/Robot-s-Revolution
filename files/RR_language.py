@@ -1,7 +1,7 @@
 import pygame, sys
 from tkinter.messagebox import *
 
-instructions = ["walk", "left", "right", "setSprite", "setVar", "getVar", "loopif", "loop", "sayConsole","if_", "getPosX", "getPosY"]
+instructions = ["walk", "left", "right", "getAttack", "setAttack", "setSprite", "setVar", "getVar", "loopif", "loop", "sayConsole","if_", "getPosX", "getPosY"]
 
 class Script():
     def __init__(self, robot, fichier):
@@ -70,6 +70,12 @@ class Script():
             if self.robot.strImage in ["files/FlammyD.png","files/FlammyB.png","files/FlammyG.png","files/FlammyH.png"]:
                 self.robot.strImage = "files/FlammyH.png"
                 self.robot.image = pygame.image.load("files/FlammyH.png")
+    
+    def setAttack(self, boolean):
+        self.robot.attack = boolean
+    
+    def getAttack(self):
+        return self.robot.attack
     
     def left(self):
         self.robot.direction -= 1
