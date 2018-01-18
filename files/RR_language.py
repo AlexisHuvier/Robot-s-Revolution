@@ -103,6 +103,9 @@ class Script():
         self.robot.strImage = sprite
         self.robot.image = pygame.image.load(sprite)
     
+    def getSprite(self):
+        return self.robot.strImage
+    
     def getDirection(self):
         if self.robot.direction == 0:
             return "droite"
