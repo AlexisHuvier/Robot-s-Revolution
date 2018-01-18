@@ -1,0 +1,3 @@
+sayConsole(self.getAttack())
+setAttack(True)
+sayConsole(self.getAttack())
