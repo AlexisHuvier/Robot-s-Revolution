@@ -1,0 +1,5 @@
+sayConsole("Direction : "+self.getDirection())
+sayConsole("Sprite : "+self.getSprite())
+right()
+sayConsole("Direction : "+self.getDirection())
+sayConsole("Sprite : "+self.getSprite())
