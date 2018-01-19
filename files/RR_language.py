@@ -76,18 +76,18 @@ class Script():
         self.robot.attack = boolean
     
     def setFunc(self, name, *instructions_f):
-		if len(instructions_f) == 0:
-			showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1)+"\nLa fonction créée n'a pas d'instructions")
+        if len(instructions_f) == 0:
+            showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1)+"\nLa fonction créée n'a pas d'instructions")
             pygame.quit()
         else:
-			for i in instructions_f:
-				if i.split("(")[0] in instructions:
-					pass
-				else:
-					showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1)+"\nL'instruction "+i+" n'existe pas")
-					pygame.quit()
-					return
-			self.fonctions[name] = instructions_f
+            for i in instructions_f:
+                if i.split("(")[0] in instructions:
+                    pass
+                else:
+                    showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1)+"\nL'instruction "+i+" n'existe pas")
+                    pygame.quit()
+                    return
+            self.fonctions[name] = instructions_f
     
     def getAttack(self):
         return self.robot.attack
