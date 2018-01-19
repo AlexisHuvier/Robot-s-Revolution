@@ -1,7 +1,7 @@
 import pygame, sys
 from tkinter.messagebox import *
 
-instructions = ["walk", "left", "right", "getDirection", "setFunc", "getAttack", "setAttack", "setSprite", "getSprite", "setVar", "getVar", "loopif", "loop", "sayConsole","if_", "getPosX", "getPosY"]
+instructions = ["walk", "left", "right", "getDirection", "setFunc", "callFunc", "getAttack", "setAttack", "setSprite", "getSprite", "setVar", "getVar", "loopif", "loop", "sayConsole","if_", "getPosX", "getPosY"]
 
 class Script():
     def __init__(self, robot, fichier):
@@ -9,6 +9,7 @@ class Script():
         self.robot = robot
         self.avancement = 0
         self.temp_boucle_a_faire = -1
+        self.temp_fonction_a_faire = -1
         self.variables = {}
         self.fonctions = {}
         try:
@@ -88,6 +89,28 @@ class Script():
                     pygame.quit()
                     return
             self.fonctions[name] = instructions_f
+    
+    def callFunc(self, name):
+        try:
+            instructions_f = self.fonctions[name]
+        except KeyError:
+            showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1)+"\nLa fonction "+name+" n'existe pas")
+            pygame.quit()
+        else:
+            if self.temp_fonction_a_faire == 0:
+                self.temp_fonction_a_faire = -1
+            elif self.temp_fonction_a_faire == -1:
+                self.temp_fonction_a_faire = len(instructions_f)
+                self.avancement -= 1
+            else:
+                instruction = instructions_f[abs(self.temp_fonction_a_faire-len(instructions_f))]
+                if instruction.split("(")[0] in instructions:
+                    eval("self."+instruction)
+                    self.avancement -=1
+                    self.temp_fonction_a_faire -= 1
+                else:
+                    showerror("ERREUR","Erreur sur l'instruction "+instruction+" de la fonction "+name+" appelée ligne n°"+str(self.avancement+1))
+                    pygame.quit()
     
     def getAttack(self):
         return self.robot.attack
