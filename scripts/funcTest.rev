@@ -1,0 +1,3 @@
+setFunc("spam", "sayConsole('Coucou')", "sayConsole('tu')", "sayConsole('es')", "sayConsole('moche')")
+callFunc("spam")
+loop("callFunc('spam')", 5)
