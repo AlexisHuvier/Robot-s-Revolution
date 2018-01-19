@@ -1,7 +1,7 @@
 import pygame, sys
 from tkinter.messagebox import *
 
-instructions = ["walk", "left", "right", "getDirection", "getAttack", "setAttack", "setSprite", "getSprite", "setVar", "getVar", "loopif", "loop", "sayConsole","if_", "getPosX", "getPosY"]
+instructions = ["walk", "left", "right", "getDirection", "setFunc", "getAttack", "setAttack", "setSprite", "getSprite", "setVar", "getVar", "loopif", "loop", "sayConsole","if_", "getPosX", "getPosY"]
 
 class Script():
     def __init__(self, robot, fichier):
@@ -10,6 +10,7 @@ class Script():
         self.avancement = 0
         self.temp_boucle_a_faire = -1
         self.variables = {}
+        self.fonctions = {}
         try:
             with open(self.fichier):
                 pass
@@ -73,6 +74,20 @@ class Script():
     
     def setAttack(self, boolean):
         self.robot.attack = boolean
+    
+    def setFunc(self, name, *instructions_f):
+		if len(instructions_f) == 0:
+			showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1)+"\nLa fonction créée n'a pas d'instructions")
+            pygame.quit()
+        else:
+			for i in instructions_f:
+				if i.split("(")[0] in instructions:
+					pass
+				else:
+					showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1)+"\nL'instruction "+i+" n'existe pas")
+					pygame.quit()
+					return
+			self.fonctions[name] = instructions_f
     
     def getAttack(self):
         return self.robot.attack
