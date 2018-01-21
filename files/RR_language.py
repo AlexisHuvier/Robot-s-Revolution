@@ -176,18 +176,85 @@ class Script():
     def setVar(self, name, value, sorte = "str"):
         if sorte == "str":
             try:
+                for i in value.split(" "):
+                    if i.split("(")[0] in instructions:
+                        value = value.replace(i, str(eval("self."+i)))
                 self.variables[name] = str(value)
             except:
                 showerror("ERREUR","Erreur sur l'instruction de la ligne n°"+str(self.avancement+1)+"\nLa variable "+name+" n'est pas une chaine de caractères")
                 pygame.quit()
         elif sorte == "int":
             try:
+                result = 0
+                if "+" in value.split(" "):
+                    for i in value.split(" "):
+                        if i != "+":
+                            if i.split("(")[0] in instructions:
+                                result += int(eval("self."+i))
+                            else:
+                                result += int(i)
+                elif "-" in value.split(" "):
+                    for i in value.split(" "):
+                        if i != "-":
+                            if i.split("(")[0] in instructions:
+                                result -= int(eval("self."+i))
+                            else:
+                                result -= int(i)
+                elif "*" in value.split(" "):
+                    for i in value.split(" "):
+                        if i != "*":
+                            if i.split("(")[0] in instructions:
+                                result *= int(eval("self."+i))
+                            else:
+                                result *= int(i)
+                elif "/" in value.split(" "):
+                    for i in value.split(" "):
+                        if i != "/":
+                            if i.split("(")[0] in instructions:
+                                result /= int(eval("self."+i))
+                            else:
+                                result /= int(i)
+                else:
+                    result = value
+                value = result
                 self.variables[name] = int(value)
             except:
                 showerror("ERREUR","Erreur sur l'instruction de la ligne n°"+str(self.avancement+1)+"\nLa variable "+name+" n'est pas un entier")
                 pygame.quit()
         elif sorte == "float":
             try:
+                result = 0
+                if "+" in value.split(" "):
+                    for i in value.split(" "):
+                        if i != "+":
+                            if i.split("(")[0] in instructions:
+                                result += float(eval("self."+i))
+                            else:
+                                result += float(i)
+                elif "-" in value.split(" "):
+                    for i in value.split(" "):
+                        if i != "-":
+                            if i.split("(")[0] in instructions:
+                                result -= float(eval("self."+i))
+                            else:
+                                result -= float(i)
+                elif "*" in value.split(" "):
+                    for i in value.split(" "):
+                        if i != "*":
+                            if i.split("(")[0] in instructions:
+                                result *= float(eval("self."+i))
+                            else:
+                                result *= float(i)
+                elif "/" in value.split(" "):
+                    for i in value.split(" "):
+                        if i != "/":
+                            if i.split("(")[0] in instructions:
+                                result /= float(eval("self."+i))
+                            else:
+                                result /= float(i)
+                else:
+                    result = value
+                value = result
                 self.variables[name] = float(value)
             except:
                 showerror("ERREUR","Erreur sur l'instruction de la ligne n°"+str(self.avancement+1)+"\nLa variable "+name+" n'est pas un flottant")
