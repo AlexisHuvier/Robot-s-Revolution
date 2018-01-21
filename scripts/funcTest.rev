@@ -1,3 +1,4 @@
-setFunc("spam", "sayConsole('Coucou')", "sayConsole('tu')", "sayConsole('es')", "sayConsole('moche')")
-callFunc("spam")
-loop("callFunc('spam')", 5)
+setFunc("deplacement", "loop('walk()', 5)")
+callFunc("deplacement")
+setFunc("deplacementV2", "loopif('walk()', 'getPosX() < 11')")
+callFunc("deplacementV2")
