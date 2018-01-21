@@ -197,6 +197,9 @@ class Script():
             pygame.quit()
     
     def sayConsole(self, txt = "Bonjour"):
+        for i in txt.split(" "):
+            if i.split("(")[0] in instructions:
+                txt = txt.replace(i, str(eval("self."+i)))
         print(txt)
     
     def loop(self, instruction = "walk()", nb = 1):
