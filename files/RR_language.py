@@ -105,9 +105,15 @@ class Script():
             else:
                 instruction = instructions_f[abs(self.temp_fonction_a_faire-len(instructions_f))]
                 if instruction.split("(")[0] in instructions:
-                    eval("self."+instruction)
-                    self.avancement -=1
-                    self.temp_fonction_a_faire -= 1
+                    if instruction.split("(")[0] == "loop" or instruction.split("(")[0] == "loopif" :
+                        result = eval("self."+instruction)
+                        self.avancement -= 1
+                        if result:
+                            self.temp_fonction_a_faire -= 1
+                    else:
+                        eval("self."+instruction)
+                        self.avancement -=1
+                        self.temp_fonction_a_faire -= 1
                 else:
                     showerror("ERREUR","Erreur sur l'instruction "+instruction+" de la fonction "+name+" appelée ligne n°"+str(self.avancement+1))
                     pygame.quit()
@@ -196,14 +202,17 @@ class Script():
     def loop(self, instruction = "walk()", nb = 1):
         if self.temp_boucle_a_faire == 0:
             self.temp_boucle_a_faire = -1
+            return 1
         elif self.temp_boucle_a_faire == -1:
             self.temp_boucle_a_faire = nb
             self.avancement -= 1
+            return 0
         else:
             if instruction.split("(")[0] in instructions:
                 eval("self."+instruction)
                 self.avancement -=1
                 self.temp_boucle_a_faire -= 1
+                return 0
             else:
                 showerror("ERREUR","Erreur sur l'instruction à la loop de la ligne n°"+str(self.avancement+1))
                 pygame.quit()
@@ -215,18 +224,26 @@ class Script():
                     eval("self."+instruction)
                     self.avancement -=1
                     self.temp_boucle_a_faire -= 1
+                    return 0
                 else:
                     showerror("ERREUR","Erreur sur l'instruction à la loop de la ligne n°"+str(self.avancement+1))
                     pygame.quit()
+            else:
+                self.temp_boucle_a_faire = -1
+                return 1
         else:
             if eval(condition):
                 if instruction.split("(")[0] in instructions:
                     eval("self."+instruction)
                     self.avancement -=1
                     self.temp_boucle_a_faire -= 1
+                    return 0
                 else:
                     showerror("ERREUR","Erreur sur l'instruction à la loop de la ligne n°"+str(self.avancement+1))
                     pygame.quit()
+            else:
+                self.temp_boucle_a_faire = -1
+                return 1
     def if_(self, instruction, condition = "True"):
         if condition.split("(")[0] in instructions:
             if eval("self."+condition):
