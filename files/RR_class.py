@@ -2,9 +2,6 @@ import pygame
 from RR_language import *
 
 class Player(pygame.sprite.Sprite):
-			pygame.quit()
-			result = 0
-			showinfo("Perdu", "Votre robot a touché un caillou !")
     def __init__(self, fichier, level, map):
         super(Player, self).__init__()
         
@@ -18,6 +15,10 @@ class Player(pygame.sprite.Sprite):
         self.attack = False
         self.posX = 1
         self.posY = 1
+        self.tempX = self.rect.x
+        self.tempY = self.rect.y
+        self.tempPosX = self.posX
+        self.tempPosY = self.posY
         self.timer = 10
         self.level = level
         self.map = map
@@ -30,6 +31,11 @@ class Player(pygame.sprite.Sprite):
             self.timer = 10
         collision_list = pygame.sprite.spritecollide(self, self.map.rock_list, False, None)
         for collided_object in collision_list:
+            print("Annulation du déplacement : vous avez hurté un caillou")
+            self.rect.x = self.tempX
+            self.rect.y = self.tempY
+            self.posX = self.tempPosX
+            self.posY = self.tempPosY
         collision_list_2 = pygame.sprite.spritecollide(self, self.map.finish_list, False, None)
         for collided_object in collision_list_2:
             pygame.quit()

@@ -39,6 +39,10 @@ class Script():
             return 1
 
     def walk(self):
+        self.robot.tempX = self.robot.rect.x
+        self.robot.tempY = self.robot.rect.y
+        self.robot.tempPosX = self.robot.posX
+        self.robot.tempPosY = self.robot.posY
         if self.robot.direction == 0:
             self.robot.rect.x += 60
             self.robot.posX += 1
