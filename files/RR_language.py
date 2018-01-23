@@ -1,7 +1,7 @@
 import pygame, sys
 from tkinter.messagebox import *
 
-instructions = ["walk", "left", "right", "getDirection", "setFunc", "callFunc", "getAttack", "setAttack", "setSprite", "getSprite", "setVar", "getVar", "loopif", "loop", "sayConsole","if_", "getPosX", "getPosY"]
+instructions = ["walk", "left", "right", "jump", "getDirection", "setFunc", "callFunc", "getAttack", "setAttack", "setSprite", "getSprite", "setVar", "getVar", "loopif", "loop", "sayConsole","if_", "getPosX", "getPosY"]
 
 class Script():
     def __init__(self, robot, fichier):
@@ -27,6 +27,7 @@ class Script():
         if len(self.instruction)-1 >= self.avancement:
             if self.instruction[self.avancement].split("(")[0] in instructions:
                 eval("self."+self.instruction[self.avancement])
+                self.last_instruction = self.instruction[self.avancement].split("(")[0]
                 self.avancement += 1
                 return 1
             elif self.instruction[self.avancement] == "":
@@ -39,6 +40,38 @@ class Script():
         else:
             return 1
 
+    def jump(self):
+        if self.last_instruction == "walk":
+            if self.robot.direction == 0:
+                if self.robot.map.getObj(self.robot.posX + 1, self.robot.posY) in self.robot.map.rock_list:
+                    self.robot.rect.x += 120
+                    self.robot.posX += 2
+                else:
+                    showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1)+"\nOn ne peut jump que les cailloux")
+            elif self.robot.direction == 1:
+                if self.robot.map.getObj(self.robot.posX, self.robot.posY + 1) in self.robot.map.rock_list:
+                    self.robot.rect.y += 120
+                    self.robot.posY += 2
+                else:
+                    showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1)+"\nOn ne peut jump que les cailloux")
+                    
+            elif self.robot.direction == 2:
+                if self.robot.map.getObj(self.robot.posX - 1, self.robot.posY) in self.robot.map.rock_list:
+                    self.robot.rect.x -= 120
+                    self.robot.posX -= 2
+                else:
+                    showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1)+"\nOn ne peut jump que les cailloux")
+                    
+            elif self.robot.direction == 3:
+                if self.robot.map.getObj(self.robot.posX, self.robot.posY - 1) in self.robot.map.rock_list:
+                    self.robot.rect.y -= 120
+                    self.robot.posY -= 2
+                else:
+                    showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1)+"\nOn ne peut jump que les cailloux")
+                    
+        else:
+            showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1)+"\nIl n'est pas possible d'utiliser 'jump()' s'il n'y a pas un 'walk()' avant")
+            
     def walk(self):
         self.robot.tempX = self.robot.rect.x
         self.robot.tempY = self.robot.rect.y
