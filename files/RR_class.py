@@ -51,6 +51,8 @@ class Rock(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = pos[0]
         self.rect.y = pos[1]
+        self.posX = self.rect.x // 60 + 1
+        self.posY = self.rect.y // 60 + 1
 
 class Finish(pygame.sprite.Sprite):
     def __init__(self, pos = [10,10]):
@@ -60,6 +62,8 @@ class Finish(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = pos[0]
         self.rect.y = pos[1]
+        self.posX = self.rect.x // 60 + 1
+        self.posY = self.rect.y // 60 + 1
 
 class Map():
     def __init__(self, objets, fichier, level):
@@ -75,4 +79,15 @@ class Map():
         for i in range(1, len(objets)-1):
             self.rock = Rock([int(objets[i].split(",")[0]),int(objets[i].split(",")[1])])
             self.rock_list.add(self.rock)
+    
+    def getObj(self, posX, posY):
+        if self.player.posX == posX and self.player.posY == posY:
+            return self.player
+        elif self.finish.posX == posX and self.finish.posX == posY:
+            return self.finish
+        else:
+            for i in self.rock_list:
+                if i.posX == posX and i.posX == posY:
+                    return i
+            return None
         
