@@ -10,6 +10,7 @@ class Script():
         self.avancement = 0
         self.temp_boucle_a_faire = -1
         self.temp_fonction_a_faire = -1
+        self.last_instruction = ""
         self.variables = {}
         self.fonctions = {}
         try:
@@ -321,7 +322,15 @@ class Script():
     def if_(self, instruction, condition = "True"):
         if condition.split("(")[0] in instructions:
             if eval("self."+condition):
-                eval("self."+instruction)
+                if instruction.split("(")[0] in instructions:
+                    eval("self."+instruction)
+                else:
+                    showerror("ERREUR","Erreur sur l'instruction du if_ de la ligne n°"+str(self.avancement+1))
+                    pygame.quit()
         else:
             if eval(condition):
-                eval("self."+instruction)
+                if instruction.split("(")[0] in instructions:
+                    eval("self."+instruction)
+                else:
+                    showerror("ERREUR","Erreur sur l'instruction du if_ de la ligne n°"+str(self.avancement+1))
+                    pygame.quit()
