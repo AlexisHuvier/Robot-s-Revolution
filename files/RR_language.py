@@ -42,30 +42,32 @@ class Script():
 
     def jump(self):
         if self.last_instruction == "walk":
+            self.robot.tempPosX = self.robot.posX
+            self.robot.tempPosY = self.robot.posY
             if self.robot.direction == 0:
                 if self.robot.map.getObj(self.robot.posX + 1, self.robot.posY) in self.robot.map.rock_list:
-                    self.robot.rect.x += 120
                     self.robot.posX += 2
+                    self.robot.rect.x  = 15 + 60 * (self.robot.posX - 1)
                 else:
                     showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1)+"\nOn ne peut jump que les cailloux")
             elif self.robot.direction == 1:
                 if self.robot.map.getObj(self.robot.posX, self.robot.posY + 1) in self.robot.map.rock_list:
-                    self.robot.rect.y += 120
                     self.robot.posY += 2
+                    self.robot.rect.y = 10 + 60 * (self.robot.posY - 1)
                 else:
                     showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1)+"\nOn ne peut jump que les cailloux")
                     
             elif self.robot.direction == 2:
                 if self.robot.map.getObj(self.robot.posX - 1, self.robot.posY) in self.robot.map.rock_list:
-                    self.robot.rect.x -= 120
                     self.robot.posX -= 2
+                    self.robot.rect.x  = 15 + 60 * (self.robot.posX - 1)
                 else:
                     showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1)+"\nOn ne peut jump que les cailloux")
                     
             elif self.robot.direction == 3:
                 if self.robot.map.getObj(self.robot.posX, self.robot.posY - 1) in self.robot.map.rock_list:
-                    self.robot.rect.y -= 120
                     self.robot.posY -= 2
+                    self.robot.rect.y = 10 + 60 * (self.robot.posY - 1)
                 else:
                     showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1)+"\nOn ne peut jump que les cailloux")
                     
@@ -73,22 +75,21 @@ class Script():
             showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1)+"\nIl n'est pas possible d'utiliser 'jump()' s'il n'y a pas un 'walk()' avant")
             
     def walk(self):
-        self.robot.tempX = self.robot.rect.x
-        self.robot.tempY = self.robot.rect.y
         self.robot.tempPosX = self.robot.posX
         self.robot.tempPosY = self.robot.posY
         if self.robot.direction == 0:
-            self.robot.rect.x += 60
             self.robot.posX += 1
+            self.robot.rect.x  = 15 + 60 * (self.robot.posX - 1)
         elif self.robot.direction == 1:
-            self.robot.rect.y += 60
             self.robot.posY += 1
+            self.robot.rect.y = 10 + 60 * (self.robot.posY - 1)
         elif self.robot.direction == 2:
-            self.robot.rect.x -= 60
             self.robot.posX -= 1
+            self.robot.rect.x  = 15 + 60 * (self.robot.posX - 1)
         elif self.robot.direction == 3:
             self.robot.rect.y -= 60
             self.robot.posY -= 1
+            self.robot.rect.y = 10 + 60 * (self.robot.posY - 1)
     
     def right(self):
         self.robot.direction += 1
