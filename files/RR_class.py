@@ -83,7 +83,7 @@ class Map():
     def getObj(self, posX, posY):
         if self.player.posX == posX and self.player.posY == posY:
             return self.player
-        elif self.finish.posX == posX and self.finish.posX == posY:
+        elif self.finish.posX == posX and self.finish.posY == posY:
             return self.finish
         else:
             for i in self.rock_list:
