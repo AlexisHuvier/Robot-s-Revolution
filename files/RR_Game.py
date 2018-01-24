@@ -1,6 +1,9 @@
-import pygame, random, sys
-from RR_class import *
-from tkinter.messagebox import *
+import pygame
+from tkinter.messagebox import showerror
+try:
+    from files.RR_class import Map
+except ImportError:
+    from RR_class import Map
 
 
 class Game():

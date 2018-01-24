@@ -1,24 +1,29 @@
-import pygame, random, sys, os
-from tkinter import *
-from tkinter.messagebox import *
+import pygame
+import random
+import sys
+import os
+from tkinter import Entry, Tk, Label, Button, END
+from tkinter.messagebox import showerror, showinfo
+try:
+    from files.RR_Game import Game
+except ImportError:
+    sys.path.append("files")
+    from RR_Game import Game
 
-sys.path.append("files")
-from RR_Game import *
+LEVEL = 1
 
-level = 1
-
-def Quitter():    
+def Quitter():
     global Fenetre
-    
+
     Fenetre.destroy()
 
 def Jouer():
-    global ENom, level, LTitre
-    
-    if ENom.get() == "" :
-        showerror("Your Robot","Veuillez écrire quelque chose !")
-    elif ENom.get() == "Nom du script" :
-        showerror("Your Robot","Veuillez changer le nom !")
+    global ENom, LEVEL, LTitre
+
+    if ENom.get() == "":
+        showerror("Your Robot", "Veuillez écrire quelque chose !")
+    elif ENom.get() == "Nom du script":
+        showerror("Your Robot", "Veuillez changer le nom !")
     else:
         try:
             with open("scripts/"+ENom.get()+".rev"):
@@ -26,56 +31,56 @@ def Jouer():
         except IOError:
             showerror("Fichier inconnu", "Le fichier n'a pas pu être ouvert.")
         else:
-            game = Game("scripts/"+ENom.get()+".rev", "Parcours", level)
-            level = game.launch()
+            game = Game("scripts/"+ENom.get()+".rev", "Parcours", LEVEL)
+            LEVEL = game.launch()
             try:
-                with open("levels/"+str(level)+".rev"):
+                with open("levels/"+str(LEVEL)+".rev"):
                     pass
             except IOError:
                 showinfo("Bravo !", "Vous avez fini tous les niveaux de ce mode !")
                 Solo()
             else:
-                showinfo("Suivant", "C'est parti pour le niveau "+str(level))
-                LTitre['text'] = "Level "+str(level)
+                showinfo("Suivant", "C'est parti pour le niveau "+str(LEVEL))
+                LTitre['text'] = "Level "+str(LEVEL)
 
 def FenScriptP():
     global ENom, Fenetre, LTitre
     Fenetre.destroy()
-    
+
     Fenetre = Tk()
     Fenetre.title("Robot's Revolution")
     Fenetre.geometry("180x180")
 
-    LTitre = Label(Fenetre,text="Level "+str(level),font=("Comic Sans MS",14,"bold"))
+    LTitre = Label(Fenetre, text="Level "+str(level), font=("Comic Sans MS", 14, "bold"))
     ENom = Entry(Fenetre)
-    ENom.insert(END,"Nom du script")
-    BQuitterF = Button(Fenetre,text="Quitter",width = 9,command = Solo)
-    BEnregistrer = Button(Fenetre,text="Lancer",width = 9,command = Jouer)
+    ENom.insert(END, "Nom du script")
+    BQuitterF = Button(Fenetre, text="Quitter", width=9, command=Solo)
+    BEnregistrer = Button(Fenetre, text="Lancer", width=9, command=Jouer)
 
-    LTitre.place(x=40,y=20)
-    ENom.place(x=30,y=100)
-    BEnregistrer.place(x=10,y=140)
-    BQuitterF.place(x=100,y=140)
+    LTitre.place(x=40, y=20)
+    ENom.place(x=30, y=100)
+    BEnregistrer.place(x=10, y=140)
+    BQuitterF.place(x=100, y=140)
 
     Fenetre.mainloop()
-    
+
 def FenScriptVersus():
-    showerror("Coming Soon","Le mode Versus IA viendra plus tard")
+    showerror("Coming Soon", "Le mode Versus IA viendra plus tard")
 
 def Solo():
     global Fenetre, level
     Fenetre.destroy()
     level = 1
-    
+
     Fenetre = Tk()
     Fenetre.title("Robot's Revolution")
     Fenetre.geometry("180x180")
 
-    LTitre = Label(Fenetre,text="Robot's Revolution",font=("Comic Sans MS",14,"bold"))
+    LTitre = Label(Fenetre, text="Robot's Revolution", font=("Comic Sans MS", 14, "bold"))
 
-    BParcours = Button(Fenetre, text="Parcours", width = 9, command = FenScriptP)
-    BVersus = Button(Fenetre, text="Versus IA", width = 9, command = FenScriptVersus)
-    BQuitterF = Button(Fenetre,text="Quitter",width = 9,command = Menu)
+    BParcours = Button(Fenetre, text="Parcours", width=9, command=FenScriptP)
+    BVersus = Button(Fenetre, text="Versus IA", width=9, command=FenScriptVersus)
+    BQuitterF = Button(Fenetre, text="Quitter", width=9, command=Menu)
 
     LTitre.place(x=5,y=20)
     BParcours.place(x=10,y=90)

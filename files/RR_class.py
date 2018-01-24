@@ -1,5 +1,8 @@
 import pygame
-from RR_language import *
+try:
+    from files.RR_language import Script
+except ImportError:
+    from RR_language import Script
 
 class Player(pygame.sprite.Sprite):
     def __init__(self, fichier, level, map):

@@ -1,5 +1,5 @@
 import pygame, sys
-from tkinter.messagebox import *
+from tkinter.messagebox import showerror
 
 instructions = ["walk", "left", "right", "jump", "getDirection", "setFunc", "callFunc", "getAttack", "setAttack", "setSprite", "getSprite", "setVar", "getVar", "loopif", "loop", "sayConsole","if_", "getPosX", "getPosY"]
 
