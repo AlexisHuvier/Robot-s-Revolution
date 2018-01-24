@@ -1,7 +1,9 @@
 import pygame, sys
 from tkinter.messagebox import showerror
 
-instructions = ["walk", "left", "right", "jump", "getDirection", "setFunc", "callFunc", "getAttack", "setAttack", "setSprite", "getSprite", "setVar", "getVar", "loopif", "loop", "sayConsole","if_", "getPosX", "getPosY"]
+instructions = ["walk", "left", "right", "jump", "getDirection", "setFunc", "callFunc",
+                "getAttack", "setAttack", "setSprite", "getSprite", "setVar", "getVar",
+                "loopif", "loop", "sayConsole", "if_", "getPosX", "getPosY"]
 
 class Script():
     def __init__(self, robot, fichier):
@@ -23,7 +25,7 @@ class Script():
         else:
             with open(self.fichier, 'r') as fichier:
                 self.instruction = fichier.read().split("\n")
-    
+
     def launch(self):
         if len(self.instruction)-1 >= self.avancement:
             if self.instruction[self.avancement].split("(")[0] in instructions:
@@ -36,7 +38,7 @@ class Script():
                 self.avancement += 1
                 return 1
             else:
-                showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1))
+                showerror("ERREUR", "Erreur sur l'instruction à la ligne n°"+str(self.avancement+1))
                 pygame.quit()
                 return 0
         else:

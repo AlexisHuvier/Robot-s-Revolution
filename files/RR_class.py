@@ -1,11 +1,12 @@
 import pygame
+from tkinter.messagebox import showinfo
 try:
     from files.RR_language import Script
 except ImportError:
     from RR_language import Script
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, fichier, level, map):
+    def __init__(self, fichier, level, carte):
         super(Player, self).__init__()
         
         self.strImage = "files/FlammyD.png"
@@ -24,7 +25,7 @@ class Player(pygame.sprite.Sprite):
         self.level = level
         self.map = map
     
-    def update(self, collidable = pygame.sprite.Group(), collidable2 = pygame.sprite.Group()):
+    def update(self):
         self.timer -= 1
         result = 1
         if self.timer == 0:
@@ -44,7 +45,7 @@ class Player(pygame.sprite.Sprite):
         return result
 
 class Rock(pygame.sprite.Sprite):
-    def __init__(self, pos = [10,10]):
+    def __init__(self, pos):
         super(Rock, self).__init__()
         
         self.image = pygame.image.load("files/Caillou.png")
@@ -55,7 +56,7 @@ class Rock(pygame.sprite.Sprite):
         self.rect.y = 5 + 60 * (self.posY - 1) 
 
 class Finish(pygame.sprite.Sprite):
-    def __init__(self, pos = [10,10]):
+    def __init__(self, pos):
         super(Finish, self).__init__()
         
         self.image = pygame.image.load("files/finish.png")
@@ -76,7 +77,7 @@ class Map():
         self.player.posY = int(objets[0].split(",")[1])
         self.player.rect.x = 15 + 60 * (self.player.posX - 1) 
         self.player.rect.y = 10 + 60 * (self.player.posY - 1) 
-        self.finish = Finish([int(objets[len(objets)-1].split(",")[0]),int(objets[len(objets)-1].split(",")[1])])
+        self.finish = Finish([int(objets[len(objets)-1].split(",")[0]), int(objets[len(objets)-1].split(",")[1])])
         self.finish_list.add(self.finish)
         for i in range(1, len(objets)-1):
             self.rock = Rock([int(objets[i].split(",")[0]),int(objets[i].split(",")[1])])

@@ -1,8 +1,5 @@
-import pygame
-import random
 import sys
-import os
-from tkinter import Entry, Tk, Label, Button, END
+from tkinter import Entry, Tk, Label, Button, END, TclError
 from tkinter.messagebox import showerror, showinfo
 try:
     from files.RR_Game import Game
@@ -11,27 +8,30 @@ except ImportError:
     from RR_Game import Game
 
 LEVEL = 1
+FENETRE = None
+ENOM = None
+LTITRE = None
 
 def Quitter():
-    global Fenetre
+    global FENETRE
 
-    Fenetre.destroy()
+    FENETRE.destroy()
 
 def Jouer():
-    global ENom, LEVEL, LTitre
+    global ENOM, LEVEL, LTITRE
 
-    if ENom.get() == "":
+    if ENOM.get() == "":
         showerror("Your Robot", "Veuillez écrire quelque chose !")
-    elif ENom.get() == "Nom du script":
+    elif ENOM.get() == "Nom du script":
         showerror("Your Robot", "Veuillez changer le nom !")
     else:
         try:
-            with open("scripts/"+ENom.get()+".rev"):
+            with open("scripts/"+ENOM.get()+".rev"):
                 pass
         except IOError:
             showerror("Fichier inconnu", "Le fichier n'a pas pu être ouvert.")
         else:
-            game = Game("scripts/"+ENom.get()+".rev", "Parcours", LEVEL)
+            game = Game("scripts/"+ENOM.get()+".rev", "Parcours", LEVEL)
             LEVEL = game.launch()
             try:
                 with open("levels/"+str(LEVEL)+".rev"):
@@ -41,79 +41,84 @@ def Jouer():
                 Solo()
             else:
                 showinfo("Suivant", "C'est parti pour le niveau "+str(LEVEL))
-                LTitre['text'] = "Level "+str(LEVEL)
+                LTITRE['text'] = "Level "+str(LEVEL)
 
 def FenScriptP():
-    global ENom, Fenetre, LTitre
-    Fenetre.destroy()
+    global ENOM, FENETRE, LTITRE
+    FENETRE.destroy()
 
-    Fenetre = Tk()
-    Fenetre.title("Robot's Revolution")
-    Fenetre.geometry("180x180")
+    FENETRE = Tk()
+    FENETRE.title("Robot's Revolution")
+    FENETRE.geometry("180x180")
 
-    LTitre = Label(Fenetre, text="Level "+str(level), font=("Comic Sans MS", 14, "bold"))
-    ENom = Entry(Fenetre)
-    ENom.insert(END, "Nom du script")
-    BQuitterF = Button(Fenetre, text="Quitter", width=9, command=Solo)
-    BEnregistrer = Button(Fenetre, text="Lancer", width=9, command=Jouer)
+    LTITRE = Label(FENETRE, text="Level "+str(LEVEL),
+                   font=("Comic Sans MS", 14, "bold"))
+    ENOM = Entry(FENETRE)
+    ENOM.insert(END, "Nom du script")
+    BQuitterF = Button(FENETRE, text="Quitter", width=9, command=Solo)
+    BEnregistrer = Button(FENETRE, text="Lancer", width=9, command=Jouer)
 
-    LTitre.place(x=40, y=20)
-    ENom.place(x=30, y=100)
+    LTITRE.place(x=40, y=20)
+    ENOM.place(x=30, y=100)
     BEnregistrer.place(x=10, y=140)
     BQuitterF.place(x=100, y=140)
 
-    Fenetre.mainloop()
+    FENETRE.mainloop()
 
 def FenScriptVersus():
     showerror("Coming Soon", "Le mode Versus IA viendra plus tard")
 
 def Solo():
-    global Fenetre, level
-    Fenetre.destroy()
-    level = 1
+    global FENETRE, LEVEL
+    FENETRE.destroy()
+    LEVEL = 1
 
-    Fenetre = Tk()
-    Fenetre.title("Robot's Revolution")
-    Fenetre.geometry("180x180")
+    FENETRE = Tk()
+    FENETRE.title("Robot's Revolution")
+    FENETRE.geometry("180x180")
 
-    LTitre = Label(Fenetre, text="Robot's Revolution", font=("Comic Sans MS", 14, "bold"))
+    LTITRE = Label(FENETRE, text="Robot's Revolution",
+                   font=("Comic Sans MS", 14, "bold"))
 
-    BParcours = Button(Fenetre, text="Parcours", width=9, command=FenScriptP)
-    BVersus = Button(Fenetre, text="Versus IA", width=9, command=FenScriptVersus)
-    BQuitterF = Button(Fenetre, text="Quitter", width=9, command=Menu)
+    BParcours = Button(FENETRE, text="Parcours", width=9, command=FenScriptP)
+    BVersus = Button(FENETRE, text="Versus IA", width=9, command=FenScriptVersus)
+    BQuitterF = Button(FENETRE, text="Quitter", width=9, command=Menu)
 
-    LTitre.place(x=5,y=20)
+    LTITRE.place(x=5,y=20)
     BParcours.place(x=10,y=90)
     BVersus.place(x=100,y=90)
     BQuitterF.place(x=50,y=140)
 
-    Fenetre.mainloop()
+    FENETRE.mainloop()
 
 def Multi():
     showerror("Coming Soon","Le mode Multiplayer viendra plus tard")
 
 def Menu():
-    global Fenetre
+    global FENETRE
+
     try:
-        Fenetre.destroy()
-    except:
+        FENETRE.destroy()
+    except TclError:
+        pass
+    except AttributeError:
         pass
     
-    Fenetre = Tk()
-    Fenetre.title("Robot's Revolution")
-    Fenetre.geometry("180x180")
+    FENETRE = Tk()
+    FENETRE.title("Robot's Revolution")
+    FENETRE.geometry("180x180")
 
-    LTitre = Label(Fenetre,text="Robot's Revolution",font=("Comic Sans MS",14,"bold"))
+    LTITRE = Label(FENETRE,text="Robot's Revolution",font=("Comic Sans MS",14,"bold"))
 
-    BSolo = Button(Fenetre, text="Singleplayer", width = 9, command = Solo)
-    BMulti = Button(Fenetre, text="Multiplayer", width = 9, command = Multi)
-    BQuitterF = Button(Fenetre,text="Quitter",width = 9,command = Quitter)
+    BSolo = Button(FENETRE, text="Singleplayer", width = 9, command = Solo)
+    BMulti = Button(FENETRE, text="Multiplayer", width = 9, command = Multi)
+    BQuitterF = Button(FENETRE, text="Quitter", width=9, command=Quitter)
 
-    LTitre.place(x=5,y=20)
+    LTITRE.place(x=5, y=20)
     BSolo.place(x=10,y=90)
     BMulti.place(x=100,y=90)
     BQuitterF.place(x=50,y=140)
 
-    Fenetre.mainloop()
+    FENETRE.mainloop()
 
 Menu()
