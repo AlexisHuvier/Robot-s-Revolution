@@ -31,7 +31,6 @@ class Player(pygame.sprite.Sprite):
             self.timer = 20
         collision_list = pygame.sprite.spritecollide(self, self.map.rock_list, False, None)
         for collided_object in collision_list:
-            print("Annulation du déplacement : vous avez hurté un caillou")
             self.rect.x = self.tempX
             self.rect.y = self.tempY
             self.posX = self.tempPosX
