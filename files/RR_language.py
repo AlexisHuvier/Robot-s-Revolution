@@ -51,26 +51,27 @@ class Script():
             if self.robot.direction == 0:
                 if self.robot.carte.getObj(self.robot.posX + 1, self.robot.posY) in self.robot.carte.rock_list:
                     self.robot.posX += 2
+                    if self.robot.posX > 10:
+                        self.robot.posX -= 2
+                        showerror("ERREUR", "Le robot est sorti de l'écran.")
                     self.robot.rect.x  = 15 + 60 * (self.robot.posX - 1)
-                else:
-                    showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1)+"\nOn ne peut jump que les cailloux")
-            elif self.robot.direction == 1:
-                if self.robot.carte.getObj(self.robot.posX, self.robot.posY + 1) in self.robot.carte.rock_list:
+                elif self.robot.direction == 1:
                     self.robot.posY += 2
-                    self.robot.rect.y = 10 + 60 * (self.robot.posY - 1)
-                else:
-                    showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1)+"\nOn ne peut jump que les cailloux")
-                    
-            elif self.robot.direction == 2:
-                if self.robot.carte.getObj(self.robot.posX - 1, self.robot.posY) in self.robot.carte.rock_list:
+                    if self.robot.posY > 10:
+                        self.robot.posY -= 2
+                        showerror("ERREUR", "Le robot est sorti de l'écran.")
+                    self.robot.rect.y = 10 + 60 * (self.robot.posY - 1)                        
+                elif self.robot.direction == 2:
                     self.robot.posX -= 2
-                    self.robot.rect.x  = 15 + 60 * (self.robot.posX - 1)
-                else:
-                    showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1)+"\nOn ne peut jump que les cailloux")
-                    
-            elif self.robot.direction == 3:
-                if self.robot.carte.getObj(self.robot.posX, self.robot.posY - 1) in self.robot.cartemap.rock_list:
+                    if self.robot.posX < 1:
+                        self.robot.posX += 2
+                        showerror("ERREUR", "Le robot est sorti de l'écran.")
+                    self.robot.rect.x  = 15 + 60 * (self.robot.posX - 1)                        
+                elif self.robot.direction == 3:
                     self.robot.posY -= 2
+                    if self.robot.posY < 1:
+                        self.robot.posY += 2
+                        showerror("ERREUR", "Le robot est sorti de l'écran.")
                     self.robot.rect.y = 10 + 60 * (self.robot.posY - 1)
                 else:
                     showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1)+"\nOn ne peut jump que les cailloux")
@@ -83,16 +84,27 @@ class Script():
         self.robot.tempPosY = self.robot.posY
         if self.robot.direction == 0:
             self.robot.posX += 1
+            if self.robot.posX > 10:
+                self.robot.posX -= 1
+                showerror("ERREUR", "Le robot est sorti de l'écran.")
             self.robot.rect.x  = 15 + 60 * (self.robot.posX - 1)
         elif self.robot.direction == 1:
             self.robot.posY += 1
+            if self.robot.posY > 10:
+                self.robot.posY -= 1
+                showerror("ERREUR", "Le robot est sorti de l'écran.")
             self.robot.rect.y = 10 + 60 * (self.robot.posY - 1)
         elif self.robot.direction == 2:
             self.robot.posX -= 1
+            if self.robot.posX < 1:
+                self.robot.posX += 1
+                showerror("ERREUR", "Le robot est sorti de l'écran.")
             self.robot.rect.x  = 15 + 60 * (self.robot.posX - 1)
         elif self.robot.direction == 3:
-            self.robot.rect.y -= 60
             self.robot.posY -= 1
+            if self.robot.posY < 1:
+                self.robot.posY += 1
+                showerror("ERREUR", "Le robot est sorti de l'écran.")
             self.robot.rect.y = 10 + 60 * (self.robot.posY - 1)
     
     def right(self):
