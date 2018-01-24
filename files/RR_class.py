@@ -52,8 +52,9 @@ class Rock(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.posX = pos[0]
         self.posY = pos[1]
-        self.rect.x = 5 + 60 * (self.posX - 1) 
-        self.rect.y = 5 + 60 * (self.posY - 1) 
+        self.rect.x = 5 + 60 * (self.posX - 1)
+        self.rect.y = 5 + 60 * (self.posY - 1)
+        self.can_be_jump = True
 
 class Finish(pygame.sprite.Sprite):
     def __init__(self, pos):
@@ -63,8 +64,9 @@ class Finish(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.posX = pos[0]
         self.posY = pos[1]
-        self.rect.x = 5 + 60 * (self.posX - 1) 
+        self.rect.x = 5 + 60 * (self.posX - 1)
         self.rect.y = 5 + 60 * (self.posY - 1)
+        self.can_be_jump = False
 
 class Map():
     def __init__(self, objets, fichier, level):

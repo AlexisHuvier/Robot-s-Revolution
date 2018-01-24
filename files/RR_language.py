@@ -48,8 +48,8 @@ class Script():
         if self.last_instruction == "walk":
             self.robot.tempPosX = self.robot.posX
             self.robot.tempPosY = self.robot.posY
-            if self.robot.direction == 0:
-                if self.robot.carte.getObj(self.robot.posX + 1, self.robot.posY) in self.robot.carte.rock_list:
+            if self.robot.carte.getObj(self.robot.posX + 1, self.robot.posY).can_be_jump:
+                if self.robot.direction == 0:
                     self.robot.posX += 2
                     if self.robot.posX > 10:
                         self.robot.posX -= 2
@@ -73,9 +73,8 @@ class Script():
                         self.robot.posY += 2
                         showerror("ERREUR", "Le robot est sorti de l'écran.")
                     self.robot.rect.y = 10 + 60 * (self.robot.posY - 1)
-                else:
-                    showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1)+"\nOn ne peut jump que les cailloux")
-                    
+            else:
+                showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1)+"\nOn ne peut jump que les cailloux")
         else:
             showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1)+"\nIl n'est pas possible d'utiliser 'jump()' s'il n'y a pas un 'walk()' avant")
             
