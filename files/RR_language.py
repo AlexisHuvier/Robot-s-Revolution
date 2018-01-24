@@ -49,27 +49,27 @@ class Script():
             self.robot.tempPosX = self.robot.posX
             self.robot.tempPosY = self.robot.posY
             if self.robot.direction == 0:
-                if self.robot.map.getObj(self.robot.posX + 1, self.robot.posY) in self.robot.map.rock_list:
+                if self.robot.carte.getObj(self.robot.posX + 1, self.robot.posY) in self.robot.carte.rock_list:
                     self.robot.posX += 2
                     self.robot.rect.x  = 15 + 60 * (self.robot.posX - 1)
                 else:
                     showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1)+"\nOn ne peut jump que les cailloux")
             elif self.robot.direction == 1:
-                if self.robot.map.getObj(self.robot.posX, self.robot.posY + 1) in self.robot.map.rock_list:
+                if self.robot.carte.getObj(self.robot.posX, self.robot.posY + 1) in self.robot.carte.rock_list:
                     self.robot.posY += 2
                     self.robot.rect.y = 10 + 60 * (self.robot.posY - 1)
                 else:
                     showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1)+"\nOn ne peut jump que les cailloux")
                     
             elif self.robot.direction == 2:
-                if self.robot.map.getObj(self.robot.posX - 1, self.robot.posY) in self.robot.map.rock_list:
+                if self.robot.carte.getObj(self.robot.posX - 1, self.robot.posY) in self.robot.carte.rock_list:
                     self.robot.posX -= 2
                     self.robot.rect.x  = 15 + 60 * (self.robot.posX - 1)
                 else:
                     showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1)+"\nOn ne peut jump que les cailloux")
                     
             elif self.robot.direction == 3:
-                if self.robot.map.getObj(self.robot.posX, self.robot.posY - 1) in self.robot.map.rock_list:
+                if self.robot.carte.getObj(self.robot.posX, self.robot.posY - 1) in self.robot.cartemap.rock_list:
                     self.robot.posY -= 2
                     self.robot.rect.y = 10 + 60 * (self.robot.posY - 1)
                 else:

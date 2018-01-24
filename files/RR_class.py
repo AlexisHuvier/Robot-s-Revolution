@@ -23,7 +23,7 @@ class Player(pygame.sprite.Sprite):
         self.tempPosY = self.posY
         self.timer = 20
         self.level = level
-        self.map = map
+        self.carte = carte
     
     def update(self):
         self.timer -= 1
@@ -31,13 +31,13 @@ class Player(pygame.sprite.Sprite):
         if self.timer == 0:
             result = self.script.launch()
             self.timer = 20
-        collision_list = pygame.sprite.spritecollide(self, self.map.rock_list, False, None)
+        collision_list = pygame.sprite.spritecollide(self, self.carte.rock_list, False, None)
         for collided_object in collision_list:
             self.posX = self.tempPosX
             self.posY = self.tempPosY
             self.rect.x = 15 + 60 * (self.posX - 1) 
             self.rect.y = 10 + 60 * (self.posY - 1) 
-        collision_list_2 = pygame.sprite.spritecollide(self, self.map.finish_list, False, None)
+        collision_list_2 = pygame.sprite.spritecollide(self, self.carte.finish_list, False, None)
         for collided_object in collision_list_2:
             pygame.quit()
             result = self.level + 1
