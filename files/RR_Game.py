@@ -11,7 +11,7 @@ class Game():
         self.result = 0
         self.mode = mode
 
-        self.screen = pygame.display.set_mode((600, 600))
+        self.screen = pygame.display.set_mode((700, 700))
         pygame.display.set_caption("Your Robot")
 
         self.clock = pygame.time.Clock()

@@ -35,8 +35,8 @@ class Player(pygame.sprite.Sprite):
         for collided_object in collision_list:
             self.posX = self.tempPosX
             self.posY = self.tempPosY
-            self.rect.x = 15 + 60 * (self.posX - 1) 
-            self.rect.y = 10 + 60 * (self.posY - 1) 
+            self.rect.x = 15 + 70 * (self.posX - 1) 
+            self.rect.y = 3 + 70 * (self.posY - 1)
         collision_list_2 = pygame.sprite.spritecollide(self, self.carte.finish_list, False, None)
         for collided_object in collision_list_2:
             pygame.quit()
@@ -52,8 +52,8 @@ class Rock(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.posX = pos[0]
         self.posY = pos[1]
-        self.rect.x = 5 + 60 * (self.posX - 1)
-        self.rect.y = 5 + 60 * (self.posY - 1)
+        self.rect.x = 10 + 70 * (self.posX - 1)
+        self.rect.y = 10 + 70 * (self.posY - 1)
         self.can_be_jump = True
 
 class Finish(pygame.sprite.Sprite):
@@ -64,8 +64,8 @@ class Finish(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.posX = pos[0]
         self.posY = pos[1]
-        self.rect.x = 5 + 60 * (self.posX - 1)
-        self.rect.y = 5 + 60 * (self.posY - 1)
+        self.rect.x = 10 + 70 * (self.posX - 1)
+        self.rect.y = 10 + 70 * (self.posY - 1)
         self.can_be_jump = False
 
 class Map():
@@ -77,8 +77,8 @@ class Map():
         self.rock_list = pygame.sprite.Group()
         self.player.posX = int(objets[0].split(",")[0])
         self.player.posY = int(objets[0].split(",")[1])
-        self.player.rect.x = 15 + 60 * (self.player.posX - 1) 
-        self.player.rect.y = 10 + 60 * (self.player.posY - 1) 
+        self.player.rect.x = 15 + 70 * (self.player.posX - 1) 
+        self.player.rect.y = 3 + 70 * (self.player.posY - 1) 
         self.finish = Finish([int(objets[len(objets)-1].split(",")[0]), int(objets[len(objets)-1].split(",")[1])])
         self.finish_list.add(self.finish)
         for i in range(1, len(objets)-1):

@@ -54,25 +54,25 @@ class Script():
                     if self.robot.posX > 10:
                         self.robot.posX -= 2
                         showerror("ERREUR", "Le robot est sorti de l'écran.")
-                    self.robot.rect.x  = 15 + 60 * (self.robot.posX - 1)
+                    self.robot.rect.x = 15 + 70 * (self.robot.posX - 1)
                 elif self.robot.direction == 1:
                     self.robot.posY += 2
                     if self.robot.posY > 10:
                         self.robot.posY -= 2
                         showerror("ERREUR", "Le robot est sorti de l'écran.")
-                    self.robot.rect.y = 10 + 60 * (self.robot.posY - 1)                        
+                    self.robot.rect.y = 3 + 70 * (self.robot.posY - 1)                        
                 elif self.robot.direction == 2:
                     self.robot.posX -= 2
                     if self.robot.posX < 1:
                         self.robot.posX += 2
                         showerror("ERREUR", "Le robot est sorti de l'écran.")
-                    self.robot.rect.x  = 15 + 60 * (self.robot.posX - 1)                        
+                    self.robot.rect.x  = 15 + 70 * (self.robot.posX - 1)                        
                 elif self.robot.direction == 3:
                     self.robot.posY -= 2
                     if self.robot.posY < 1:
                         self.robot.posY += 2
                         showerror("ERREUR", "Le robot est sorti de l'écran.")
-                    self.robot.rect.y = 10 + 60 * (self.robot.posY - 1)
+                    self.robot.rect.y = 3 + 70 * (self.robot.posY - 1)
             else:
                 showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1)+"\nOn ne peut jump que les cailloux")
         else:
@@ -86,25 +86,25 @@ class Script():
             if self.robot.posX > 10:
                 self.robot.posX -= 1
                 showerror("ERREUR", "Le robot est sorti de l'écran.")
-            self.robot.rect.x  = 15 + 60 * (self.robot.posX - 1)
+            self.robot.rect.x  = 15 + 70 * (self.robot.posX - 1)
         elif self.robot.direction == 1:
             self.robot.posY += 1
             if self.robot.posY > 10:
                 self.robot.posY -= 1
                 showerror("ERREUR", "Le robot est sorti de l'écran.")
-            self.robot.rect.y = 10 + 60 * (self.robot.posY - 1)
+            self.robot.rect.y = 3 + 70 * (self.robot.posY - 1)
         elif self.robot.direction == 2:
             self.robot.posX -= 1
             if self.robot.posX < 1:
                 self.robot.posX += 1
                 showerror("ERREUR", "Le robot est sorti de l'écran.")
-            self.robot.rect.x  = 15 + 60 * (self.robot.posX - 1)
+            self.robot.rect.x  = 15 + 70 * (self.robot.posX - 1)
         elif self.robot.direction == 3:
             self.robot.posY -= 1
             if self.robot.posY < 1:
                 self.robot.posY += 1
                 showerror("ERREUR", "Le robot est sorti de l'écran.")
-            self.robot.rect.y = 10 + 60 * (self.robot.posY - 1)
+            self.robot.rect.y = 3 + 70 * (self.robot.posY - 1)
     
     def right(self):
         self.robot.direction += 1
