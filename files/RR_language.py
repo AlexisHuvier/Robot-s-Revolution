@@ -54,7 +54,7 @@ class Script():
                     if self.robot.posX > 10:
                         self.robot.posX -= 2
                         showerror("ERREUR", "Le robot est sorti de l'écran.")
-                    self.robot.rect.x = 15 + 70 * (self.robot.posX - 1)
+                    self.robot.rect.x = 20 + 70 * (self.robot.posX - 1)
                 elif self.robot.direction == 1:
                     self.robot.posY += 2
                     if self.robot.posY > 10:
@@ -66,7 +66,7 @@ class Script():
                     if self.robot.posX < 1:
                         self.robot.posX += 2
                         showerror("ERREUR", "Le robot est sorti de l'écran.")
-                    self.robot.rect.x  = 15 + 70 * (self.robot.posX - 1)                        
+                    self.robot.rect.x  = 20 + 70 * (self.robot.posX - 1)                        
                 elif self.robot.direction == 3:
                     self.robot.posY -= 2
                     if self.robot.posY < 1:
@@ -86,7 +86,7 @@ class Script():
             if self.robot.posX > 10:
                 self.robot.posX -= 1
                 showerror("ERREUR", "Le robot est sorti de l'écran.")
-            self.robot.rect.x  = 15 + 70 * (self.robot.posX - 1)
+            self.robot.rect.x  = 20 + 70 * (self.robot.posX - 1)
         elif self.robot.direction == 1:
             self.robot.posY += 1
             if self.robot.posY > 10:
@@ -98,7 +98,7 @@ class Script():
             if self.robot.posX < 1:
                 self.robot.posX += 1
                 showerror("ERREUR", "Le robot est sorti de l'écran.")
-            self.robot.rect.x  = 15 + 70 * (self.robot.posX - 1)
+            self.robot.rect.x  = 20 + 70 * (self.robot.posX - 1)
         elif self.robot.direction == 3:
             self.robot.posY -= 1
             if self.robot.posY < 1:
