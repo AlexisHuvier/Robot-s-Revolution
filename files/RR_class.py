@@ -9,7 +9,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, fichier, level, carte):
         super(Player, self).__init__()
         
-        self.strImage = "files/FlammyD.png"
+        self.strImage = "files/robotD.png"
         self.image = pygame.image.load(self.strImage)
         self.rect = self.image.get_rect()
         self.rect.x = 10
