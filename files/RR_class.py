@@ -48,12 +48,12 @@ class Rock(pygame.sprite.Sprite):
     def __init__(self, pos):
         super(Rock, self).__init__()
         
-        self.image = pygame.image.load("files/Caillou.png")
+        self.image = pygame.image.load("files/rocher.png")
         self.rect = self.image.get_rect()
         self.posX = pos[0]
         self.posY = pos[1]
         self.rect.x = 10 + 70 * (self.posX - 1)
-        self.rect.y = 10 + 70 * (self.posY - 1)
+        self.rect.y = 15 + 70 * (self.posY - 1)
         self.can_be_jump = True
 
 class Finish(pygame.sprite.Sprite):
