@@ -18,9 +18,6 @@ class Editor(Tk):
         self.code.insert('1.0', '#Votre code')
         self.s1 = Scrollbar(self)
         self.s2 = Scrollbar(self)
-        self.nom = Entry()
-        self.nom.insert(END, "Nom")
-        self.executer = Button(self, text="Exécuter", command=self.Execute)
         self.code.config(yscrollcommand=self.s1.set, xscrollcommand=self.s2.set)
         self.s2.config(orient="horizontal")
         self.s2.config(command=self.code.xview)
@@ -29,8 +26,6 @@ class Editor(Tk):
         self.code.grid(row=0, column=0, sticky="NSEW")
         self.s1.grid(row=0, column=1, stick="NSEW")
         self.s2.grid(row=1, column=0, columnspan=2, stick="NSEW")
-        self.nom.grid(row=2, column=0, stick="NSEW")
-        self.executer.grid(row=2, column=1, stick="NSEW")
         self.code.focus_set()
 
         self.screen = Toplevel(self)
