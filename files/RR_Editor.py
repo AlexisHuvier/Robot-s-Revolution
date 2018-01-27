@@ -88,7 +88,7 @@ class Editor(Tk):
             filename = asksaveasfilename(title="Sauvegarder votre script",defaultextension = '.rev',filetypes=[('Revolt Files','.rev')])
             if filename != "":
                 file=open(filename,"w")
-                file.write(self.code.get("1.0","end"))
+                file.write(self.code.get("1.0","end")[:-1])
                 self.title("Revolt IDLE - "+filename)
                 file.close()
                 return filename
@@ -100,7 +100,7 @@ class Editor(Tk):
                 if filename != "":
                     print(filename)
                     file = open(filename, "w")
-                    file.write(self.code.get("1.0", "end"))
+                    file.write(self.code.get("1.0", "end")[:-1])
                     self.title("Revolt IDLE - "+filename)
                     file.close()
                     return filename
