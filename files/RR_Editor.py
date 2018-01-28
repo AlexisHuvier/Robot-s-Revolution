@@ -17,6 +17,7 @@ class Editor(Tk):
         self.code = Text(self, font=("Comic Sans MS", 14),
                     wrap='none', tabs=('1c', '2c'))
         self.code.insert('1.0', '#Votre code')
+        self.coloration()
         self.menubar = Menu(self)
 
         self.menu1 = Menu(self.menubar, tearoff=0)
@@ -30,7 +31,12 @@ class Editor(Tk):
         self.menubar.add_cascade(label="Info", menu=self.menu2)
         self.s1 = Scrollbar(self)
         self.s2 = Scrollbar(self)
-        self.code.config(yscrollcommand=self.s1.set, xscrollcommand=self.s2.set)
+        self.code.config(yscrollcommand=self.s1.set,
+                         xscrollcommand=self.s2.set)
+        self.code.tag_config("Mots", foreground="#800000")
+        self.code.tag_config("Nombre", foreground="#0000FF")
+        self.code.tag_config("Texte", foreground="#156f11")
+        self.code.tag_config("Commentaire", foreground="#808080")
         self.s2.config(orient="horizontal")
         self.s2.config(command=self.code.xview)
         self.s1.config(command=self.code.yview)
@@ -144,6 +150,7 @@ class Editor(Tk):
         self.code.delete('1.0', 'end')
         self.code.insert('1.0',content)
         self.title("Revolt IDE - "+filename)
+        self.coloration()
     
     def writeEvent(self, evt):
         if evt.char == '"':
@@ -164,6 +171,49 @@ class Editor(Tk):
             self.code.mark_gravity(INSERT, RIGHT)
         if self.title()[0] != "*":
             self.title("*"+self.title())
+        self.coloration()
+    
+    def coloration(self):
+        nmbChar = IntVar()
+        for mot in ["walk", "left", "right", "jump", "getDirection", "setFunc", "callFunc",
+                    "getAttack", "setAttack", "setSprite", "getSprite", "setVar", "getVar",
+                    "loopif", "loop", "sayConsole", "if_", "getPosX", "getPosY"]:
+            lastPos = "1.0"
+            while 1 :
+                lastPos = self.code.search( mot, index = lastPos, stopindex = 'end', regexp = 0, count = nmbChar )
+                if lastPos == "" :
+                    break
+                self.code.tag_add('Mots', lastPos, "%s + %d chars" %
+                                  (lastPos, nmbChar.get()))
+                lastPos = "%s + 1 chars" % lastPos
+        for mot in ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]:
+            lastPos = "1.0"
+            while 1:
+                lastPos = self.code.search(
+                    mot, index=lastPos, stopindex='end', regexp=0, count=nmbChar)
+                if lastPos == "":
+                    break
+                self.code.tag_add('Nombre', lastPos,
+                                  "%s + %d chars" % (lastPos, nmbChar.get()))
+                lastPos = "%s + 1 chars" % lastPos
+        lastPos = "1.0"
+        while 1:
+            lastPos = self.code.search(
+                r'".*"', index=lastPos, stopindex='end', regexp=True, count=nmbChar)
+            if lastPos == "":
+                break
+            self.code.tag_add('Texte', lastPos, "%s + %d chars" %
+                              (lastPos, nmbChar.get()))
+            lastPos = "%s + 1 chars" % lastPos
+        lastPos = "1.0"
+        while 1:
+            lastPos = self.code.search(
+                r'#.*', index=lastPos, stopindex='end', regexp=True, count=nmbChar)
+            if lastPos == "":
+                break
+            self.code.tag_add('Commentaire', lastPos,
+                              "%s + %d chars" % (lastPos, nmbChar.get()))
+            lastPos = "%s + 1 chars" % lastPos
     
     def apropos(self, evt=None):
         showinfo("Revolt IDE", "Créé par LN12\nCopyright 2111 - 2112")
