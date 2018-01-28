@@ -40,7 +40,13 @@ class Editor(Tk):
         self.s2.grid(row=1, column=0, columnspan=2, stick="NSEW")
 
         self.bind_all('<Key>', self.writeEvent)
+        self.bind_all("<Control-KeyPress-o>", self.ouvrir)
+        self.bind_all("<Control-KeyPress-n>", self.creer)
+        self.bind_all("<Control-KeyPress-i>", self.apropos)
+        self.bind_all("<Control-KeyPress-s>", self.sauvegarde)
+        self.bind_all("<KeyPress-F5>", self.execute)
         self.config(menu=self.menubar)
+    
         self.code.focus_set()
 
         self.screen = Toplevel(self)
@@ -80,13 +86,12 @@ class Editor(Tk):
                 photo = ImageTk.PhotoImage(image)
                 item = self.canvas.create_image(300, 300, image=photo)
 
-    def execute(self):
+    def execute(self, evt = None):
         file = self.sauvegarde()
         if file != "":
             self.Jouer(file)
             
-
-    def sauvegarde(self):
+    def sauvegarde(self, evt= None):
         if self.title().split(" - ")[1] == 'Untitled':
             filename = asksaveasfilename(title="Sauvegarder votre script",defaultextension = '.rev',filetypes=[('Revolt Files','.rev')])
             if filename != "":
@@ -111,7 +116,7 @@ class Editor(Tk):
                 return self.title().split(" - ")[1]
             return ""
         
-    def creer(self):
+    def creer(self, evt=None):
         if self.title().split(" - ")[1] == 'Untitled':
             showerror("Revolt IDE","Vous êtes déjà sur un nouveau fichier !")
         else:
@@ -130,7 +135,7 @@ class Editor(Tk):
                 else:
                     self.sauvegarde()
     
-    def ouvrir(self):
+    def ouvrir(self, evt=None):
         global txt, fenetre
         filename = askopenfilename(title="Ouvrir votre script", defaultextension='.rev', filetypes=[('Revolt Files', '.rev')])
         fichier = open(filename, "r", encoding="utf-8")
