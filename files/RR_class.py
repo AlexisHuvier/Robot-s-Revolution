@@ -70,20 +70,30 @@ class Finish(pygame.sprite.Sprite):
 
 class Map():
     def __init__(self, objets, fichier, level):
-        self.player = Player(fichier, level, self)
         self.player_list = pygame.sprite.Group()
-        self.player_list.add(self.player)
         self.finish_list = pygame.sprite.Group()
         self.rock_list = pygame.sprite.Group()
-        self.player.posX = int(objets[0].split(",")[0])
-        self.player.posY = int(objets[0].split(",")[1])
-        self.player.rect.x = 20 + 70 * (self.player.posX - 1) 
-        self.player.rect.y = 3 + 70 * (self.player.posY - 1) 
-        self.finish = Finish([int(objets[len(objets)-1].split(",")[0]), int(objets[len(objets)-1].split(",")[1])])
-        self.finish_list.add(self.finish)
-        for i in range(1, len(objets)-1):
-            self.rock = Rock([int(objets[i].split(",")[0]),int(objets[i].split(",")[1])])
-            self.rock_list.add(self.rock)
+        self.lava_list = pygame.sprite.Group()
+        self.wall_list = pygame.sprite.Group()
+
+        n=0
+        for i in objets:
+            n+=1
+            if i.split(", ")[0] == "player":
+                self.player = Player(fichier, level, self)
+                self.player.posX = int(i.split(", ")[1])
+                self.player.posY = int(i.split(", ")[2])
+                self.player.rect.x = 20 + 70 * (self.player.posX - 1)
+                self.player.rect.y = 3 + 70 * (self.player.posY - 1)
+                self.player_list.add(self.player)
+            elif i.split(", ")[0] == "finish":
+                self.finish = Finish([int(i.split(", ")[1]), int(i.split(", ")[2])])
+                self.finish_list.add(self.finish)
+            elif i.split(", ")[0] == "rock":
+                self.rock = Rock([int(i.split(", ")[1]), int(i.split(", ")[2])])
+                self.rock_list.add(self.rock)
+            else:
+                showerror("ERREUR", "Le niveau "+ level+" a un élément inconnu (n°"+n)
     
     def getObj(self, posX, posY):
         if self.player.posX == posX and self.player.posY == posY:
