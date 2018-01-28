@@ -1,5 +1,5 @@
 import pygame
-from tkinter.messagebox import showinfo
+from tkinter.messagebox import showinfo, showerror
 try:
     from files.RR_language import Script
 except ImportError:
@@ -31,6 +31,10 @@ class Player(pygame.sprite.Sprite):
         if self.timer == 0:
             result = self.script.launch()
             self.timer = 20
+        collision_list = pygame.sprite.spritecollide(self, self.carte.lava_list, False, None)
+        for collided_object in collision_list:
+            pygame.quit()
+            showinfo("Perdu", "Votre robot a fondu dans la lave !")
         collision_list = pygame.sprite.spritecollide(self, self.carte.rock_list, False, None)
         for collided_object in collision_list:
             self.posX = self.tempPosX
@@ -67,6 +71,18 @@ class Finish(pygame.sprite.Sprite):
         self.rect.x = 10 + 70 * (self.posX - 1)
         self.rect.y = 10 + 70 * (self.posY - 1)
         self.can_be_jump = False
+    
+class Lava(pygame.sprite.Sprite):
+    def __init__(self, pos):
+        super(Lava, self).__init__()
+
+        self.image = pygame.image.load("files/lave.png")
+        self.rect = self.image.get_rect()
+        self.posX = pos[0]
+        self.posY = pos[1]
+        self.rect.x = 3 + 70 * (self.posX - 1)
+        self.rect.y = 3 + 70 * (self.posY - 1)
+        self.can_be_jump = True
 
 class Map():
     def __init__(self, objets, fichier, level):
@@ -92,6 +108,9 @@ class Map():
             elif i.split(", ")[0] == "rock":
                 self.rock = Rock([int(i.split(", ")[1]), int(i.split(", ")[2])])
                 self.rock_list.add(self.rock)
+            elif i.split(", ")[0] == "lava":
+                self.lava=Lava([int(i.split(", ")[1]), int(i.split(", ")[2])])
+                self.lava_list.add(self.lava)
             else:
                 showerror("ERREUR", "Le niveau "+ level+" a un élément inconnu (n°"+n)
     
