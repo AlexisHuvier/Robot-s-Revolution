@@ -37,6 +37,9 @@ class Script():
             elif self.instruction[self.avancement] == "":
                 self.avancement += 1
                 return 1
+            elif self.instruction[self.avancement][0] == "#":
+                self.avancement += 1
+                return 1
             else:
                 showerror("ERREUR", "Erreur sur l'instruction à la ligne n°"+str(self.avancement+1))
                 pygame.quit()
