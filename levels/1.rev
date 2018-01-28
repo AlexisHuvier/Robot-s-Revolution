@@ -1,4 +1,7 @@
 player, 1, 1
 rock, 4, 4
 lava, 4, 3
+wall, 2, 2, simple-V
+wall, 3, 2, simple-V
+wall, 4, 2, simple-V
 finish, 4, 5

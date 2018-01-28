@@ -35,17 +35,24 @@ class Player(pygame.sprite.Sprite):
         for collided_object in collision_list:
             pygame.quit()
             showinfo("Perdu", "Votre robot a fondu dans la lave !")
+        collision_list = pygame.sprite.spritecollide(self, self.carte.finish_list, False, None)
+        for collided_object in collision_list:
+            pygame.quit()
+            result = self.level + 1
+            showinfo("Gagné", "Votre robot a atteint le point final !")
         collision_list = pygame.sprite.spritecollide(self, self.carte.rock_list, False, None)
         for collided_object in collision_list:
             self.posX = self.tempPosX
             self.posY = self.tempPosY
             self.rect.x = 20 + 70 * (self.posX - 1) 
             self.rect.y = 3 + 70 * (self.posY - 1)
-        collision_list_2 = pygame.sprite.spritecollide(self, self.carte.finish_list, False, None)
-        for collided_object in collision_list_2:
-            pygame.quit()
-            result = self.level + 1
-            showinfo("Gagné", "Votre robot a atteint le point final !")
+        collision_list = pygame.sprite.spritecollide(
+            self, self.carte.wall_list, False, None)
+        for collided_object in collision_list:
+            self.posX = self.tempPosX
+            self.posY = self.tempPosY
+            self.rect.x = 20 + 70 * (self.posX - 1)
+            self.rect.y = 3 + 70 * (self.posY - 1)
         return result
 
 class Rock(pygame.sprite.Sprite):
@@ -84,6 +91,29 @@ class Lava(pygame.sprite.Sprite):
         self.rect.y = 3 + 70 * (self.posY - 1)
         self.can_be_jump = True
 
+class Wall(pygame.sprite.Sprite):
+    def __init__(self, pos, sorte):
+        super(Wall, self).__init__()
+
+        self.posX = pos[0]
+        self.posY = pos[1]
+        self.can_be_jump = False
+        if sorte.split("-")[0] == "simple":
+            if sorte.split("-")[1] == "V":
+                self.image = pygame.image.load("files/Mur.png")
+                self.rect = self.image.get_rect()
+                self.rect.x = 70 * (self.posX - 1)
+                self.rect.y = 20 + 70 * (self.posY - 1)
+            else:
+                self.image = ""
+        else:
+            self.image = ""
+        
+        if self.image == "":
+            pygame.quit()
+            showerror("ERREUR", "Le type "+sorte+" pour les murs n'est pas connu.")
+
+
 class Map():
     def __init__(self, objets, fichier, level):
         self.player_list = pygame.sprite.Group()
@@ -111,6 +141,9 @@ class Map():
             elif i.split(", ")[0] == "lava":
                 self.lava=Lava([int(i.split(", ")[1]), int(i.split(", ")[2])])
                 self.lava_list.add(self.lava)
+            elif i.split(", ")[0] == "wall":
+                self.wall = Wall([int(i.split(", ")[1]), int(i.split(", ")[2])], i.split(", ")[3])
+                self.wall_list.add(self.wall)
             else:
                 showerror("ERREUR", "Le niveau "+ level+" a un élément inconnu (n°"+n)
     

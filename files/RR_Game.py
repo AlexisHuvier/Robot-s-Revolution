@@ -51,6 +51,7 @@ class Game():
                 self.map.rock_list.draw(self.screen)
                 self.map.finish_list.draw(self.screen)
                 self.map.lava_list.draw(self.screen)
+                self.map.wall_list.draw(self.screen)
                 pygame.display.update()
             else:
                 self.done = False
