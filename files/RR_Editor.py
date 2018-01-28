@@ -25,6 +25,9 @@ class Editor(Tk):
         self.menu1.add_command(label="Sauvegarder", command=self.sauvegarde)
         self.menu1.add_command(label="Exécuter", command=self.execute)
         self.menubar.add_cascade(label="Fichier", menu=self.menu1)
+        self.menu2 = Menu(self.menubar, tearoff=0)
+        self.menu2.add_command(label="A propos", command=self.apropos)
+        self.menubar.add_cascade(label="Info", menu=self.menu2)
         self.s1 = Scrollbar(self)
         self.s2 = Scrollbar(self)
         self.code.config(yscrollcommand=self.s1.set, xscrollcommand=self.s2.set)
@@ -156,3 +159,6 @@ class Editor(Tk):
             self.code.mark_gravity(INSERT, RIGHT)
         if self.title()[0] != "*":
             self.title("*"+self.title())
+    
+    def apropos(self, evt=None):
+        showinfo("Revolt IDE", "Créé par LN12\nCopyright 2111 - 2112")
