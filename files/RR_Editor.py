@@ -138,5 +138,21 @@ class Editor(Tk):
         self.title("Revolt IDE - "+filename)
     
     def writeEvent(self, evt):
+        if evt.char == '"':
+            self.code.mark_gravity(INSERT, LEFT)
+            self.code.insert(INSERT, '"')
+            self.code.mark_gravity(INSERT, RIGHT)
+        elif evt.char == '{':
+            self.code.mark_gravity(INSERT, LEFT)
+            self.code.insert(INSERT,'}')
+            self.code.mark_gravity(INSERT, RIGHT)
+        elif evt.char == '(':
+            self.code.mark_gravity(INSERT, LEFT)
+            self.code.insert(INSERT, ')')
+            self.code.mark_gravity(INSERT, RIGHT)
+        elif evt.char == '[':
+            self.code.mark_gravity(INSERT, LEFT)
+            self.code.insert(INSERT, ']')
+            self.code.mark_gravity(INSERT, RIGHT)
         if self.title()[0] != "*":
             self.title("*"+self.title())
