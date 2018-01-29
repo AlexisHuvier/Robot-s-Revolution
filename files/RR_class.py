@@ -103,7 +103,43 @@ class Wall(pygame.sprite.Sprite):
                 self.image = pygame.image.load("files/Mur.png")
                 self.rect = self.image.get_rect()
                 self.rect.x = 70 * (self.posX - 1)
-                self.rect.y = 20 + 70 * (self.posY - 1)
+                self.rect.y = 35 + 70 * (self.posY - 1)
+            elif sorte.split("-")[1] == "H":
+                self.image = pygame.image.load("files/MurH.png")
+                self.rect = self.image.get_rect()
+                self.rect.x = 35 + 70 * (self.posX - 1)
+                self.rect.y = 70 * (self.posY - 1)
+            else:
+                self.image = ""    
+        elif sorte.split("-")[0] == "+":
+            self.image = pygame.image.load("files/Mur+.png")
+            self.rect = self.image.get_rect()
+            self.rect.x = 70 * (self.posX - 1)
+            self.rect.y = 70 * (self.posY - 1)
+        elif sorte.split("-")[0] == "angle":
+            if sorte.split("-")[1] == "BD":
+                self.image = pygame.image.load("files/MurAngle.png")
+                self.rect = self.image.get_rect()
+                self.rect.x = 35 + 70 * (self.posX - 1)
+                self.rect.y = 35 + 70 * (self.posY - 1)
+            elif sorte.split("-")[1] == "HG":
+                self.image = pygame.image.load("files/Murangin.png")
+                self.rect = self.image.get_rect()
+                self.rect.x = 70 * (self.posX - 1)
+                self.rect.y = 70 * (self.posY - 1)
+            else:
+                self.image = ""
+        elif sorte.split("-")[0] == "T":
+            if sorte.split("-")[1] == "B":
+                self.image = pygame.image.load("files/MurT_ff.png")
+                self.rect = self.image.get_rect()
+                self.rect.x = 70 * (self.posX - 1)
+                self.rect.y = 35 + 70 * (self.posY - 1)
+            elif sorte.split("-")[1] == "H":
+                self.image = pygame.image.load("files/MurTin.png")
+                self.rect = self.image.get_rect()
+                self.rect.x = 70 * (self.posX - 1)
+                self.rect.y = 70 * (self.posY - 1)
             else:
                 self.image = ""
         else:
