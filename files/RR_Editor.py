@@ -80,17 +80,21 @@ class Editor(Tk):
             showerror("Fichier inconnu", "Le fichier n'a pas pu être ouvert.")
         else:
             game = Game(name.split("\"")[-1], "Parcours", self.level)
-            LEVEL = game.launch()
-            try:
-                with open("levels/"+str(self.level)+".rev"):
-                    pass
-            except IOError:
-                showinfo("Bravo !", "Vous avez fini tous les niveaux de ce mode !")
+            temp = game.launch()
+            if temp == self.level:
+                showinfo("Retente", "Réessaie de finir le niveau "+str(self.level)+" !")
             else:
-                showinfo("Suivant", "C'est parti pour le niveau "+str(self.level))
-                image = Image.open("files/l"+str(self.level)+".png")
-                photo = ImageTk.PhotoImage(image)
-                item = self.canvas.create_image(300, 300, image=photo)
+                self.level = temp
+                try:
+                    with open("levels/"+str(self.level)+".rev"):
+                        pass
+                except IOError:
+                    showinfo("Bravo !", "Vous avez fini tous les niveaux de ce mode !")
+                else:
+                    showinfo("Suivant", "C'est parti pour le niveau "+str(self.level))
+                    image = Image.open("files/l"+str(self.level)+".png")
+                    photo = ImageTk.PhotoImage(image)
+                    item = self.canvas.create_image(300, 300, image=photo)
 
     def execute(self, evt = None):
         file = self.sauvegarde()
