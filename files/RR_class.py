@@ -75,8 +75,8 @@ class Finish(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.posX = pos[0]
         self.posY = pos[1]
-        self.rect.x = 10 + 70 * (self.posX - 1)
-        self.rect.y = 10 + 70 * (self.posY - 1)
+        self.rect.x = 18 + 70 * (self.posX - 1)
+        self.rect.y = 70 * (self.posY - 1)
         self.can_be_jump = False
     
 class Lava(pygame.sprite.Sprite):
