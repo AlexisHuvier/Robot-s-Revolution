@@ -12,12 +12,12 @@ class Game():
         self.mode = mode
 
         self.screen = pygame.display.set_mode((700, 700))
-        pygame.display.set_caption("Your Robot")
 
         self.clock = pygame.time.Clock()
 
         self.done = True
         if self.mode == "Parcours":
+            pygame.display.set_caption("RR - Level "+str(level))
             self.level = level
             self.mode = mode
             try:
