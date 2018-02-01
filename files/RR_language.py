@@ -51,36 +51,45 @@ class Script():
         if self.last_instruction == "walk":
             self.robot.tempPosX = self.robot.posX
             self.robot.tempPosY = self.robot.posY
-            if self.robot.carte.getObj(self.robot.posX + 1, self.robot.posY).can_be_jump:
-                if self.robot.direction == 0:
+            if self.robot.direction == 0:
+                if self.robot.carte.getObj(self.robot.posX + 1, self.robot.posY).can_be_jump:
                     self.robot.posX += 2
                     if self.robot.posX > 10:
                         self.robot.posX -= 2
                         showerror("ERREUR", "Le robot est sorti de l'écran.")
                     self.robot.rect.x = 20 + 70 * (self.robot.posX - 1)
-                elif self.robot.direction == 1:
+                else:
+                    showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1)+"\nOn ne peut jump que les cailloux")
+            elif self.robot.direction == 1:
+                if self.robot.carte.getObj(self.robot.posX, self.robot.posY + 1).can_be_jump:
                     self.robot.posY += 2
                     if self.robot.posY > 10:
                         self.robot.posY -= 2
                         showerror("ERREUR", "Le robot est sorti de l'écran.")
-                    self.robot.rect.y = 3 + 70 * (self.robot.posY - 1)                        
-                elif self.robot.direction == 2:
+                    self.robot.rect.y = 3 + 70 * (self.robot.posY - 1)
+                else:
+                    showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1)+"\nOn ne peut jump que les cailloux")
+            elif self.robot.direction == 2:
+                if self.robot.carte.getObj(self.robot.posX - 1, self.robot.posY).can_be_jump:
                     self.robot.posX -= 2
                     if self.robot.posX < 1:
                         self.robot.posX += 2
                         showerror("ERREUR", "Le robot est sorti de l'écran.")
-                    self.robot.rect.x  = 20 + 70 * (self.robot.posX - 1)                        
-                elif self.robot.direction == 3:
+                    self.robot.rect.x  = 20 + 70 * (self.robot.posX - 1)
+                else:
+                    showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1)+"\nOn ne peut jump que les cailloux")
+            elif self.robot.direction == 3:
+                if self.robot.carte.getObj(self.robot.posX, self.robot.posY - 1).can_be_jump:
                     self.robot.posY -= 2
                     if self.robot.posY < 1:
                         self.robot.posY += 2
                         showerror("ERREUR", "Le robot est sorti de l'écran.")
                     self.robot.rect.y = 3 + 70 * (self.robot.posY - 1)
-            else:
-                showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1)+"\nOn ne peut jump que les cailloux")
+                else:
+                    showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1)+"\nOn ne peut jump que les cailloux")
         else:
             showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1)+"\nIl n'est pas possible d'utiliser 'jump()' s'il n'y a pas un 'walk()' avant")
-            
+
     def walk(self):
         self.robot.tempPosX = self.robot.posX
         self.robot.tempPosY = self.robot.posY
@@ -108,7 +117,7 @@ class Script():
                 self.robot.posY += 1
                 showerror("ERREUR", "Le robot est sorti de l'écran.")
             self.robot.rect.y = 3 + 70 * (self.robot.posY - 1)
-    
+
     def right(self):
         self.robot.direction += 1
         if self.robot.direction == 4:
@@ -129,10 +138,10 @@ class Script():
             if self.robot.strImage in ["files/robotD.png","files/robotB.png","files/robotG.png","files/robotH.png"]:
                 self.robot.strImage = "files/robotH.png"
                 self.robot.image = pygame.image.load("files/robotH.png")
-    
+
     def setAttack(self, boolean):
         self.robot.attack = boolean
-    
+
     def setFunc(self, name, *instructions_f):
         if len(instructions_f) == 0:
             showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1)+"\nLa fonction créée n'a pas d'instructions")
@@ -146,7 +155,7 @@ class Script():
                     pygame.quit()
                     return
             self.fonctions[name] = instructions_f
-    
+
     def callFunc(self, name):
         try:
             instructions_f = self.fonctions[name]
@@ -176,10 +185,10 @@ class Script():
                 else:
                     showerror("ERREUR","Erreur sur l'instruction "+instruction+" de la fonction "+name+" appelée ligne n°"+str(self.avancement+1))
                     pygame.quit()
-    
+
     def getAttack(self):
         return self.robot.attack
-    
+
     def left(self):
         self.robot.direction -= 1
         if self.robot.direction == -1:
@@ -200,14 +209,14 @@ class Script():
             if self.robot.strImage in ["files/robotD.png", "files/robotB.png", "files/robotG.png", "files/robotH.png"]:
                 self.robot.strImage = "files/robotH.png"
                 self.robot.image = pygame.image.load("files/robotH.png")
-                
+
     def setSprite(self, sprite= "files/robotD.png"):
         self.robot.strImage = sprite
         self.robot.image = pygame.image.load(sprite)
-    
+
     def getSprite(self):
         return self.robot.strImage
-    
+
     def getDirection(self):
         if self.robot.direction == 0:
             return "droite"
@@ -217,20 +226,20 @@ class Script():
             return "gauche"
         elif self.robot.direction == 3:
             return "haut"
-    
+
     def getPosX(self):
         return self.robot.posX
-    
+
     def getPosY(self):
         return self.robot.posY
-    
+
     def getVar(self, name):
         if name in self.variables.keys():
             return self.variables[name]
         else:
             showerror("ERREUR","Erreur sur l'instruction de la ligne n°"+str(self.avancement+1)+"\nLa variable "+name+" n'est pas définie")
             pygame.quit()
-    
+
     def setVar(self, name, value, sorte = "str"):
         if sorte == "str":
             try:
@@ -320,13 +329,13 @@ class Script():
         else:
             showerror("ERREUR","Erreur sur l'instruction de la ligne n°"+str(self.avancement+1)+"\nLa variable "+name+" n'a pas un type connu")
             pygame.quit()
-    
+
     def sayConsole(self, txt = "Bonjour"):
         for i in str(txt).split(" "):
             if i.split("(")[0] in instructions:
                 txt = txt.replace(i, str(eval("self."+i)))
         print(txt)
-    
+
     def loop(self, instruction = "walk()", nb = 1):
         if self.temp_boucle_a_faire == 0:
             if instruction.split("(")[0] in instructions:
@@ -350,7 +359,7 @@ class Script():
             else:
                 showerror("ERREUR","Erreur sur l'instruction à la loop de la ligne n°"+str(self.avancement+1))
                 pygame.quit()
-            
+
     def loopif(self, instruction = "walk()", condition = "True"):
         if condition.split("(")[0] in instructions:
             if eval("self."+condition):
