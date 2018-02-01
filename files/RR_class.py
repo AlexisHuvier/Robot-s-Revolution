@@ -98,56 +98,26 @@ class Wall(pygame.sprite.Sprite):
         self.posX = pos[0]
         self.posY = pos[1]
         self.can_be_jump = False
-        if sorte.split("-")[0] == "simple":
-            if sorte.split("-")[1] == "V":
-                self.image = pygame.image.load("files/Mur.png")
-                self.rect = self.image.get_rect()
-                self.rect.x = 70 * (self.posX - 1)
-                self.rect.y = 35 + 70 * (self.posY - 1)
-            elif sorte.split("-")[1] == "H":
-                self.image = pygame.image.load("files/MurH.png")
-                self.rect = self.image.get_rect()
-                self.rect.x = 35 + 70 * (self.posX - 1)
-                self.rect.y = 70 * (self.posY - 1)
-            else:
-                self.image = ""    
-        elif sorte.split("-")[0] == "+":
+        if sorte == "V":
+            self.image = pygame.image.load("files/Mur.png")
+            self.setPos(0, 35)
+        elif sorte == "H":
+            self.image = pygame.image.load("files/MurH.png")
+            self.setPos(32, 0)  
+        elif sorte == "+":
             self.image = pygame.image.load("files/Mur+.png")
-            self.rect = self.image.get_rect()
-            self.rect.x = 70 * (self.posX - 1)
-            self.rect.y = 70 * (self.posY - 1)
-        elif sorte.split("-")[0] == "angle":
-            if sorte.split("-")[1] == "BD":
-                self.image = pygame.image.load("files/MurAngle.png")
-                self.rect = self.image.get_rect()
-                self.rect.x = 35 + 70 * (self.posX - 1)
-                self.rect.y = 35 + 70 * (self.posY - 1)
-            elif sorte.split("-")[1] == "HG":
-                self.image = pygame.image.load("files/Murangin.png")
-                self.rect = self.image.get_rect()
-                self.rect.x = 70 * (self.posX - 1)
-                self.rect.y = 70 * (self.posY - 1)
-            else:
-                self.image = ""
-        elif sorte.split("-")[0] == "T":
-            if sorte.split("-")[1] == "B":
-                self.image = pygame.image.load("files/MurT_ff.png")
-                self.rect = self.image.get_rect()
-                self.rect.x = 70 * (self.posX - 1)
-                self.rect.y = 35 + 70 * (self.posY - 1)
-            elif sorte.split("-")[1] == "H":
-                self.image = pygame.image.load("files/MurTin.png")
-                self.rect = self.image.get_rect()
-                self.rect.x = 70 * (self.posX - 1)
-                self.rect.y = 70 * (self.posY - 1)
-            else:
-                self.image = ""
+            self.setPos(0, 0)
         else:
             self.image = ""
         
         if self.image == "":
             pygame.quit()
             showerror("ERREUR", "Le type "+sorte+" pour les murs n'est pas connu.")
+    
+    def setPos(self, offsetX, offsetY):
+        self.rect = self.image.get_rect()
+        self.rect.x = offsetX + 70 * (self.posX - 1)
+        self.rect.y = offsetY + 70 * (self.posY - 1)
 
 
 class Map():
