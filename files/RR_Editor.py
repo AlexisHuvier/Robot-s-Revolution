@@ -229,6 +229,15 @@ class Editor(Tk):
         lastPos = "1.0"
         while 1:
             lastPos = self.code.search(
+                r"'.*'", index=lastPos, stopindex='end', regexp=True, count=nmbChar)
+            if lastPos == "":
+                break
+            self.code.tag_add('Texte', lastPos, "%s + %d chars" %
+                              (lastPos, nmbChar.get()))
+            lastPos = "%s + 1 chars" % lastPos
+        lastPos = "1.0"
+        while 1:
+            lastPos = self.code.search(
                 r'#.*', index=lastPos, stopindex='end', regexp=True, count=nmbChar)
             if lastPos == "":
                 break
