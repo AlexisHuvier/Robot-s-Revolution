@@ -160,7 +160,13 @@ class Map():
             return self.finish
         else:
             for i in self.rock_list:
-                if i.posX == posX and i.posX == posY:
+                if i.posX == posX and i.posY == posY:
+                    return i
+            for i in self.lava_list:
+                if i.posX == posX and i.posY == posY:
+                    return i
+            for i in self.wall_list:
+                if i.posX == posX and i.posY == posY:
                     return i
             return None
         
