@@ -79,4 +79,11 @@ def Menu():
 
     FENETRE.mainloop()
 
+try:
+    with open("files/config.txt", "r") as fichier:
+        lignes = fichier.read().split("\n")
+except IOError:
+    showwarning("ATTENTION", "Le fichier de config n'a pas été trouvé et va être recréer")
+    with open("files/config.txt", "w") as fichier:
+        fichier.write("Timer Instruction : 20")
 Menu()

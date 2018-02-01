@@ -1,5 +1,5 @@
 import pygame
-from tkinter.messagebox import showinfo, showerror
+from tkinter.messagebox import showinfo, showerror, showwarning
 try:
     from files.RR_language import Script
 except ImportError:
@@ -14,14 +14,26 @@ class Player(pygame.sprite.Sprite):
         self.rect = self.image.get_rect()
         self.rect.x = 10
         self.rect.y = 10
-        self.script = Script(self, fichier)
+        if fichier != "":
+            self.script = Script(self, fichier)
+        else:
+            self.script = ""
         self.direction = 0
         self.attack = False
         self.posX = 1
         self.posY = 1
         self.tempPosX = self.posX
         self.tempPosY = self.posY
-        self.timer = 20
+        try:
+            with open("files/config.txt", "r") as fichier:
+                lignes = fichier.read().split("\n")
+                self.timerT = int(lignes[0].split(" : ")[1])
+        except IOError:
+            self.timerT = 20
+            showwarning("ATTENTION", "Le fichier de config n'a pas été trouvé et va être recréer")
+            with open("files/config.txt", "w") as fichier:
+                fichier.write("Timer Instruction : 20")
+        self.timer = self.timerT
         self.level = level
         self.carte = carte
     
