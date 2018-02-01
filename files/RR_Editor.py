@@ -184,6 +184,10 @@ class Editor(Tk):
             self.code.mark_gravity(INSERT, LEFT)
             self.code.insert(INSERT, ']')
             self.code.mark_gravity(INSERT, RIGHT)
+        elif evt.char == "'":
+            self.code.mark_gravity(INSERT, LEFT)
+            self.code.insert(INSERT, "'")
+            self.code.mark_gravity(INSERT, RIGHT)
         if self.title()[0] != "*":
             self.title("*"+self.title())
         self.coloration()
