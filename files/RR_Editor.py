@@ -55,6 +55,7 @@ class Editor(Tk):
         self.bind_all("<Control-KeyPress-i>", self.apropos)
         self.bind_all("<Control-KeyPress-s>", self.sauvegarde)
         self.bind_all("<KeyPress-F5>", self.execute)
+        self.protocol("WM_DELETE_WINDOW", self.quitter)
         self.config(menu=self.menubar)
 
         self.code.focus_set()
@@ -92,6 +93,7 @@ class Editor(Tk):
         except IOError:
             showerror("Fichier inconnu", "Le fichier n'a pas pu être ouvert.")
         else:
+            pygame.quit()
             game = Game(name.split("\"")[-1], "Parcours", self.level)
             temp = game.launch()
             if temp == self.level:
@@ -103,9 +105,19 @@ class Editor(Tk):
                         pass
                 except IOError:
                     showinfo("Bravo !", "Vous avez fini tous les niveaux de ce mode !")
+                    self.level = 1
                 else:
                     showinfo("Suivant", "C'est parti pour le niveau "+str(self.level))
                     self.previewLevel(self.level)
+                 
+    def quitter(self):
+        if askquestion("Revolt IDE", "Voulez-vous quitter ?") == "yes":
+            if self.title().split(" - ")[1] == 'Untitled' or self.title()[0] == "*":
+                if askquestion("Revolt IDE", "Voulez-vous enregistrer ?")=="yes":
+                    self.sauvegarde()
+            self.on = False
+            self.destroy()
+            pygame.quit()
 
     def execute(self, evt = None):
         file = self.sauvegarde()
@@ -127,7 +139,6 @@ class Editor(Tk):
                 liste = self.title().split(" - ")[1].split("/")
                 filename = asksaveasfilename(title="Sauvegarder votre script",defaultextension = '.rev',filetypes=[('Revolt Files','.rev')], initialfile = liste[len(liste)-1])
                 if filename != "":
-                    print(filename)
                     file = open(filename, "w")
                     file.write(self.code.get("1.0", "end")[:-1])
                     self.title("Revolt IDLE - "+filename)
