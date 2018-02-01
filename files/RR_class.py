@@ -42,13 +42,14 @@ class Player(pygame.sprite.Sprite):
             showinfo("Gagné", "Votre robot a atteint le point final !")
         collision_list = pygame.sprite.spritecollide(self, self.carte.rock_list, False, None)
         for collided_object in collision_list:
+            self.script.last_instruction = ""
             self.posX = self.tempPosX
             self.posY = self.tempPosY
             self.rect.x = 20 + 70 * (self.posX - 1) 
             self.rect.y = 3 + 70 * (self.posY - 1)
-        collision_list = pygame.sprite.spritecollide(
-            self, self.carte.wall_list, False, None)
+        collision_list = pygame.sprite.spritecollide(self, self.carte.wall_list, False, None)
         for collided_object in collision_list:
+            self.script.last_instruction = ""
             self.posX = self.tempPosX
             self.posY = self.tempPosY
             self.rect.x = 20 + 70 * (self.posX - 1)
