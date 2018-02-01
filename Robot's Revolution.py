@@ -22,13 +22,19 @@ def FenScriptP():
     FENETRE.destroy()
     
     FENETRE = Editor(LEVEL)
+    while FENETRE.on:
+        pass
+    Solo()
 
 def FenScriptVersus():
     showerror("Coming Soon", "Le mode Versus IA viendra plus tard")
 
 def Solo():
     global FENETRE, LEVEL
-    FENETRE.destroy()
+    try:
+        FENETRE.destroy()
+    except TclError:
+        pass
     LEVEL = 1
 
     FENETRE = Tk()

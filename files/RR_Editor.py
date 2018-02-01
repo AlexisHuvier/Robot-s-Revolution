@@ -2,14 +2,18 @@ from tkinter import *
 from tkinter.messagebox import showerror, showinfo, askquestion
 from tkinter.filedialog import askopenfilename, asksaveasfilename
 from PIL import Image, ImageTk
+import pygame
 try:
     from files.RR_Game import Game
+    from files.RR_class import Map
 except ImportError:
+    from RR_class import Map
     from RR_Game import Game
 
 class Editor(Tk):
     def __init__(self, level):
         super(Editor, self).__init__()
+        self.on = True
         self.level = level
 
         self.title("Revolt IDE - Untitled")
@@ -52,25 +56,34 @@ class Editor(Tk):
         self.bind_all("<Control-KeyPress-s>", self.sauvegarde)
         self.bind_all("<KeyPress-F5>", self.execute)
         self.config(menu=self.menubar)
-    
+
         self.code.focus_set()
 
-        self.screen = Toplevel(self)
-        self.screen.title("Level"+str(self.level))
-        self.screen.geometry("620x650")
-
-        self.ltitre = Label(self.screen, text="Level "+str(self.level),
-                    font=("Comic Sans MS", 14, "bold"))
-
-        self.canvas = Canvas(self.screen, width=600, height=600, bg="black")
-        image = Image.open("files/l"+str(self.level)+".png")
-        photo = ImageTk.PhotoImage(image)
-        item = self.canvas.create_image(300, 300, image=photo)
-
-        self.ltitre.place(x=260, y=5)
-        self.canvas.place(x=10, y=40)
+        self.previewLevel(self.level)
 
         self.mainloop()
+
+    def previewLevel(self, level):
+        self.screen = pygame.display.set_mode((700, 700))
+        self.clock = pygame.time.Clock()
+
+        pygame.display.set_caption("RR - Level "+str(level))
+        try:
+            with open("levels/"+str(level)+".rev", 'r') as fichier:
+                lignes = fichier.read().split("\n")
+                self.map = Map(lignes, level)
+        except IOError:
+            showerror("ERREUR", "Le fichier du level "+str(self.level)+" est inaccessible")
+            pygame.quit()
+        self.screen.fill((0, 0, 0))
+        self.clock.tick(60)
+        self.screen.blit(pygame.image.load("files/background.png"), [0, 0])
+        self.map.player_list.draw(self.screen)
+        self.map.rock_list.draw(self.screen)
+        self.map.finish_list.draw(self.screen)
+        self.map.lava_list.draw(self.screen)
+        self.map.wall_list.draw(self.screen)
+        pygame.display.update()
 
     def Jouer(self, name):
         try:
@@ -92,15 +105,13 @@ class Editor(Tk):
                     showinfo("Bravo !", "Vous avez fini tous les niveaux de ce mode !")
                 else:
                     showinfo("Suivant", "C'est parti pour le niveau "+str(self.level))
-                    image = Image.open("files/l"+str(self.level)+".png")
-                    photo = ImageTk.PhotoImage(image)
-                    item = self.canvas.create_image(300, 300, image=photo)
+                    self.previewLevel(self.level)
 
     def execute(self, evt = None):
         file = self.sauvegarde()
         if file != "":
             self.Jouer(file)
-            
+
     def sauvegarde(self, evt= None):
         if self.title().split(" - ")[1] == 'Untitled':
             filename = asksaveasfilename(title="Sauvegarder votre script",defaultextension = '.rev',filetypes=[('Revolt Files','.rev')])
@@ -125,7 +136,7 @@ class Editor(Tk):
             else:
                 return self.title().split(" - ")[1]
             return ""
-        
+
     def creer(self, evt=None):
         if self.title().split(" - ")[1] == 'Untitled':
             showerror("Revolt IDE","Vous êtes déjà sur un nouveau fichier !")
@@ -144,7 +155,7 @@ class Editor(Tk):
                     self.code.insert("1.0", "#Votre Code")
                 else:
                     self.sauvegarde()
-    
+
     def ouvrir(self, evt=None):
         global txt, fenetre
         filename = askopenfilename(title="Ouvrir votre script", defaultextension='.rev', filetypes=[('Revolt Files', '.rev')])
@@ -155,7 +166,7 @@ class Editor(Tk):
         self.code.insert('1.0',content)
         self.title("Revolt IDE - "+filename)
         self.coloration()
-    
+
     def writeEvent(self, evt):
         if evt.char == '"':
             self.code.mark_gravity(INSERT, LEFT)
@@ -176,7 +187,7 @@ class Editor(Tk):
         if self.title()[0] != "*":
             self.title("*"+self.title())
         self.coloration()
-    
+
     def coloration(self):
         nmbChar = IntVar()
         for mot in ["walk", "left", "right", "jump", "getDirection", "setFunc", "callFunc",
@@ -218,6 +229,6 @@ class Editor(Tk):
             self.code.tag_add('Commentaire', lastPos,
                               "%s + %d chars" % (lastPos, nmbChar.get()))
             lastPos = "%s + 1 chars" % lastPos
-    
+
     def apropos(self, evt=None):
         showinfo("Revolt IDE", "Créé par LN12\nCopyright 2111 - 2112")

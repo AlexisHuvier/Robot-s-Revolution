@@ -23,7 +23,7 @@ class Game():
             try:
                 with open("levels/"+str(self.level)+".rev", 'r') as fichier:
                     lignes = fichier.read().split("\n")
-                    self.map = Map(lignes, script, level)
+                    self.map = Map(lignes, level, script)
             except IOError:
                 showerror("ERREUR", "Le fichier du level "+str(self.level)+" est inaccessible")
                 pygame.quit()

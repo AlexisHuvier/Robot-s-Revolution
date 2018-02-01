@@ -41,8 +41,9 @@ class Player(pygame.sprite.Sprite):
         self.timer -= 1
         result = 1
         if self.timer == 0:
-            result = self.script.launch()
-            self.timer = 20
+            if self.script != "":
+                result = self.script.launch()
+            self.timer = self.timerT
         collision_list = pygame.sprite.spritecollide(self, self.carte.lava_list, False, None)
         for collided_object in collision_list:
             pygame.quit()
@@ -134,7 +135,7 @@ class Wall(pygame.sprite.Sprite):
 
 
 class Map():
-    def __init__(self, objets, fichier, level):
+    def __init__(self, objets, level, fichier = ""):
         self.player_list = pygame.sprite.Group()
         self.finish_list = pygame.sprite.Group()
         self.rock_list = pygame.sprite.Group()
