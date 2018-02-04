@@ -5,23 +5,31 @@ try:
 except ImportError:
     from RR_language import Script
 
+
 class Player(pygame.sprite.Sprite):
-    def __init__(self, fichier, level, carte):
+    def __init__(self, fichier, level, carte, direction):
         super(Player, self).__init__()
-        
-        self.strImage = "files/robotD.png"
-        self.image = pygame.image.load(self.strImage)
-        self.rect = self.image.get_rect()
-        self.rect.x = 10
-        self.rect.y = 10
+
         if fichier != "":
             self.script = Script(self, fichier)
         else:
             self.script = ""
-        self.direction = 0
+        self.direction = direction
+        if direction == 0:
+            self.strImage = "files/robotD.png"
+        elif direction == 1:
+            self.strImage = "files/robotB.png"
+        elif direction == 2:
+            self.strImage = "files/robotG.png"
+        elif direction == 3:
+            self.strImage = "files/robotH.png"
+        self.image = pygame.image.load(self.strImage)
+        self.rect = self.image.get_rect()
         self.attack = False
         self.posX = 1
         self.posY = 1
+        self.rect.x = 10
+        self.rect.y = 10
         self.tempPosX = self.posX
         self.tempPosY = self.posY
         try:
@@ -30,13 +38,14 @@ class Player(pygame.sprite.Sprite):
                 self.timerT = int(lignes[0].split(" : ")[1])
         except IOError:
             self.timerT = 20
-            showwarning("ATTENTION", "Le fichier de config n'a pas été trouvé et va être recréer")
+            showwarning(
+                "ATTENTION", "Le fichier de config n'a pas été trouvé et va être recréer")
             with open("files/config.txt", "w") as fichier:
                 fichier.write("Timer Instruction : 20")
         self.timer = self.timerT
         self.level = level
         self.carte = carte
-    
+
     def update(self):
         self.timer -= 1
         result = 1
@@ -44,23 +53,27 @@ class Player(pygame.sprite.Sprite):
             if self.script != "":
                 result = self.script.launch()
             self.timer = self.timerT
-        collision_list = pygame.sprite.spritecollide(self, self.carte.lava_list, False, None)
+        collision_list = pygame.sprite.spritecollide(
+            self, self.carte.lava_list, False, None)
         for collided_object in collision_list:
             pygame.quit()
             showinfo("Perdu", "Votre robot a fondu dans la lave !")
-        collision_list = pygame.sprite.spritecollide(self, self.carte.finish_list, False, None)
+        collision_list = pygame.sprite.spritecollide(
+            self, self.carte.finish_list, False, None)
         for collided_object in collision_list:
             pygame.quit()
             result = self.level + 1
             showinfo("Gagné", "Votre robot a atteint le point final !")
-        collision_list = pygame.sprite.spritecollide(self, self.carte.rock_list, False, None)
+        collision_list = pygame.sprite.spritecollide(
+            self, self.carte.rock_list, False, None)
         for collided_object in collision_list:
             self.script.last_instruction = ""
             self.posX = self.tempPosX
             self.posY = self.tempPosY
-            self.rect.x = 20 + 70 * (self.posX - 1) 
+            self.rect.x = 20 + 70 * (self.posX - 1)
             self.rect.y = 3 + 70 * (self.posY - 1)
-        collision_list = pygame.sprite.spritecollide(self, self.carte.wall_list, False, None)
+        collision_list = pygame.sprite.spritecollide(
+            self, self.carte.wall_list, False, None)
         for collided_object in collision_list:
             self.script.last_instruction = ""
             self.posX = self.tempPosX
@@ -69,10 +82,11 @@ class Player(pygame.sprite.Sprite):
             self.rect.y = 3 + 70 * (self.posY - 1)
         return result
 
+
 class Rock(pygame.sprite.Sprite):
     def __init__(self, pos):
         super(Rock, self).__init__()
-        
+
         self.image = pygame.image.load("files/rocher.png")
         self.rect = self.image.get_rect()
         self.posX = pos[0]
@@ -81,10 +95,11 @@ class Rock(pygame.sprite.Sprite):
         self.rect.y = 15 + 70 * (self.posY - 1)
         self.can_be_jump = True
 
+
 class Finish(pygame.sprite.Sprite):
     def __init__(self, pos):
         super(Finish, self).__init__()
-        
+
         self.image = pygame.image.load("files/finish.png")
         self.rect = self.image.get_rect()
         self.posX = pos[0]
@@ -92,7 +107,8 @@ class Finish(pygame.sprite.Sprite):
         self.rect.x = 18 + 70 * (self.posX - 1)
         self.rect.y = 70 * (self.posY - 1)
         self.can_be_jump = False
-    
+
+
 class Lava(pygame.sprite.Sprite):
     def __init__(self, pos):
         super(Lava, self).__init__()
@@ -104,6 +120,7 @@ class Lava(pygame.sprite.Sprite):
         self.rect.x = 3 + 70 * (self.posX - 1)
         self.rect.y = 3 + 70 * (self.posY - 1)
         self.can_be_jump = True
+
 
 class Wall(pygame.sprite.Sprite):
     def __init__(self, pos, sorte):
@@ -117,17 +134,18 @@ class Wall(pygame.sprite.Sprite):
             self.setPos(0, 35)
         elif sorte == "H":
             self.image = pygame.image.load("files/MurH.png")
-            self.setPos(32, 0)  
+            self.setPos(32, 0)
         elif sorte == "+":
             self.image = pygame.image.load("files/Mur+.png")
             self.setPos(0, 0)
         else:
             self.image = ""
-        
+
         if self.image == "":
             pygame.quit()
-            showerror("ERREUR", "Le type "+sorte+" pour les murs n'est pas connu.")
-    
+            showerror("ERREUR", "Le type "+sorte +
+                      " pour les murs n'est pas connu.")
+
     def setPos(self, offsetX, offsetY):
         self.rect = self.image.get_rect()
         self.rect.x = offsetX + 70 * (self.posX - 1)
@@ -135,38 +153,45 @@ class Wall(pygame.sprite.Sprite):
 
 
 class Map():
-    def __init__(self, objets, level, fichier = ""):
+    def __init__(self, objets, level, fichier=""):
         self.player_list = pygame.sprite.Group()
         self.finish_list = pygame.sprite.Group()
         self.rock_list = pygame.sprite.Group()
         self.lava_list = pygame.sprite.Group()
         self.wall_list = pygame.sprite.Group()
 
-        n=0
+        n = 0
         for i in objets:
-            n+=1
-            if i.split(", ")[0] == "player":
-                self.player = Player(fichier, level, self)
+            n += 1
+            if i.split(", ")[0] == "0":
+                pass
+            elif i.split(", ")[0] == "player":
+                self.player = Player(fichier, level, self, int(i.split(", ")[3]))
                 self.player.posX = int(i.split(", ")[1])
                 self.player.posY = int(i.split(", ")[2])
                 self.player.rect.x = 20 + 70 * (self.player.posX - 1)
                 self.player.rect.y = 3 + 70 * (self.player.posY - 1)
                 self.player_list.add(self.player)
             elif i.split(", ")[0] == "finish":
-                self.finish = Finish([int(i.split(", ")[1]), int(i.split(", ")[2])])
+                self.finish = Finish(
+                    [int(i.split(", ")[1]), int(i.split(", ")[2])])
                 self.finish_list.add(self.finish)
             elif i.split(", ")[0] == "rock":
-                self.rock = Rock([int(i.split(", ")[1]), int(i.split(", ")[2])])
+                self.rock = Rock(
+                    [int(i.split(", ")[1]), int(i.split(", ")[2])])
                 self.rock_list.add(self.rock)
             elif i.split(", ")[0] == "lava":
-                self.lava=Lava([int(i.split(", ")[1]), int(i.split(", ")[2])])
+                self.lava = Lava(
+                    [int(i.split(", ")[1]), int(i.split(", ")[2])])
                 self.lava_list.add(self.lava)
             elif i.split(", ")[0] == "wall":
-                self.wall = Wall([int(i.split(", ")[1]), int(i.split(", ")[2])], i.split(", ")[3])
+                self.wall = Wall([int(i.split(", ")[1]), int(
+                    i.split(", ")[2])], i.split(", ")[3])
                 self.wall_list.add(self.wall)
             else:
-                showerror("ERREUR", "Le niveau "+ level+" a un élément inconnu (n°"+n)
-    
+                showerror("ERREUR", "Le niveau " + level +
+                          " a un élément inconnu (n°"+n)
+
     def getObj(self, posX, posY):
         if self.player.posX == posX and self.player.posY == posY:
             return self.player
@@ -183,4 +208,3 @@ class Map():
                 if i.posX == posX and i.posY == posY:
                     return i
             return None
-        
