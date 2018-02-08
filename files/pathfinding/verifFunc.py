@@ -8,7 +8,31 @@ except ImportError:
     from grid import Grid
 
 def isObstacle(titleMap, x, y):
-    if x == 9:
+    if x == 1 and y == 0:
+        if titleMap[1][0] != 0:
+            return 1
+    elif x == 8 and y == 0:
+        if titleMap[1][9] != 0:
+            return 1
+    elif x == 0 and y == 1:
+        if titleMap[0][1] != 0:
+            return 1
+    elif x == 9 and y == 1:
+        if titleMap[0][8] != 0:
+            return 1
+    elif x == 8 and y == 9:
+        if titleMap[8][9] != 0:
+            return 1
+    elif x == 0 and y == 8:
+        if titleMap[9][1] != 0:
+            return 1
+    elif x == 1 and y == 9:
+        if titleMap[8][0] != 0:
+            return 1
+    elif x == 9 and y == 8:
+        if titleMap[9][8] != 0:
+            return 1
+    elif x == 9:
         if y == 9:
             return 1
         elif y == 0:
@@ -124,7 +148,6 @@ def isObstacle(titleMap, x, y):
             return 1
         elif titleMap[y-2][x] != 0 and titleMap[y+2][x] != 0:
             return 1
-    print(x, y)
     return 0
 
 
