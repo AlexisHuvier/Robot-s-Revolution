@@ -5,7 +5,7 @@ import time # for time limitation
 try:
     from files.pathfinding.utils import DiagonalMovement, manhatten, octile, SQRT2
 except ImportError:
-    from files.pathfinding.utils import DiagonalMovement, manhatten, octile, SQRT2
+    from utils import DiagonalMovement, manhatten, octile, SQRT2
 
 
 # max. amount of tries we iterate until we abort the search
