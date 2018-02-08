@@ -98,6 +98,7 @@ class Editor(Tk):
             temp = game.launch()
             if temp == self.level:
                 showinfo("Retente", "Réessaie de finir le niveau "+str(self.level)+" !")
+                self.previewLevel(self.level)
             else:
                 self.level = temp
                 try:
