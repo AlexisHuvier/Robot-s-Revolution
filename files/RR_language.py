@@ -48,7 +48,7 @@ class Script():
             return 1
 
     def jump(self):
-        if self.last_instruction == "walk":
+        if self.last_instruction == "walk" or self.last_instruction == "jump":
             self.robot.tempPosX = self.robot.posX
             self.robot.tempPosY = self.robot.posY
             if self.robot.direction == 0:
