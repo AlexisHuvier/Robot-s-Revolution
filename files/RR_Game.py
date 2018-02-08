@@ -23,13 +23,24 @@ class Game():
             try:
                 with open("levels/"+str(self.level)+".rev", 'r') as fichier:
                     lignes = fichier.read().split("\n")
-                    self.map = Map(lignes, level, script)
+                    self.map = Map(lignes, level, self, script)
             except IOError:
                 showerror("ERREUR", "Le fichier du level "+str(self.level)+" est inaccessible")
                 pygame.quit()
         else:
             showerror("ERREUR", "MODE INCONNU")
             pygame.quit()
+         
+    def update(self):
+        self.screen.fill((0, 0, 0))
+        self.clock.tick(60)
+        self.screen.blit(pygame.image.load("files/background.png"), [0, 0])
+        self.map.rock_list.draw(self.screen)
+        self.map.finish_list.draw(self.screen)
+        self.map.lava_list.draw(self.screen)
+        self.map.wall_list.draw(self.screen)
+        self.map.player_list.draw(self.screen)
+        pygame.display.update()
 
     def launch(self):
         while self.done:
@@ -44,15 +55,7 @@ class Game():
             self.result = self.map.player.update()
 
             if self.result == 1:
-                self.screen.fill((0, 0, 0))
-                self.clock.tick(60)
-                self.screen.blit(pygame.image.load("files/background.png"), [0, 0])
-                self.map.player_list.draw(self.screen)
-                self.map.rock_list.draw(self.screen)
-                self.map.finish_list.draw(self.screen)
-                self.map.lava_list.draw(self.screen)
-                self.map.wall_list.draw(self.screen)
-                pygame.display.update()
+                self.update()
             else:
                 self.done = False
         pygame.quit()

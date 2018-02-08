@@ -6,9 +6,10 @@ instructions = ["walk", "left", "right", "jump", "getDirection", "setFunc", "cal
                 "loopif", "loop", "sayConsole", "if_", "getPosX", "getPosY"]
 
 class Script():
-    def __init__(self, robot, fichier):
+    def __init__(self, robot, game, fichier):
         self.fichier = fichier
         self.robot = robot
+        self.game = game
         self.avancement = 0
         self.temp_boucle_a_faire = -1
         self.temp_fonction_a_faire = -1
@@ -57,7 +58,16 @@ class Script():
                     if self.robot.posX > 10:
                         self.robot.posX -= 2
                         showerror("ERREUR", "Le robot est sorti de l'écran.")
-                    self.robot.rect.x = 20 + 70 * (self.robot.posX - 1)
+                    else:
+                        self.robot.posX -= 2
+                        self.robot.posX += 1
+                        self.robot.rect.x = 20 + 70 * (self.robot.posX - 1)
+                        self.robot.rect.y -= 30
+                        self.game.update()
+                        pygame.time.wait(500)
+                        self.robot.posX += 1
+                        self.robot.rect.x = 20 + 70 * (self.robot.posX - 1)
+                        self.robot.rect.y += 30
                 else:
                     showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1)+"\nOn ne peut jump que les cailloux")
             elif self.robot.direction == 1:
@@ -88,6 +98,7 @@ class Script():
                 else:
                     showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1)+"\nOn ne peut jump que les cailloux")
         else:
+            print(self.last_instruction)
             showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1)+"\nIl n'est pas possible d'utiliser 'jump()' s'il n'y a pas un 'walk()' avant")
 
     def walk(self):

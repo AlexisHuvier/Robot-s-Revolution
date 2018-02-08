@@ -7,11 +7,12 @@ except ImportError:
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, fichier, level, carte, direction):
+    def __init__(self, fichier, game, level, carte, direction):
         super(Player, self).__init__()
 
+        self.game = game
         if fichier != "":
-            self.script = Script(self, fichier)
+            self.script = Script(self, game, fichier)
         else:
             self.script = ""
         self.direction = direction
@@ -153,7 +154,7 @@ class Wall(pygame.sprite.Sprite):
 
 
 class Map():
-    def __init__(self, objets, level, fichier=""):
+    def __init__(self, objets, level, game, fichier=""):
         self.player_list = pygame.sprite.Group()
         self.finish_list = pygame.sprite.Group()
         self.rock_list = pygame.sprite.Group()
@@ -166,7 +167,7 @@ class Map():
             if i.split(", ")[0] == "0":
                 pass
             elif i.split(", ")[0] == "player":
-                self.player = Player(fichier, level, self, int(i.split(", ")[3]))
+                self.player = Player(fichier, game, level, self, int(i.split(", ")[3]))
                 self.player.posX = int(i.split(", ")[1])
                 self.player.posY = int(i.split(", ")[2])
                 self.player.rect.x = 20 + 70 * (self.player.posX - 1)

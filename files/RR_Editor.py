@@ -68,11 +68,11 @@ class Editor(Tk):
         self.screen = pygame.display.set_mode((700, 700))
         self.clock = pygame.time.Clock()
 
-        pygame.display.set_caption("RR - Level "+str(level))
+        pygame.display.set_caption("Preview - Level "+str(level))
         try:
             with open("levels/"+str(level)+".rev", 'r') as fichier:
                 lignes = fichier.read().split("\n")
-                self.map = Map(lignes, level)
+                self.map = Map(lignes, level, "")
         except IOError:
             showerror("ERREUR", "Le fichier du level "+str(self.level)+" est inaccessible")
             pygame.quit()
