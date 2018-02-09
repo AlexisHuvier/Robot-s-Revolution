@@ -190,8 +190,8 @@ class Map():
                     i.split(", ")[2])], i.split(", ")[3])
                 self.wall_list.add(self.wall)
             else:
-                showerror("ERREUR", "Le niveau " + level +
-                          " a un élément inconnu (n°"+n)
+                showerror("ERREUR", "Le niveau " + str(level) +
+                          " a un élément inconnu (n°"+str(n)+")")
 
     def getObj(self, posX, posY):
         if self.player.posX == posX and self.player.posY == posY:
