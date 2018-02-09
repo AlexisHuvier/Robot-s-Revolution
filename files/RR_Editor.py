@@ -13,6 +13,9 @@ except ImportError:
 class Editor(Tk):
     def __init__(self, level):
         super(Editor, self).__init__()
+        self.dOn = False
+        self.difficultScreen = ""
+        self.difficult = 0
         self.on = True
         self.level = level
 
@@ -72,6 +75,9 @@ class Editor(Tk):
         try:
             with open("levels/"+str(level)+".rev", 'r') as fichier:
                 lignes = fichier.read().split("\n")
+                while lignes[-1] == "" or lignes[-1] == "\n":
+                    lignes = lignes[:-1]
+                lignes = lignes[:-1]
                 self.map = Map(lignes, level, "")
         except IOError:
             showerror("ERREUR", "Le fichier du level "+str(self.level)+" est inaccessible")
@@ -85,6 +91,11 @@ class Editor(Tk):
         self.map.lava_list.draw(self.screen)
         self.map.wall_list.draw(self.screen)
         pygame.display.update()
+    
+    def CloseDifficult(self):
+        if self.difficultScreen != "":
+            self.dOn = False
+            self.difficultScreen.destroy()
 
     def Jouer(self, name):
         try:
@@ -94,7 +105,36 @@ class Editor(Tk):
             showerror("Fichier inconnu", "Le fichier n'a pas pu être ouvert.")
         else:
             pygame.quit()
-            game = Game(name.split("\"")[-1], "Parcours", self.level)
+
+            self.difficultScreen = Toplevel()
+            self.difficultScreen.title("Difficulty")
+            self.difficultScreen.geometry("180x180")
+
+            self.dOn = True
+            v = IntVar()
+            v.set(0)
+
+            LTitre = Label(self.difficultScreen, text="Robot's Revolution",
+                           font=("Comic Sans MS", 13, "bold"))
+            REasy = Radiobutton(self.difficultScreen, text="Easy", variable=v,
+                        value=1)
+            RMedium = Radiobutton(self.difficultScreen, text="Medium", variable=v,
+                        value=2)
+            RDifficult = Radiobutton(self.difficultScreen, text="Hard", variable=v,
+                        value=3)
+
+            button = Button(self.difficultScreen, text="Validate",
+                            command=self.CloseDifficult)
+            LTitre.pack()
+            REasy.pack()
+            RMedium.pack()
+            RDifficult.pack()
+            button.pack()
+            while self.dOn:
+                self.update()
+            self.difficult = v.get()
+            
+            game = Game(name.split("\"")[-1], "Parcours", self.difficult, self.level)
             temp = game.launch()
             if temp == self.level:
                 showinfo("Retente", "Réessaie de finir le niveau "+str(self.level)+" !")
@@ -106,7 +146,13 @@ class Editor(Tk):
                         pass
                 except IOError:
                     showinfo("Bravo !", "Vous avez fini tous les niveaux de ce mode !")
-                    self.level = 1
+                    if askquestion("Robot's Revolution", "Voulez-vous relancer le niveau 1 ?\nVous pourrez refaire les niveaux avec plus de difficulté") == "yes":
+                        self.level = 1
+                        showinfo("Robot's Revolution", "C'est reparti !")
+                        self.previewLevel(self.level)
+                    else:
+                        self.on = False
+                        self.destroy()
                 else:
                     showinfo("Suivant", "C'est parti pour le niveau "+str(self.level))
                     self.previewLevel(self.level)

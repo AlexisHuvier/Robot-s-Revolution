@@ -1,5 +1,5 @@
-from tkinter.messagebox import showerror
-import pygame
+from tkinter.messagebox import showerror, showinfo
+import pygame, sys
 try:
     from files.RR_class import Map
 except ImportError:
@@ -7,8 +7,13 @@ except ImportError:
 
 
 class Game():
-    def __init__(self, script, mode, level=1):
+    def __init__(self, script, mode, difficult = 0, level=1):
         self.result = 0
+        self.difficult = difficult
+        self.easy = 0
+        self.medium = 0
+        self.hard = 0
+        self.nbInstruction = 0
         self.mode = mode
 
         self.screen = pygame.display.set_mode((700, 700))
@@ -21,8 +26,26 @@ class Game():
             self.level = level
             self.mode = mode
             try:
+                with open(script, "r") as fichier:
+                    temp_instructions = fichier.read().split("\n")
+                    for i in temp_instructions:
+                        if i[0] != "#" and i != "":
+                            self.nbInstruction += 1
+            except IOError as e:
+                showerror("Fichier inconnu",
+                          "Le fichier n'a pas pu être ouvert.")
+                sys.exit()
+            try:
                 with open("levels/"+str(self.level)+".rev", 'r') as fichier:
                     lignes = fichier.read().split("\n")
+                    while lignes[-1] == "" or lignes[-1] == "\n":
+                        lignes = lignes[:-1]
+                    self.easy, self.medium, self.hard = [
+                        int(lignes[-1].split(", ")[0]),
+                        int(lignes[-1].split(", ")[1]),
+                        int(lignes[-1].split(", ")[2])
+                    ]
+                    lignes = lignes[:-1]
                     self.map = Map(lignes, level, self, script)
             except IOError:
                 showerror("ERREUR", "Le fichier du level "+str(self.level)+" est inaccessible")
@@ -59,7 +82,23 @@ class Game():
             else:
                 self.done = False
         pygame.quit()
-        if self.result > 1:
-            return self.result
-        else:
-            return self.level
+        if self.mode == "Parcours":
+            if ((self.difficult == 1 and self.nbInstruction <= self.easy) 
+                or (self.difficult == 2 and self.nbInstruction <= self.medium) 
+                or (self.difficult == 3 and self.nbInstruction <= self.hard)):
+                showinfo("Gagné", "Votre robot a atteint le point final !")
+                if self.result > 1:
+                    return self.result
+                else:
+                    return self.level
+            else:
+                if self.difficult == 1:
+                    showinfo(
+                        "Désolé", "Votre robot a bien atteint le point final.\nMais la difficulté 'EASY' implique de faire ce parcours en "+str(self.easy)+" instructions")
+                elif self.difficult == 2:
+                    showinfo(
+                        "Désolé", "Votre robot a bien atteint le point final.\nMais la difficulté 'MEDIUM' implique de faire ce parcours en "+str(self.medium)+" instructions")
+                elif self.difficult == 3:
+                    showinfo(
+                        "Désolé", "Votre robot a bien atteint le point final.\nMais la difficulté 'HARD' implique de faire ce parcours en "+str(self.hard)+" instructions")
+                return self.level

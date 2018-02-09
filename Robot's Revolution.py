@@ -110,13 +110,13 @@ def Multi():
 def FenScriptVersus():
     showerror("Coming Soon", "Le mode Versus IA viendra plus tard")
     
-def Community () :
+def Community():
     showerror("Coming Soon", "Le mode Levels Community viendra plus tard")
     
-def IA() :
+def IA():
     showerror("Coming Soon", "Le mode I.A viendra plus tard")
     
-def Serveur() :
+def Serveur():
     showerror("Coming Soon", "Le mode serveur viendra plus tard")
     
 def FenScriptP():
