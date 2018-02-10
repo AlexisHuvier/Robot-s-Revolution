@@ -2,7 +2,7 @@ from tkinter import *
 from tkinter.messagebox import showerror, showinfo, askquestion
 from tkinter.filedialog import askopenfilename, asksaveasfilename
 from PIL import Image, ImageTk
-import pygame
+import pygame, glob, random
 try:
     from files.RR_Game import Game
     from files.RR_class import Map
@@ -11,13 +11,23 @@ except ImportError:
     from RR_Game import Game
 
 class Editor(Tk):
-    def __init__(self, level):
+    def __init__(self, level, mode):
         super(Editor, self).__init__()
         self.dOn = False
+        self.mode = mode
         self.difficultScreen = ""
-        self.difficult = 0
+        self.difficult = "MP"
         self.on = True
-        self.level = level
+        if self.mode == "IA":
+            liste = glob.glob('levels\\mp_*.rev')
+            if len(liste) == 1:
+                self.level = liste[0].split("\\")[-1].split(".")[0]
+            else:
+                self.level = liste[random.randint(
+                    0, len(liste)-1)].split("\\")[-1].split(".")[0]
+        else:
+            self.level = level
+        print(self.level)
 
         self.title("Revolt IDE - Untitled")
 
@@ -75,9 +85,10 @@ class Editor(Tk):
         try:
             with open("levels/"+str(level)+".rev", 'r') as fichier:
                 lignes = fichier.read().split("\n")
-                while lignes[0] == "" or lignes[0] == "\n":
+                if self.mode == "Parcours": 
+                    while lignes[0] == "" or lignes[0] == "\n":
+                        lignes = lignes[1:]
                     lignes = lignes[1:]
-                lignes = lignes[1:]
                 self.map = Map(lignes, level, "")
         except IOError:
             showerror("ERREUR", "Le fichier du level "+str(self.level)+" est inaccessible")
@@ -105,36 +116,36 @@ class Editor(Tk):
             showerror("Fichier inconnu", "Le fichier n'a pas pu être ouvert.")
         else:
             pygame.quit()
+            if self.mode == "Parcours":
+                self.difficultScreen = Toplevel()
+                self.difficultScreen.title("Difficulty")
+                self.difficultScreen.geometry("180x180")
 
-            self.difficultScreen = Toplevel()
-            self.difficultScreen.title("Difficulty")
-            self.difficultScreen.geometry("180x180")
+                self.dOn = True
+                v = IntVar()
+                v.set(0)
 
-            self.dOn = True
-            v = IntVar()
-            v.set(0)
+                LTitre = Label(self.difficultScreen, text="Robot's Revolution",
+                            font=("Comic Sans MS", 13, "bold"))
+                REasy = Radiobutton(self.difficultScreen, text="Easy", variable=v,
+                            value=1)
+                RMedium = Radiobutton(self.difficultScreen, text="Medium", variable=v,
+                            value=2)
+                RDifficult = Radiobutton(self.difficultScreen, text="Hard", variable=v,
+                            value=3)
 
-            LTitre = Label(self.difficultScreen, text="Robot's Revolution",
-                           font=("Comic Sans MS", 13, "bold"))
-            REasy = Radiobutton(self.difficultScreen, text="Easy", variable=v,
-                        value=1)
-            RMedium = Radiobutton(self.difficultScreen, text="Medium", variable=v,
-                        value=2)
-            RDifficult = Radiobutton(self.difficultScreen, text="Hard", variable=v,
-                        value=3)
-
-            button = Button(self.difficultScreen, text="Validate",
-                            command=self.CloseDifficult)
-            LTitre.pack()
-            REasy.pack()
-            RMedium.pack()
-            RDifficult.pack()
-            button.pack()
-            while self.dOn:
-                self.update()
-            self.difficult = v.get()
+                button = Button(self.difficultScreen, text="Validate",
+                                command=self.CloseDifficult)
+                LTitre.pack()
+                REasy.pack()
+                RMedium.pack()
+                RDifficult.pack()
+                button.pack()
+                while self.dOn:
+                    self.update()
+                self.difficult = v.get()
             
-            game = Game(name.split("\"")[-1], "Parcours", self.difficult, self.level)
+            game = Game(name.split("\"")[-1], self.mode, self.difficult, self.level)
             temp = game.launch()
             if temp == self.level:
                 showinfo("Retente", "Réessaie de finir le niveau "+str(self.level)+" !")

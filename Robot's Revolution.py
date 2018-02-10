@@ -114,7 +114,13 @@ def Community():
     showerror("Coming Soon", "Le mode Levels Community viendra plus tard")
     
 def IA():
-    showerror("Coming Soon", "Le mode I.A viendra plus tard")
+    global FENETRE
+    FENETRE.destroy()
+
+    FENETRE = Editor("mp", "IA")
+    while FENETRE.on:
+        pass
+    Multi()
     
 def Serveur():
     showerror("Coming Soon", "Le mode serveur viendra plus tard")
@@ -123,7 +129,7 @@ def FenScriptP():
     global FENETRE, LEVEL
     FENETRE.destroy()
 
-    FENETRE = Editor(LEVEL)
+    FENETRE = Editor(LEVEL, "Parcours")
     while FENETRE.on:
         pass
     Solo()
