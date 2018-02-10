@@ -1,12 +1,14 @@
 import pygame, sys
 from tkinter.filedialog import asksaveasfilename
 from tkinter.messagebox import askquestion
+from tkinter import *
 try:
     from files.pathfinding.verifFunc import verif
 except ImportError:
     sys.path.append("files/pathfinding")
     from verifFunc import verif
 pygame.mixer.init()
+temp_text = ""
 
 def mouseEvent(button, pos):
     if button == 1:
@@ -49,15 +51,53 @@ def mouseEvent(button, pos):
                     posAndObjects.remove(items)
                     break
 
+def validate():
+    global EEasy, EMedium, EHard, temp_text
+    for i in [EEasy, EMedium, EHard]:
+        if i != EHard:
+            temp_text += i.get() + ", "
+        else:
+            temp_text += i.get()+"\n"
+    save()
+        
+def difficult():
+    global EEasy, EMedium, EHard, difficultScreen
+    difficultScreen = Tk()
+    difficultScreen.title("Difficulty")
+    difficultScreen.geometry("180x180")
+
+    LTitre = Label(difficultScreen, text="Robot's Revolution",
+                    font=("Comic Sans MS", 13, "bold"))
+    LEasy = Label(difficultScreen, text="Nombre de ligne en Easy :")
+    EEasy = Entry(difficultScreen)
+    LMedium = Label(difficultScreen, text="Nombre de ligne en Medium :")
+    EMedium = Entry(difficultScreen)
+    LHard = Label(difficultScreen, text="Nombre de ligne en Hard :")
+    EHard = Entry(difficultScreen)
+    button = Button(difficultScreen, text="Validate",
+                    command=validate)
+    LTitre.pack()
+    LEasy.pack()
+    EEasy.pack()
+    LMedium.pack()
+    EMedium.pack()
+    LHard.pack()
+    EHard.pack()
+    button.pack()
+    difficultScreen.mainloop()
+
 def save():
+    global temp_text, difficultScreen
+
     filename = asksaveasfilename(title="Sauvegarder votre level",defaultextension = '.rev',filetypes=[('Revolt Files','.rev')])
     if filename != "":
         file = open(filename, "w")
-        file.write(convertV())
+        file.write(convertV(temp_text))
         file.close()
+    difficultScreen.destroy()
         
-def convertV():
-    fichier = ""
+def convertV(texttemp):
+    fichier = texttemp
     for items in posAndObjects:
         if items[0] == "files/finish.png":
             fichier += "finish, "+str(items[2][0])+", "+str(items[2][1])
@@ -105,11 +145,11 @@ while not done:
                 done = True
             if event.key == pygame.K_F5:
                 if verif(posAndObjects) != 0:
-                    save()
+                    difficult()
                     done = True
                 else:
                     if askquestion("Attention", "Votre niveau n'est apparemment pas possible\nVoulez-vous quand même l'enregistrer ?") == "yes":
-                        save()
+                        difficult()
                         done = True
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouseEvent(event.button, event.pos)
