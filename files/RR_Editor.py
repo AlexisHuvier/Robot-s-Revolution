@@ -75,9 +75,9 @@ class Editor(Tk):
         try:
             with open("levels/"+str(level)+".rev", 'r') as fichier:
                 lignes = fichier.read().split("\n")
-                while lignes[-1] == "" or lignes[-1] == "\n":
-                    lignes = lignes[:-1]
-                lignes = lignes[:-1]
+                while lignes[0] == "" or lignes[0] == "\n":
+                    lignes = lignes[1:]
+                lignes = lignes[1:]
                 self.map = Map(lignes, level, "")
         except IOError:
             showerror("ERREUR", "Le fichier du level "+str(self.level)+" est inaccessible")

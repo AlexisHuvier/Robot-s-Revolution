@@ -38,14 +38,14 @@ class Game():
             try:
                 with open("levels/"+str(self.level)+".rev", 'r') as fichier:
                     lignes = fichier.read().split("\n")
-                    while lignes[-1] == "" or lignes[-1] == "\n":
-                        lignes = lignes[:-1]
+                    while lignes[0] == "" or lignes[0] == "\n":
+                        lignes = lignes[1:]
                     self.easy, self.medium, self.hard = [
-                        int(lignes[-1].split(", ")[0]),
-                        int(lignes[-1].split(", ")[1]),
-                        int(lignes[-1].split(", ")[2])
+                        int(lignes[0].split(", ")[0]),
+                        int(lignes[0].split(", ")[1]),
+                        int(lignes[0].split(", ")[2])
                     ]
-                    lignes = lignes[:-1]
+                    lignes = lignes[1:]
                     self.map = Map(lignes, level, self, script)
             except IOError:
                 showerror("ERREUR", "Le fichier du level "+str(self.level)+" est inaccessible")
@@ -86,8 +86,8 @@ class Game():
             if ((self.difficult == 1 and self.nbInstruction <= self.easy) 
                 or (self.difficult == 2 and self.nbInstruction <= self.medium) 
                 or (self.difficult == 3 and self.nbInstruction <= self.hard)):
-                showinfo("Gagné", "Votre robot a atteint le point final !")
                 if self.result > 1:
+                    showinfo("Gagné", "Votre robot a atteint le point final !")
                     return self.result
                 else:
                     return self.level
