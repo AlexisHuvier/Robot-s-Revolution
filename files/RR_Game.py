@@ -29,8 +29,9 @@ class Game():
                 with open(script, "r") as fichier:
                     temp_instructions = fichier.read().split("\n")
                     for i in temp_instructions:
-                        if i[0] != "#" and i != "":
-                            self.nbInstruction += 1
+                        if i != "":
+                            if i[0] != "#":
+                                self.nbInstruction += 1
             except IOError as e:
                 showerror("Fichier inconnu",
                           "Le fichier n'a pas pu être ouvert.")
