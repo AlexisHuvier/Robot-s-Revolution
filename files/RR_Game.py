@@ -88,7 +88,7 @@ class Game():
                 or (self.difficult == 2 and self.nbInstruction <= self.medium) 
                 or (self.difficult == 3 and self.nbInstruction <= self.hard)):
                 if self.result > 1:
-                    showinfo("Gagné", "Votre robot a atteint le point final !")
+                    showinfo("Gagné", "Votre robot a atteint le point final !\nTemps d'exécution : XXs\nNombre d'instructions : "+str(self.nbInstruction)+"\nNombre minimum d'instruction (d'après le créateur du niveau) : "+str(self.hard))
                     return self.result
                 else:
                     return self.level
