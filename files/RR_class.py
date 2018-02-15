@@ -7,10 +7,11 @@ except ImportError:
 
 
 class Player(pygame.sprite.Sprite):
-    def __init__(self, fichier, game, level, carte, direction):
+    def __init__(self, status, fichier, game, level, carte, direction):
         super(Player, self).__init__()
 
         self.game = game
+        self.status = status
         if fichier != "":
             self.script = Script(self, game, fichier)
         else:
@@ -52,18 +53,36 @@ class Player(pygame.sprite.Sprite):
         result = 1
         if self.timer == 0:
             if self.script != "":
+                for lazer in self.carte.lazer_list:
+                    lazer.update()
                 result = self.script.launch()
             self.timer = self.timerT
+        collision_list = pygame.sprite.spritecollide(
+            self, self.carte.player_list, False, None)
+        for collided_object in collision_list:
+            if collided_object != self:
+                self.script.last_instruction = ""
+                self.posX = self.tempPosX
+                self.posY = self.tempPosY
+                self.rect.x = 20 + 70 * (self.posX - 1)
+                self.rect.y = 3 + 70 * (self.posY - 1)
+        collision_list = pygame.sprite.spritecollide(
+            self, self.carte.lazer_list, False, None)
+        for collided_object in collision_list:
+            if self.status == "Joueur":
+                pygame.quit()
+                showinfo("Perdu", "Votre robot a percuté un lazer !")
         collision_list = pygame.sprite.spritecollide(
             self, self.carte.lava_list, False, None)
         for collided_object in collision_list:
             pygame.quit()
             showinfo("Perdu", "Votre robot a fondu dans la lave !")
-        collision_list = pygame.sprite.spritecollide(
-            self, self.carte.finish_list, False, None)
-        for collided_object in collision_list:
-            pygame.quit()
-            result = self.level + 1
+        if self.game != "" and self.game.mode == "Parcours":
+            collision_list = pygame.sprite.spritecollide(
+                self, self.carte.finish_list, False, None)
+            for collided_object in collision_list:
+                pygame.quit()
+                result = self.level + 1
         collision_list = pygame.sprite.spritecollide(
             self, self.carte.rock_list, False, None)
         for collided_object in collision_list:
@@ -152,6 +171,55 @@ class Wall(pygame.sprite.Sprite):
         self.rect.y = offsetY + 70 * (self.posY - 1)
 
 
+class Lazer(pygame.sprite.Sprite):
+    def __init__(self, posX, posY, direction, map):
+        super(Lazer, self).__init__()
+        
+        self.posX = posX
+        self.posY = posY
+        self.map = map
+        self.direction = direction
+        if direction == 0 or direction == 2:
+            self.image = pygame.image.load("files/lazer.png")
+            self.setPos()
+        elif direction == 1 or direction == 3:
+            self.image = pygame.image.load("files/lazer.png")
+            self.image = pygame.transform.rotate(self.image, 90)
+            self.setPos()
+    
+    def setPos(self):
+        self.rect = self.image.get_rect()
+        self.rect.x = 20 + 70 * (self.posX - 1)
+        self.rect.y = 5 + 70 * (self.posY - 1)
+    
+    def update(self):
+        if self.direction == 0:
+            self.posX += 1
+            if self.posX >= 11:
+                self.map.lazer_list.remove(self)
+            else:
+                self.setPos()
+        elif self.direction == 1:
+            self.posY += 1
+            if self.posY >= 11:
+                self.map.lazer_list.remove(self)
+            else:
+                self.setPos()
+        elif self.direction == 2:
+            self.posX -= 1
+            if self.posX <= 0:
+                self.map.lazer_list.remove(self)
+            else:
+                self.setPos()
+        elif self.direction == 3:
+            self.posY -= 1
+            if self.posY <= 0:
+                self.map.lazer_list.remove(self)
+            else:
+                self.setPos()
+            
+
+
 class Map():
     def __init__(self, objets, level, game, fichier=""):
         self.player_list = pygame.sprite.Group()
@@ -159,6 +227,7 @@ class Map():
         self.rock_list = pygame.sprite.Group()
         self.lava_list = pygame.sprite.Group()
         self.wall_list = pygame.sprite.Group()
+        self.lazer_list = pygame.sprite.Group()
 
         n = 0
         for i in objets:
@@ -166,12 +235,28 @@ class Map():
             if i.split(", ")[0] == "0":
                 pass
             elif i.split(", ")[0] == "player":
-                self.player = Player(fichier, game, level, self, int(i.split(", ")[3]))
-                self.player.posX = int(i.split(", ")[1])
-                self.player.posY = int(i.split(", ")[2])
-                self.player.rect.x = 20 + 70 * (self.player.posX - 1)
-                self.player.rect.y = 3 + 70 * (self.player.posY - 1)
-                self.player_list.add(self.player)
+                if game != "" and game.mode == "IA":
+                    if i.split(", ")[4] == "Ennemi":
+                        self.player = Player(i.split(", ")[4], "files/ia/"+str(level)+".rev", game, level, self, int(i.split(", ")[3]))
+                        self.player.posX = int(i.split(", ")[1])
+                        self.player.posY = int(i.split(", ")[2])
+                        self.player.rect.x = 20 + 70 * (self.player.posX - 1)
+                        self.player.rect.y = 3 + 70 * (self.player.posY - 1)
+                        self.player_list.add(self.player)
+                    else:
+                        self.player = Player("Joueur", fichier, game, level, self, int(i.split(", ")[3]))
+                        self.player.posX = int(i.split(", ")[1])
+                        self.player.posY = int(i.split(", ")[2])
+                        self.player.rect.x = 20 + 70 * (self.player.posX - 1)
+                        self.player.rect.y = 3 + 70 * (self.player.posY - 1)
+                        self.player_list.add(self.player)
+                else:
+                    self.player = Player("Joueur", fichier, game, level, self, int(i.split(", ")[3]))
+                    self.player.posX = int(i.split(", ")[1])
+                    self.player.posY = int(i.split(", ")[2])
+                    self.player.rect.x = 20 + 70 * (self.player.posX - 1)
+                    self.player.rect.y = 3 + 70 * (self.player.posY - 1)
+                    self.player_list.add(self.player)
             elif i.split(", ")[0] == "finish":
                 self.finish = Finish(
                     [int(i.split(", ")[1]), int(i.split(", ")[2])])
@@ -208,3 +293,7 @@ class Map():
                 if i.posX == posX and i.posY == posY:
                     return i
             return None
+
+    def createLazer(self, posX, posY, direction):
+        self.lazer = Lazer(posX, posY, direction, self)
+        self.lazer_list.add(self.lazer)

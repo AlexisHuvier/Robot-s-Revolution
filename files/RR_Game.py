@@ -21,7 +21,7 @@ class Game():
         self.clock = pygame.time.Clock()
 
         self.done = True
-        if self.mode == "Parcours":
+        if self.mode == "Parcours" or self.mode == "IA":
             pygame.display.set_caption("RR - Level "+str(level))
             self.level = level
             self.mode = mode
@@ -39,18 +39,20 @@ class Game():
             try:
                 with open("levels/"+str(self.level)+".rev", 'r') as fichier:
                     lignes = fichier.read().split("\n")
-                    while lignes[0] == "" or lignes[0] == "\n":
+                    if self.mode == "Parcours":
+                        while lignes[0] == "" or lignes[0] == "\n":
+                            lignes = lignes[1:]
+                        self.easy, self.medium, self.hard = [
+                            int(lignes[0].split(", ")[0]),
+                            int(lignes[0].split(", ")[1]),
+                            int(lignes[0].split(", ")[2])
+                        ]
                         lignes = lignes[1:]
-                    self.easy, self.medium, self.hard = [
-                        int(lignes[0].split(", ")[0]),
-                        int(lignes[0].split(", ")[1]),
-                        int(lignes[0].split(", ")[2])
-                    ]
-                    lignes = lignes[1:]
                     self.map = Map(lignes, level, self, script)
             except IOError:
                 showerror("ERREUR", "Le fichier du level "+str(self.level)+" est inaccessible")
                 pygame.quit()
+            
         else:
             showerror("ERREUR", "MODE INCONNU")
             pygame.quit()
@@ -64,6 +66,7 @@ class Game():
         self.map.lava_list.draw(self.screen)
         self.map.wall_list.draw(self.screen)
         self.map.player_list.draw(self.screen)
+        self.map.lazer_list.draw(self.screen)
         pygame.display.update()
 
     def launch(self):
@@ -76,8 +79,11 @@ class Game():
                     self.done = False
                     self.result = 0
 
-            self.result = self.map.player.update()
-
+            for character in self.map.player_list:
+                if character.status == "Joueur":
+                    self.result = character.update()
+                else:
+                    character.update()
             if self.result == 1:
                 self.update()
             else:
@@ -102,4 +108,13 @@ class Game():
                 elif self.difficult == 3:
                     showinfo(
                         "Désolé", "Votre robot a bien atteint le point final.\nMais la difficulté 'HARD' implique de faire ce parcours en "+str(self.hard)+" instructions")
+                return self.level
+        elif self.mode == "IA":
+            if len(self.map.player_list) == 1:
+                if self.result > 1:
+                    showinfo("Gagné", "Votre robot a tué l'ennemi !\nTemps d'exécution : XXs\nNombre d'instructions : "+str(self.nbInstruction))
+                else:
+                    return self.level 
+            else:
+                showinfo("Perdu", "Le robot ennemi n'a pas été tué")
                 return self.level

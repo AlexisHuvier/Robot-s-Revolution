@@ -17,7 +17,7 @@ def FenScriptP():
     global FENETRE, LEVEL
     FENETRE.destroy()
     
-    FENETRE = Editor(LEVEL)
+    FENETRE = Editor(LEVEL, "Parcours")
     while FENETRE.on:
         pass
     Solo()
