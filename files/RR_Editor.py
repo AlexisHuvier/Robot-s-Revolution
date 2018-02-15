@@ -27,7 +27,6 @@ class Editor(Tk):
                     0, len(liste)-1)].split("\\")[-1].split(".")[0]
         else:
             self.level = level
-        print(self.level)
 
         self.title("Revolt IDE - Untitled")
 
