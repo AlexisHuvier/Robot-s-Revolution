@@ -3,7 +3,7 @@ from tkinter.messagebox import showerror
 
 instructions = ["walk", "left", "right", "jump", "getDirection", "setFunc", "callFunc",
                 "getAttack", "setAttack", "setSprite", "getSprite", "setVar", "getVar",
-                "loopif", "loop", "sayConsole", "if_", "getPosX", "getPosY"]
+                "loopif", "loop", "sayConsole", "if_", "getPosX", "getPosY", "shoot"]
 
 class Script():
     def __init__(self, robot, game, fichier):
@@ -47,6 +47,10 @@ class Script():
                 return 0
         else:
             return 1
+    
+    def shoot(self):
+        if self.robot.attack:
+            self.robot.carte.createLazer(self.robot.posX, self.robot.posY, self.robot.direction)
 
     def jump(self):
         if self.last_instruction == "walk" or self.last_instruction == "jump":
