@@ -1,4 +1,4 @@
 rock, 4, 5
 rock, 8, 5
-player, 2, 5, 0
-player, 10, 5, 2
+player, 2, 5, 0, Joueur
+player, 10, 5, 2, Ennemi
