@@ -1,2 +1,6 @@
 setAttack(True)
 shoot()
+left()
+walk()
+right()
+shoot()
