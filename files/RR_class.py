@@ -53,8 +53,9 @@ class Player(pygame.sprite.Sprite):
         result = 1
         if self.timer == 0:
             if self.script != "":
-                for lazer in self.carte.lazer_list:
-                    lazer.update()
+                if self.status == "Joueur":
+                    for lazer in self.carte.lazer_list:
+                        lazer.update()
                 result = self.script.launch()
             self.timer = self.timerT
         collision_list = pygame.sprite.spritecollide(
