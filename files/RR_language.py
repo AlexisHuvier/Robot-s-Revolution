@@ -50,7 +50,10 @@ class Script():
     
     def shoot(self):
         if self.robot.attack:
-            self.robot.carte.createLazer(self.robot.posX, self.robot.posY, self.robot.direction)
+            if self.robot.status == "Joueur":
+                self.robot.carte.createBullet(self.robot.posX, self.robot.posY, self.robot.direction)
+            else:
+                self.robot.carte.createLazer(self.robot.posX, self.robot.posY, self.robot.direction)
 
     def jump(self):
         if self.last_instruction == "walk" or self.last_instruction == "jump":

@@ -68,6 +68,7 @@ class Game():
             self.map.wall_list.draw(self.screen)
             self.map.player_list.draw(self.screen)
             self.map.lazer_list.draw(self.screen)
+            self.map.bullet_list.draw(self.screen)
             pygame.display.update()
         except pygame.error:
             self.done = False

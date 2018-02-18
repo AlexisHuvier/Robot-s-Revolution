@@ -54,6 +54,9 @@ class Player(pygame.sprite.Sprite):
         if self.timer == 0:
             if self.script != "":
                 if self.status == "Joueur":
+                    for bullet in self.carte.bullet_list:
+                        bullet.update()
+                else:
                     for lazer in self.carte.lazer_list:
                         lazer.update()
                 result = self.script.launch()
@@ -73,6 +76,15 @@ class Player(pygame.sprite.Sprite):
             if self.status == "Joueur":
                 pygame.quit()
                 showinfo("Perdu", "Votre robot a percuté un lazer !")
+        collision_list = pygame.sprite.spritecollide(
+            self, self.carte.bullet_list, False, None
+        )
+        for collided_object in collision_list:
+            if self.status == "Joueur":
+                pass
+            else:
+                pygame.quit()
+                result = self.level.split("_")[0] + str(int(self.level.split("_")[1])+1)
         collision_list = pygame.sprite.spritecollide(
             self, self.carte.lava_list, False, None)
         for collided_object in collision_list:
@@ -223,7 +235,60 @@ class Lazer(pygame.sprite.Sprite):
             else:
                 self.setPos()
             
-
+class Bullet(pygame.sprite.Sprite):
+    def __init__(self, posX, posY, direction, map):
+        super(Bullet, self).__init__()
+        
+        self.posX = posX
+        self.posY = posY
+        self.map = map
+        self.direction = direction
+        if direction == 0:
+            self.image = pygame.image.load("files/bullet.png")
+            self.setPos()
+        elif direction == 2:
+            self.image = pygame.image.load("files/bullet.png")
+            self.image = pygame.transform.rotate(self.image, 45)
+            self.setPos()
+        elif direction == 1:
+            self.image = pygame.image.load("files/bullet.png")
+            self.image = pygame.transform.rotate(self.image, 90)
+            self.setPos()
+        elif direction == 3:
+            self.image = pygame.image.load("files/bullet.png")
+            self.image = pygame.transform.rotate(self.image, 135)
+            self.setPos()
+    
+    def setPos(self):
+        self.rect = self.image.get_rect()
+        self.rect.x = 20 + 70 * (self.posX - 1)
+        self.rect.y = 20 + 70 * (self.posY - 1)
+    
+    def update(self):
+        if self.direction == 0:
+            self.posX += 1
+            if self.posX >= 11:
+                self.map.bullet_list.remove(self)
+            else:
+                self.setPos()
+        elif self.direction == 1:
+            self.posY += 1
+            if self.posY >= 11:
+                self.map.bullet_list.remove(self)
+            else:
+                self.setPos()
+        elif self.direction == 2:
+            self.posX -= 1
+            if self.posX <= 0:
+                self.map.bullet_list.remove(self)
+            else:
+                self.setPos()
+        elif self.direction == 3:
+            self.posY -= 1
+            if self.posY <= 0:
+                self.map.bullet_list.remove(self)
+            else:
+                self.setPos()
 
 class Map():
     def __init__(self, objets, level, game, fichier=""):
@@ -233,6 +298,7 @@ class Map():
         self.lava_list = pygame.sprite.Group()
         self.wall_list = pygame.sprite.Group()
         self.lazer_list = pygame.sprite.Group()
+        self.bullet_list = pygame.sprite.Group()
 
         n = 0
         for i in objets:
@@ -302,3 +368,7 @@ class Map():
     def createLazer(self, posX, posY, direction):
         self.lazer = Lazer(posX, posY, direction, self)
         self.lazer_list.add(self.lazer)
+    
+    def createBullet(self, posX, posY, direction):
+        self.bullet = Bullet(posX, posY, direction, self)
+        self.bullet_list.add(self.bullet)
