@@ -58,16 +58,20 @@ class Game():
             pygame.quit()
          
     def update(self):
-        self.screen.fill((0, 0, 0))
-        self.clock.tick(60)
-        self.screen.blit(pygame.image.load("files/background.png"), [0, 0])
-        self.map.rock_list.draw(self.screen)
-        self.map.finish_list.draw(self.screen)
-        self.map.lava_list.draw(self.screen)
-        self.map.wall_list.draw(self.screen)
-        self.map.player_list.draw(self.screen)
-        self.map.lazer_list.draw(self.screen)
-        pygame.display.update()
+        try:
+            self.screen.fill((0, 0, 0))
+            self.clock.tick(60)
+            self.screen.blit(pygame.image.load("files/background.png"), [0, 0])
+            self.map.rock_list.draw(self.screen)
+            self.map.finish_list.draw(self.screen)
+            self.map.lava_list.draw(self.screen)
+            self.map.wall_list.draw(self.screen)
+            self.map.player_list.draw(self.screen)
+            self.map.lazer_list.draw(self.screen)
+            pygame.display.update()
+        except pygame.error:
+            self.done = False
+            self.result = 1
 
     def launch(self):
         while self.done:
