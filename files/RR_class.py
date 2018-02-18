@@ -76,8 +76,12 @@ class Player(pygame.sprite.Sprite):
         collision_list = pygame.sprite.spritecollide(
             self, self.carte.lava_list, False, None)
         for collided_object in collision_list:
-            pygame.quit()
-            showinfo("Perdu", "Votre robot a fondu dans la lave !")
+            if self.status == "Joueur":
+                pygame.quit()
+                showinfo("Perdu", "Votre robot a fondu dans la lave !")
+            else:
+                pygame.quit()
+                result = self.level.split("_")[0] + str(int(self.level.split("_")[1])+1)
         if self.game != "" and self.game.mode == "Parcours":
             collision_list = pygame.sprite.spritecollide(
                 self, self.carte.finish_list, False, None)
