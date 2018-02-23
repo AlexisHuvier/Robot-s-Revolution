@@ -52,7 +52,8 @@ def mouseEvent(button, pos):
                     break
 
 def validate():
-    global EEasy, EMedium, EHard, temp_text
+    global EEasy, EMedium, EHard, temp_text, EHelp
+    temp_text += EHelp.get() + "\n"
     for i in [EEasy, EMedium, EHard]:
         if i != EHard:
             temp_text += i.get() + ", "
@@ -61,13 +62,15 @@ def validate():
     save()
         
 def difficult():
-    global EEasy, EMedium, EHard, difficultScreen
+    global EEasy, EMedium, EHard, difficultScreen, EHelp
     difficultScreen = Tk()
     difficultScreen.title("Difficulty")
-    difficultScreen.geometry("180x180")
+    difficultScreen.geometry("180x230")
 
     LTitre = Label(difficultScreen, text="Robot's Revolution",
                     font=("Comic Sans MS", 13, "bold"))
+    LHelp = Label(difficultScreen, text="Phrase d'aide :")
+    EHelp = Entry(difficultScreen)
     LEasy = Label(difficultScreen, text="Nombre de ligne en Easy :")
     EEasy = Entry(difficultScreen)
     LMedium = Label(difficultScreen, text="Nombre de ligne en Medium :")
@@ -77,6 +80,8 @@ def difficult():
     button = Button(difficultScreen, text="Validate",
                     command=validate)
     LTitre.pack()
+    LHelp.pack()
+    EHelp.pack()
     LEasy.pack()
     EEasy.pack()
     LMedium.pack()
@@ -144,7 +149,7 @@ while not done:
             if event.key == pygame.K_ESCAPE:
                 done = True
             if event.key == pygame.K_F5:
-                if verif(posAndObjects) != 0:
+                if verif(posAndObjects) > 0:
                     difficult()
                     done = True
                 elif verif(posAndObjects) == -1:
