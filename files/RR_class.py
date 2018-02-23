@@ -344,9 +344,11 @@ class Map():
                 self.wall = Wall([int(i.split(", ")[1]), int(
                     i.split(", ")[2])], i.split(", ")[3])
                 self.wall_list.add(self.wall)
+            elif i.split(", ")[0] == "":
+                pass
             else:
                 showerror("ERREUR", "Le niveau " + str(level) +
-                          " a un élément inconnu (n°"+str(n)+")")
+                          " a un élément inconnu ("+i.split(", ")[0]+") (n°"+str(n)+")")
 
     def getObj(self, posX, posY):
         if self.player.posX == posX and self.player.posY == posY:
