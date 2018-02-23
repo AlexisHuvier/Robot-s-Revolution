@@ -1,6 +1,6 @@
 import pygame, sys
 from tkinter.filedialog import asksaveasfilename
-from tkinter.messagebox import askquestion
+from tkinter.messagebox import askquestion, showerror
 from tkinter import *
 try:
     from files.pathfinding.verifFunc import verif
@@ -147,6 +147,12 @@ while not done:
                 if verif(posAndObjects) != 0:
                     difficult()
                     done = True
+                elif verif(posAndObjects) == -1:
+                    showerror("ERREUR", "Il manque un robot et un drapeau de fin")
+                elif verif(posAndObjects) == -2:
+                    showerror("ERREUR", "Il manque un robot de début")
+                elif verif(posAndObjects) == -3:
+                    showerror("ERREUR", "Il manque un drapeau de fin")
                 else:
                     if askquestion("Attention", "Votre niveau n'est apparemment pas possible\nVoulez-vous quand même l'enregistrer ?") == "yes":
                         difficult()

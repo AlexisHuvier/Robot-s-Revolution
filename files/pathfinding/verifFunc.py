@@ -213,11 +213,20 @@ def verif(posAndObjects):
             if titleMapSaut[y][x] == 1:
                 titleMapObstacle[y][x] = 1
     grid = Grid(matrix=titleMapObstacle)
+    start, end = 0, 0
     for items in posAndObjects:
         if items[0] == "files/robotB.png" or items[0] == "files/robotD.png" or items[0] == "files/robotG.png" or items[0] == "files/robotH.png":
             start = grid.node(items[2][0] - 1, items[2][1] - 1)
         elif items[0] == "files/finish.png":
             end = grid.node(items[2][0] - 1, items[2][1] - 1)
-    finder = AStarFinder(diagonal_movement=DiagonalMovement.never)
-    path, runs = finder.find_path(start, end, grid)
-    return len(path)
+    if start == 0:
+        if end == 0:
+            return -1
+        else:
+            return -2
+    elif end == 0:
+        return -3
+    else:
+        finder = AStarFinder(diagonal_movement=DiagonalMovement.never)
+        path, runs = finder.find_path(start, end, grid)
+        return len(path)
