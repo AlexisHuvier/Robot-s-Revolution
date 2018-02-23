@@ -17,6 +17,7 @@ class Editor(Tk):
         self.mode = mode
         self.difficultScreen = ""
         self.difficult = "MP"
+        self.aide = ""
         self.on = True
         if self.mode == "IA":
             self.level = "mp_1"
@@ -27,7 +28,6 @@ class Editor(Tk):
 
         self.code = Text(self, font=("Comic Sans MS", 14),
                     wrap='none', tabs=('1c', '2c'))
-        self.code.insert('1.0', '#Votre code')
         self.coloration()
         self.menubar = Menu(self)
 
@@ -82,7 +82,11 @@ class Editor(Tk):
                 if self.mode == "Parcours": 
                     while lignes[0] == "" or lignes[0] == "\n":
                         lignes = lignes[1:]
-                    lignes = lignes[1:]
+                    self.aide = "#"+lignes[0]
+                    self.code.delete('1.0', 'end')
+                    self.code.insert("1.0", self.aide)
+                    self.coloration()
+                    lignes = lignes[2:]
                 self.map = Map(lignes, level, "")
         except IOError:
             showerror("ERREUR", "Le fichier du level "+str(self.level)+" est inaccessible")
@@ -228,12 +232,12 @@ class Editor(Tk):
             if self.code.get("1.0","end") == content:
                 self.title("Revolt IDE - Untitled")
                 self.code.delete('1.0','end')
-                self.code.insert("1.0","#Votre Code")
+                self.code.insert("1.0",self.aide)
             else:
                 if askquestion("Revolt IDE", "Voulez-vous enregistrer ?")=="no":
                     self.title("Revolt IDE - Untitled")
                     self.code.delete('1.0','end')
-                    self.code.insert("1.0", "#Votre Code")
+                    self.code.insert("1.0", self.aide)
                 else:
                     self.sauvegarde()
 
