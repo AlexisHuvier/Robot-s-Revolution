@@ -19,12 +19,7 @@ class Editor(Tk):
         self.difficult = "MP"
         self.on = True
         if self.mode == "IA":
-            liste = glob.glob('levels\\mp_*.rev')
-            if len(liste) == 1:
-                self.level = liste[0].split("\\")[-1].split(".")[0]
-            else:
-                self.level = liste[random.randint(
-                    0, len(liste)-1)].split("\\")[-1].split(".")[0]
+            self.level = "mp_1"
         else:
             self.level = level
 
@@ -146,7 +141,25 @@ class Editor(Tk):
             
             game = Game(name.split("\"")[-1], self.mode, self.difficult, self.level)
             temp = game.launch()
-            if temp == self.level:
+            if temp == -12 and self.mode == "IA":
+                showinfo("Bravo !", "Vous avez battu l'IA "+str(self.level))
+                self.level = self.level.split("_")[0]+"_"+str(int(self.level.split("_")[1])+1)
+                try:
+                    with open("levels/"+str(self.level)+".rev"):
+                        pass
+                except IOError:
+                    showinfo("Bravo !", "Vous avez fini tous les niveaux de ce mode !")
+                    if askquestion("Robot's Revolution", "Voulez-vous relancer le niveau 1 ?\nVous pourrez réaffronter la première IA") == "yes":
+                        self.level = "mp_1"
+                        showinfo("Robot's Revolution", "C'est reparti !")
+                        self.previewLevel(self.level)
+                    else:
+                        self.on = False
+                        self.destroy()
+                else:
+                    showinfo("Suivant", "C'est parti pour le niveau "+str(self.level))
+                    self.previewLevel(self.level)
+            elif temp == self.level:
                 showinfo("Retente", "Réessaie de finir le niveau "+str(self.level)+" !")
                 self.previewLevel(self.level)
             else:

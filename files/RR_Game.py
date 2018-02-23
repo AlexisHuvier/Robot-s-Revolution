@@ -116,10 +116,8 @@ class Game():
                 return self.level
         elif self.mode == "IA":
             if len(self.map.player_list) == 1:
-                if self.result > 1:
-                    showinfo("Gagné", "Votre robot a tué l'ennemi !\nTemps d'exécution : XXs\nNombre d'instructions : "+str(self.nbInstruction))
-                else:
-                    return self.level 
+                showinfo("Gagné", "Votre robot a tué l'ennemi !\nTemps d'exécution : XXs\nNombre d'instructions : "+str(self.nbInstruction))
+                return -12
             else:
                 showinfo("Perdu", "Le robot ennemi n'a pas été tué")
                 return self.level

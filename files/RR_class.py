@@ -84,6 +84,7 @@ class Player(pygame.sprite.Sprite):
                 pass
             else:
                 pygame.quit()
+                self.carte.player_list.remove(self)
                 result = self.level.split("_")[0] + str(int(self.level.split("_")[1])+1)
         collision_list = pygame.sprite.spritecollide(
             self, self.carte.lava_list, False, None)
