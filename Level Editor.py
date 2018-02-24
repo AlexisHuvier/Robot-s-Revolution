@@ -9,8 +9,10 @@ except ImportError:
     from verifFunc import verif
 pygame.mixer.init()
 temp_text = ""
+mode = 0 #Mode parcours par défaut
 
 def mouseEvent(button, pos):
+    global mode
     if button == 1:
         posX = pos[0] // 70 + 1
         posY = pos[1] // 70 + 1
@@ -29,25 +31,76 @@ def mouseEvent(button, pos):
                         pygame.mixer.music.play()
                         break
                     elif (items[0] == "files/robotB.png" or items[0] == "files/robotD.png" or items[0] == "files/robotG.png" or items[0] == "files/robotH.png") and (objects[selectPos[0]-1] == "files/robotB.png" or objects[selectPos[0]-1] == "files/robotD.png" or objects[selectPos[0]-1] == "files/robotG.png" or objects[selectPos[0]-1] == "files/robotH.png"):
-                        find = True
-                        pygame.mixer.music.load("files/negative.wav")
-                        pygame.mixer.music.play()
-                        break
+                        if mode == 0:
+                            nb_temp = 0
+                            for items in posAndObjects:
+                                if items[0] == "files/finish.png":
+                                    nb_temp += 1
+                            if nb_temp == 1:
+                                showerror(
+                                    "ERREUR", "Vous êtes en mode Parcours et vous avez un drapeau sur le terrain")
+                                find = True
+                                pygame.mixer.music.load("files/negative.wav")
+                                pygame.mixer.music.play()
+                                break
+                            else:
+                                if askquestion("Attention", "Voulez-vous faire un niveau pour le mode Versus ?") == "yes":
+                                    mode = 1
+                                else:
+                                    find = True
+                                    pygame.mixer.music.load("files/negative.wav")
+                                    pygame.mixer.music.play()
+                                    break
+                        else:
+                            nb_temp = 0
+                            for items in posAndObjects:
+                                if items[0] == "files/robotB.png" or items[0] == "files/robotD.png" or items[0] == "files/robotG.png" or items[0] == "files/robotH.png":
+                                    nb_temp += 1
+                            if nb_temp == 2:
+                                find = True
+                                pygame.mixer.music.load("files/negative.wav")
+                                pygame.mixer.music.play()
+                                break
                     elif items[2][0] == posX and items[2][1] == posY:
                         posAndObjects.remove(items)
-                        posAndObjects.append(
-                            [objects[selectPos[0]-1], offset[selectPos[0]-1],  [posX, posY]])
-                        find = True
                         break
                 if not find:
-                    posAndObjects.append(
-                        [objects[selectPos[0]-1], offset[selectPos[0]-1],  [posX, posY]])
+                    if objects[selectPos[0]-1] == "files/finish.png":
+                        if mode == 1:
+                            nb_temp = 0
+                            for items in posAndObjects:
+                                if items[0] == "files/robotB.png" or items[0] == "files/robotD.png" or items[0] == "files/robotG.png" or items[0] == "files/robotH.png":
+                                    nb_temp += 1
+                            if nb_temp == 2:
+                                showerror("ERREUR", "Vous êtes en mode Versus et vous avez deux robots sur le terrain")
+                                find = True
+                                pygame.mixer.music.load("files/negative.wav")
+                                pygame.mixer.music.play()
+                            else:
+                                if askquestion("Attention", "Voulez-vous faire un niveau pour le mode Parcours ?") == "yes":
+                                    mode = 0
+                                    posAndObjects.append([objects[selectPos[0]-1], offset[selectPos[0]-1],  [posX, posY]])
+                                else:
+                                    find = True
+                                    pygame.mixer.music.load("files/negative.wav")
+                                    pygame.mixer.music.play()
+                    else:
+                        posAndObjects.append([objects[selectPos[0]-1], offset[selectPos[0]-1],  [posX, posY]])
     elif button == 3:
         posX = pos[0] // 70 + 1
         posY = pos[1] // 70 + 1
         if posY < 11:
             for items in posAndObjects:
                 if items[2][0] == posX and items[2][1] == posY:
+                    if items[0] == "files/robotB.png" or items[0] == "files/robotD.png" or items[0] == "files/robotG.png" or items[0] == "files/robotH.png":
+                        nb_temp = 0
+                        for items in posAndObjects:
+                            if items[0] == "files/robotB.png" or items[0] == "files/robotD.png" or items[0] == "files/robotG.png" or items[0] == "files/robotH.png":
+                                nb_temp += 1
+                        if nb_temp == 2:
+                            if mode == 1:
+                                if askquestion("Attention", "Voulez-vous faire un niveau pour le mode Parcours ?") == "yes":
+                                    mode = 0
                     posAndObjects.remove(items)
                     break
 
@@ -99,9 +152,15 @@ def save():
         file = open(filename, "w")
         file.write(convertV(temp_text))
         file.close()
-    difficultScreen.destroy()
-        
+    try:
+        difficultScreen.destroy()
+    except NameError:
+        pass
+
 def convertV(texttemp):
+    global fichier, mode
+    nb_ennemi = 0
+    nb_joueur = 0
     fichier = texttemp
     for items in posAndObjects:
         if items[0] == "files/finish.png":
@@ -126,6 +185,21 @@ def convertV(texttemp):
                 fichier += ", 2"
             elif items[0] == "files/robotH.png":
                 fichier += ", 3"
+            if mode == 1:
+                print(nb_ennemi, nb_joueur)
+                if nb_ennemi == 0 and nb_joueur == 0:
+                    if askquestion("Type", "Voulez vous que le robot aux coordonnées ("+str(items[2][0])+";"+str(items[2][1])+") soit un ennemi ?") == "yes":
+                        fichier += ", Ennemi"
+                        nb_ennemi += 1
+                    else:
+                        fichier += ", Joueur"
+                        nb_joueur += 1
+                elif nb_ennemi == 0:
+                    fichier += ", Ennemi"
+                else:
+                    fichier += ", Joueur"
+            else:
+                fichier += ", Joueur"
         elif items[0] == "files/rocher.png":
             fichier += "rock, "+str(items[2][0])+", "+str(items[2][1])
         if items != posAndObjects[-1]:
@@ -149,19 +223,23 @@ while not done:
             if event.key == pygame.K_ESCAPE:
                 done = True
             if event.key == pygame.K_F5:
-                if verif(posAndObjects) > 0:
-                    difficult()
-                    done = True
-                elif verif(posAndObjects) == -1:
-                    showerror("ERREUR", "Il manque un robot et un drapeau de fin")
-                elif verif(posAndObjects) == -2:
-                    showerror("ERREUR", "Il manque un robot de début")
-                elif verif(posAndObjects) == -3:
-                    showerror("ERREUR", "Il manque un drapeau de fin")
-                else:
-                    if askquestion("Attention", "Votre niveau n'est apparemment pas possible\nVoulez-vous quand même l'enregistrer ?") == "yes":
+                if mode == 0:
+                    if verif(posAndObjects) > 0:
                         difficult()
                         done = True
+                    elif verif(posAndObjects) == -1:
+                        showerror("ERREUR", "Il manque un robot et un drapeau de fin")
+                    elif verif(posAndObjects) == -2:
+                        showerror("ERREUR", "Il manque un robot de début")
+                    elif verif(posAndObjects) == -3:
+                        showerror("ERREUR", "Il manque un drapeau de fin")
+                    else:
+                        if askquestion("Attention", "Votre niveau n'est apparemment pas possible\nVoulez-vous quand même l'enregistrer ?") == "yes":
+                            difficult()
+                            done = True
+                else:
+                    save()
+                    done = True
         if event.type == pygame.MOUSEBUTTONDOWN:
             mouseEvent(event.button, event.pos)
         if event.type == pygame.QUIT:

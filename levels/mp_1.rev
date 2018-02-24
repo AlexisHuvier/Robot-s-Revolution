@@ -1,4 +1,12 @@
-rock, 4, 5
-rock, 8, 5
-player, 2, 5, 0, Joueur
-player, 10, 5, 2, Ennemi
+player, 3, 4, 0, Joueur
+player, 8, 4, 2, Ennemi
+wall, 5, 3, H
+wall, 5, 4, H
+wall, 5, 5, H
+wall, 5, 6, +
+wall, 6, 6, +
+wall, 6, 2, +
+wall, 5, 2, +
+wall, 6, 3, H
+wall, 6, 4, H
+wall, 6, 5, H
