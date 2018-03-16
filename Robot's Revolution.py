@@ -6,9 +6,11 @@ import pygame
 from pygame.locals import*
 try:
     from files.RR_Editor import Editor
+    from files.RR_Community import CommunityFen
 except ImportError:
     sys.path.append("files")
     from RR_Editor import Editor
+    from RR_Community import CommunityFen
 
 LEVEL = 1
 FENETRE = None
@@ -128,8 +130,15 @@ def Multi():
     FENETRE.mainloop()
 
     
-def Community() :
-    showerror("Coming Soon", "Le mode Levels Community viendra plus tard")
+def Community():
+    global FENETRE
+    FENETRE.destroy()
+    pygame.mixer.stop()
+
+    FENETRE = CommunityFen()
+    while FENETRE.on:
+        pass
+    print(FENETRE.choix)
     
 def IA() :
     global FENETRE
