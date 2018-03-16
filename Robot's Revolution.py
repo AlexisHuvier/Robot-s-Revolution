@@ -3,7 +3,7 @@ from tkinter import *
 from PIL import Image, ImageTk
 from tkinter.messagebox import showerror, showinfo
 import pygame
-from pygame.locals import*
+from pygame.locals import *
 try:
     from files.RR_Editor import Editor
     from files.RR_Community import CommunityFen
