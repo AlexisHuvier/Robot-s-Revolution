@@ -7,10 +7,12 @@ from pygame.locals import *
 try:
     from files.RR_Editor import Editor
     from files.RR_Community import CommunityFen
+    from files.RR_class import downloadFile
 except ImportError:
     sys.path.append("files")
     from RR_Editor import Editor
     from RR_Community import CommunityFen
+    from RR_class import downloadFile
 
 LEVEL = 1
 FENETRE = None
@@ -139,6 +141,12 @@ def Community():
     while FENETRE.on:
         pass
     print(FENETRE.choix)
+        result = downloadFile(FENETRE.choix[3])
+        if result:
+                pass
+        else:
+            showerror("ERREUR", "Le téléchargement n'a pu être fait.\nVeuillez vérifier votre connection et l'existance du niveau")
+    Solo()
     
 def IA() :
     global FENETRE

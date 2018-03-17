@@ -375,3 +375,18 @@ class Map():
     def createBullet(self, posX, posY, direction):
         self.bullet = Bullet(posX, posY, direction, self)
         self.bullet_list.add(self.bullet)
+
+
+def downloadFile(name):
+    try:
+        url = "http://robot-s-revolution.fr.nf/upload/"+name+".rev"
+        with open('levels/'+name+'.rev', 'w') as img:
+            texte = urlopen(url)
+            texte = texte.read().decode("utf-8")
+            texte = texte.replace("\r", "")
+            texte = texte.replace("\n", "\n")
+            img.write(texte)
+        return True
+    except:
+        return False
+    
