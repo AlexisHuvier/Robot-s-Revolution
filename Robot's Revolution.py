@@ -65,7 +65,10 @@ def Solo():
     BExitF = Button(FENETRE, image = photo3, relief = FLAT, command =Menu,activebackground="grey" )
     BExitF.place(x=135, y=210)
 
-    image4 = Image.open("files/sonO.png")
+    if play:
+        image4 = Image.open("files/sonO.png")
+    else:
+        image4 = Image.open("files/sonX.png")
     photo4 = ImageTk.PhotoImage(image4)
     Bson = Button(FENETRE, image = photo4, relief = FLAT, command =son )
     Bson.place(x=355, y=310)
@@ -116,7 +119,10 @@ def Multi():
     BExitF = Button(FENETRE, image = photo3, relief = FLAT, command =Menu,activebackground="grey" )
     BExitF.place(x=135, y=210)
 
-    image4 = Image.open("files/sonO.png")
+    if play:
+        image4 = Image.open("files/sonO.png")
+    else:
+        image4 = Image.open("files/sonX.png")
     photo4 = ImageTk.PhotoImage(image4)
     Bson = Button(FENETRE, image = photo4, relief = FLAT, command =son)
     Bson.place(x=355, y=310)
@@ -140,9 +146,11 @@ def Community():
     FENETRE = CommunityFen()
     while FENETRE.on:
         pass
-    print(FENETRE.choix)
+    if FENETRE.choix != "Quit":
         result = downloadFile(FENETRE.choix[3])
         if result:
+            FENETRE = Editor(FENETRE.choix[3], "Community")
+            while FENETRE.on:
                 pass
         else:
             showerror("ERREUR", "Le téléchargement n'a pu être fait.\nVeuillez vérifier votre connection et l'existance du niveau")
@@ -163,21 +171,21 @@ def Serveur() :
     
 def son () :
     global play, FENETRE
-    if play == True  :
-            pygame.mixer.pause()
-            play = False
-            image5 = Image.open("files/sonX.png")
-            photo5 = ImageTk.PhotoImage(image5)
-            BsonX = Button(FENETRE, image = photo5, relief = FLAT, command = son)
-            BsonX.place(x=355, y=310)
+    if play:
+        pygame.mixer.pause()
+        play = False
+        image5 = Image.open("files/sonX.png")
+        photo5 = ImageTk.PhotoImage(image5)
+        BsonX = Button(FENETRE, image = photo5, relief = FLAT, command = son)
+        BsonX.place(x=355, y=310)
             
-    else :
-            pygame.mixer.unpause()
-            play = True
-            image4 = Image.open("files/sonO.png")
-            photo4 = ImageTk.PhotoImage(image4)
-            Bson = Button(FENETRE, image = photo4, relief = FLAT, command =son )
-            Bson.place(x=355, y=310)
+    else:
+        pygame.mixer.unpause()
+        play = True
+        image4 = Image.open("files/sonO.png")
+        photo4 = ImageTk.PhotoImage(image4)
+        Bson = Button(FENETRE, image = photo4, relief = FLAT, command =son )
+        Bson.place(x=355, y=310)
     FENETRE.mainloop()
     
 def FenScriptP():
@@ -232,7 +240,10 @@ def Menu():
     BExitF = Button(FENETRE, image = photo3, relief = FLAT, command =Quitter,activebackground="grey" )
     BExitF.place(x=135, y=210)
 
-    image4 = Image.open("files/sonO.png")
+    if play:
+        image4 = Image.open("files/sonO.png")
+    else:
+        image4 = Image.open("files/sonX.png")
     photo4 = ImageTk.PhotoImage(image4)
     Bson = Button(FENETRE, image = photo4, relief = FLAT, command =son )
     Bson.place(x=355, y=310)
