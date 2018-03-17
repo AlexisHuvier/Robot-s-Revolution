@@ -79,7 +79,7 @@ class Editor(Tk):
         try:
             with open("levels/"+str(level)+".rev", 'r') as fichier:
                 lignes = fichier.read().split("\n")
-                if self.mode == "Parcours": 
+                if self.mode == "Parcours" or self.mode == "Community": 
                     while lignes[0] == "" or lignes[0] == "\n":
                         lignes = lignes[1:]
                     self.aide = "#"+lignes[0]
@@ -114,7 +114,7 @@ class Editor(Tk):
             showerror("Fichier inconnu", "Le fichier n'a pas pu être ouvert.")
         else:
             pygame.quit()
-            if self.mode == "Parcours":
+            if self.mode == "Parcours" or self.mode == "Community":
                 self.difficultScreen = Toplevel()
                 self.difficultScreen.title("Difficulty")
                 self.difficultScreen.geometry("180x180")
@@ -163,6 +163,14 @@ class Editor(Tk):
                 else:
                     showinfo("Suivant", "C'est parti pour le niveau "+str(self.level))
                     self.previewLevel(self.level)
+            elif temp == -25 and self.mode == "Community":
+                showinfo("Bravo !", "Vous avez réussi le niveau !")
+                if askquestion("Robot's Revolution", "Voulez-vous refaire ce niveau ?") == "yes":
+                    showinfo("Robot's Revolution", "C'est reparti !")
+                    self.previewLevel(self.level)
+                else:
+                    self.on = False
+                    self.destroy()
             elif temp == self.level:
                 showinfo("Retente", "Réessaie de finir le niveau "+str(self.level)+" !")
                 self.previewLevel(self.level)

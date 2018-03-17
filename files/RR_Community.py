@@ -1,5 +1,5 @@
 from tkinter import *
-import urllib.request
+from urllib.request import urlopen
 from html.parser import HTMLParser
 
 
@@ -50,14 +50,15 @@ class CommunityFen(Tk):
     def __init__(self):
         super(CommunityFen, self).__init__()
         self.on = True
-        html = urllib.request.urlopen('http://www.robot-s-revolution.fr.nf/scripts.php').read()
+        html = urlopen('http://www.robot-s-revolution.fr.nf/scripts.php').read().decode("utf-8")
         parser = MyHTMLParser()
-        parser.feed(str(html))
-        self.listeButton=[]
+        parser.feed(html)
         self.result=parser.getResult()
         self.page = 1
+        self.listeButton = []
 
         self.title("Choix du niveau")
+        self.protocol("WM_DELETE_WINDOW", self.quit)
 
         self.titre = Label(self, text="Choix du niveau", font=("Comic Sans MS", 20, "bold"))
         self.titre.grid(row = 1, column = 2)
@@ -91,9 +92,10 @@ class CommunityFen(Tk):
             infos = Label(frame, text=texte, height = 10, width = 25)
             frame.grid(row=row, column=column, padx=20, pady=20)
             infos.pack()
-            if setButton:
-                self.button = Button(frame, text="Choisir "+level[1], command = lambda x=nb:self.choisir(x))
-                self.button.pack()
+            self.button = Button(frame, text="Choisir ce niveau", command=lambda x=nb: self.choisir(x))
+            self.button.pack()
+            if setButton == False:
+                self.button.config(state="disabled")
             column += 1
             if column == 4:
                 row += 1

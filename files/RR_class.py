@@ -1,5 +1,6 @@
 import pygame
 from tkinter.messagebox import showinfo, showerror, showwarning
+from urllib.request import urlopen
 try:
     from files.RR_language import Script
 except ImportError:
@@ -95,12 +96,15 @@ class Player(pygame.sprite.Sprite):
             else:
                 pygame.quit()
                 result = self.level.split("_")[0] + str(int(self.level.split("_")[1])+1)
-        if self.game != "" and self.game.mode == "Parcours":
+        if self.game != "" and (self.game.mode == "Parcours" or self.game.mode == "Community"):
             collision_list = pygame.sprite.spritecollide(
                 self, self.carte.finish_list, False, None)
             for collided_object in collision_list:
                 pygame.quit()
-                result = self.level + 1
+                if self.game.mode == "Parcours":
+                    result = self.level + 1
+                else:
+                    result = 2
         collision_list = pygame.sprite.spritecollide(
             self, self.carte.rock_list, False, None)
         for collided_object in collision_list:

@@ -21,7 +21,7 @@ class Game():
         self.clock = pygame.time.Clock()
 
         self.done = True
-        if self.mode == "Parcours" or self.mode == "IA":
+        if self.mode == "Parcours" or self.mode == "Community" or self.mode == "IA":
             pygame.display.set_caption("RR - Level "+str(level))
             self.level = level
             self.mode = mode
@@ -39,7 +39,7 @@ class Game():
             try:
                 with open("levels/"+str(self.level)+".rev", 'r') as fichier:
                     lignes = fichier.read().split("\n")
-                    if self.mode == "Parcours":
+                    if self.mode == "Parcours" or self.mode == "Community":
                         while lignes[0] == "" or lignes[0] == "\n":
                             lignes = lignes[1:]
                         self.easy, self.medium, self.hard = [
@@ -94,12 +94,14 @@ class Game():
             else:
                 self.done = False
         pygame.quit()
-        if self.mode == "Parcours":
+        if self.mode == "Parcours" or self.mode == "Community":
             if ((self.difficult == 1 and self.nbInstruction <= self.easy) 
                 or (self.difficult == 2 and self.nbInstruction <= self.medium) 
                 or (self.difficult == 3 and self.nbInstruction <= self.hard)):
                 if self.result > 1:
                     showinfo("Gagné", "Votre robot a atteint le point final !\nTemps d'exécution : XXs\nNombre d'instructions : "+str(self.nbInstruction)+"\nNombre minimum d'instruction (d'après le créateur du niveau) : "+str(self.hard))
+                    if self.mode == "Community":
+                        return -25
                     return self.result
                 else:
                     return self.level
