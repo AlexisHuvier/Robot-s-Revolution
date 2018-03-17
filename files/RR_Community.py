@@ -69,8 +69,37 @@ class CommunityFen(Tk):
 
         self.affichePage(self.page)
 
+        self.buttonLeft = Button(self, text="Page Précédente", width=12, height=2, command=self.pageMoins)
+        self.buttonLeft.grid(row=5, column=1, padx=10, pady=10)
+        self.buttonLeft.config(state="disabled")
+        self.buttonQuit = Button(self, text="Quitter", width=12, height=2, command=self.quit)
+        self.buttonQuit.grid(row=5, column=2, padx=10, pady=10)
+        self.buttonRight = Button(self, text="Page Suivante", width=12, height=2, command=self.pagePlus)
+        self.buttonRight.grid(row=5, column=3, padx=10, pady=10)
+        if self.nbPage:
+            self.buttonRight.config(state="disabled")
+
         self.mainloop()
     
+    def pageMoins(self):
+        self.page -= 1
+        self.affichePage(self.page)
+        self.buttonRight.config(state="normal")
+        if self.page == 1:
+            self.buttonLeft.config(state="disabled")
+    
+    def pagePlus(self):
+        self.page += 1
+        self.affichePage(self.page)
+        self.buttonLeft.config(state="normal")
+        if self.page == self.nbPage:
+            self.buttonRight.config(state="disabled")
+    
+    def quit(self):
+        self.choix = "Quit"
+        self.on = False
+        self.destroy()
+
     def affichePage(self, page = 1):
         self.listeButton = []
         row = 2
