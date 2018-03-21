@@ -19,7 +19,7 @@ class Editor(Tk):
         self.difficult = "MP"
         self.aide = ""
         self.on = True
-        if self.mode == "IA":
+        if self.mode == "IA" or self.mode == "Versus":
             self.level = "mp_1"
             if ia == None:
                 self.ia = "mp_1"
@@ -152,24 +152,30 @@ class Editor(Tk):
             else:
                 game = Game(name.split("\"")[-1], self.mode, self.difficult, self.level)
             temp = game.launch()
-            if temp == -12 and self.mode == "IA":
-                showinfo("Bravo !", "Vous avez battu l'IA "+str(self.level))
-                self.level = self.level.split("_")[0]+"_"+str(int(self.level.split("_")[1])+1)
-                try:
-                    with open("levels/"+str(self.level)+".rev"):
-                        pass
-                except IOError:
-                    showinfo("Bravo !", "Vous avez fini tous les niveaux de ce mode !")
-                    if askquestion("Robot's Revolution", "Voulez-vous relancer le niveau 1 ?\nVous pourrez réaffronter la première IA") == "yes":
-                        self.level = "mp_1"
-                        showinfo("Robot's Revolution", "C'est reparti !")
+            if temp == -12 and (self.mode == "IA" or self.mode == "Versus"):
+                showinfo("Bravo !", "Vous avez battu l'IA "+str(self.ia))
+                if self.mode == "IA":
+                    self.ia = self.ia.split("_")[0]+"_"+str(int(self.ia.split("_")[1])+1)
+                    try:
+                        with open("files/ia/"+str(self.level)+".rev"):
+                            pass
+                    except IOError:
+                        showinfo("Bravo !", "Vous avez fini tous les niveaux de ce mode !")
+                        if askquestion("Robot's Revolution", "Voulez-vous relancer le niveau 1 ?\nVous pourrez réaffronter la première IA") == "yes":
+                            self.ia = "mp_1"
+                            self.previewLevel(self.level)
+                        else:
+                            self.on = False
+                            self.destroy()
+                    else:
+                        showinfo("Suivant", "C'est parti pour l'IA "+str(self.ia))
+                        self.previewLevel(self.level)
+                else:
+                    if askquestion("Robot's Revolution", "Voulez-vous relancer ce niveau ?\nVous pourrez réaffronter l'IA") == "yes":
                         self.previewLevel(self.level)
                     else:
                         self.on = False
                         self.destroy()
-                else:
-                    showinfo("Suivant", "C'est parti pour le niveau "+str(self.level))
-                    self.previewLevel(self.level)
             elif temp == -25 and self.mode == "Community":
                 showinfo("Bravo !", "Vous avez réussi le niveau !")
                 if askquestion("Robot's Revolution", "Voulez-vous refaire ce niveau ?") == "yes":

@@ -312,7 +312,7 @@ class Map():
             if i.split(", ")[0] == "0":
                 pass
             elif i.split(", ")[0] == "player":
-                if game != "" and game.mode == "IA":
+                if game != "" and (game.mode == "IA" or game.mode == "Versus"):
                     if i.split(", ")[4] == "Ennemi":
                         self.player = Player(i.split(", ")[4], "files/ia/"+str(ia)+".rev", game, level, self, int(i.split(", ")[3]))
                         self.player.posX = int(i.split(", ")[1])

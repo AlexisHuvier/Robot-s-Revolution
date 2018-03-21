@@ -21,7 +21,7 @@ class Game():
         self.clock = pygame.time.Clock()
 
         self.done = True
-        if self.mode == "Parcours" or self.mode == "Community" or self.mode == "IA":
+        if self.mode == "Parcours" or self.mode == "Community" or self.mode == "IA" or self.mode == "Versus":
             pygame.display.set_caption("RR - Level "+str(level))
             self.level = level
             self.mode = mode
@@ -119,7 +119,7 @@ class Game():
                     showinfo(
                         "Désolé", "Votre robot a bien atteint le point final.\nMais la difficulté 'HARD' implique de faire ce parcours en "+str(self.hard)+" instructions")
                 return self.level
-        elif self.mode == "IA":
+        elif self.mode == "IA" or self.mode == "Versus":
             if len(self.map.player_list) == 1:
                 showinfo("Gagné", "Votre robot a tué l'ennemi !\nTemps d'exécution : XXs\nNombre d'instructions : "+str(self.nbInstruction))
                 return -12

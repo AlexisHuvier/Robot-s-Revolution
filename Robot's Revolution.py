@@ -13,6 +13,7 @@ except ImportError:
     sys.path.append("files")
     from RR_Editor import Editor
     from RR_Community import CommunityFen
+    from RR_Versus import VersusFen
     from RR_class import downloadFile
 
 LEVEL = 1
@@ -162,13 +163,29 @@ def IA() :
     FENETRE.destroy()
     pygame.mixer.stop()
 
-    FENETRE = Editor("mp", "IA")
+    FENETRE = Editor("mp", "IA", "mp_1")
     while FENETRE.on:
         pass
     Multi()
     
 def Serveur() :
-    showerror("Coming Soon", "Le mode serveur viendra plus tard")
+    global FENETRE
+    FENETRE.destroy()
+    pygame.mixer.pause()
+
+    FENETRE = VersusFen()
+    while FENETRE.on:
+        pass
+    if FENETRE.choix != "Quit":
+        result = downloadFile(FENETRE.choix[3], "ia")
+        if result:
+            FENETRE = Editor("mp", "Versus", FENETRE.choix[3])
+            while FENETRE.on:
+                pass
+        else:
+            showerror(
+                "ERREUR", "Le téléchargement n'a pu être fait.\nVeuillez vérifier votre connection et l'existance du niveau")
+    Multi()
     
 def son () :
     global play, FENETRE
