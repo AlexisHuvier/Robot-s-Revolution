@@ -7,6 +7,7 @@ from pygame.locals import *
 try:
     from files.RR_Editor import Editor
     from files.RR_Community import CommunityFen
+    from files.RR_Versus import VersusFen
     from files.RR_class import downloadFile
 except ImportError:
     sys.path.append("files")
@@ -147,7 +148,7 @@ def Community():
     while FENETRE.on:
         pass
     if FENETRE.choix != "Quit":
-        result = downloadFile(FENETRE.choix[3])
+        result = downloadFile(FENETRE.choix[3], "level")
         if result:
             FENETRE = Editor(FENETRE.choix[3], "Community")
             while FENETRE.on:

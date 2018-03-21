@@ -1,6 +1,7 @@
 import pygame
 from tkinter.messagebox import showinfo, showerror, showwarning
 from urllib.request import urlopen
+from html.parser import HTMLParser
 try:
     from files.RR_language import Script
 except ImportError:
@@ -381,15 +382,78 @@ class Map():
         self.bullet_list.add(self.bullet)
 
 
-def downloadFile(name):
+class MyHTMLParser(HTMLParser):
+    def __init__(self):
+        super(MyHTMLParser, self).__init__()
+        self.getData = False
+        self.result = []
+
+    def handle_starttag(self, tag, attrs):
+        if tag == "div":
+            for i in attrs:
+                if i[0]=="class" and i[1]=="level":
+                    self.getData = True
+                else:
+                    self.getData = False
+        if tag == "a":
+            for i in range(0, len(attrs)):
+                if attrs[i][0] == "class" and attrs[i][1] == "lien":
+                    self.result.append(attrs[i+1][1])
+                    
+    
+    def handle_endtag(self, tag):
+        if tag == "div":
+            self.getData = False
+
+    def handle_data(self, data):
+        if self.getData == True:
+            if data != "- ":
+                if " : " in data:
+                    self.result.append(data.split(" : ")[1])
+                else:
+                    self.result.append(data)
+    
+    def get(self, text):
+        resultF = self.getResult()
+        resultTemp = []
+        for i in resultF:
+            resultTemp.append(i)
+        for i in resultTemp:
+            if i[7]=="Intelligence pour Versus" and text == "level":
+                resultF.remove(i)
+            elif i[7]=="Niveau pour Parcours" and text == "ia":
+                resultF.remove(i)
+        return resultF
+    
+    def getResult(self):
+        nb = int(len(self.result)/8)
+        resultF = []
+        for i in range(nb):
+            resultF.append([])
+            for y in range(8):
+                resultF[i].append(self.result[y])
+            for i in range(8):
+                self.result.remove(self.result[0])
+        return resultF
+
+
+def downloadFile(name, info):
     try:
         url = "http://robot-s-revolution.fr.nf/upload/"+name+".rev"
-        with open('levels/'+name+'.rev', 'w') as img:
-            texte = urlopen(url)
-            texte = texte.read().decode("utf-8")
-            texte = texte.replace("\r", "")
-            texte = texte.replace("\n", "\n")
-            img.write(texte)
+        if info == "level":
+            with open('levels/'+name+'.rev', 'w') as img:
+                texte = urlopen(url)
+                texte = texte.read().decode("utf-8")
+                texte = texte.replace("\r", "")
+                texte = texte.replace("\n", "\n")
+                img.write(texte)
+        if info == "ia":
+            with open('files/ia/'+name+'.rev', 'w') as img:
+                texte = urlopen(url)
+                texte = texte.read().decode("utf-8")
+                texte = texte.replace("\r", "")
+                texte = texte.replace("\n", "\n")
+                img.write(texte)
         return True
     except:
         return False

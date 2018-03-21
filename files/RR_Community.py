@@ -1,49 +1,9 @@
 from tkinter import *
 from urllib.request import urlopen
-from html.parser import HTMLParser
-
-
-class MyHTMLParser(HTMLParser):
-    def __init__(self):
-        super(MyHTMLParser, self).__init__()
-        self.getData = False
-        self.result = []
-
-    def handle_starttag(self, tag, attrs):
-        if tag == "div":
-            for i in attrs:
-                if i[0]=="class" and i[1]=="level":
-                    self.getData = True
-                else:
-                    self.getData = False
-        if tag == "a":
-            for i in range(0, len(attrs)):
-                if attrs[i][0] == "class" and attrs[i][1] == "lien":
-                    self.result.append(attrs[i+1][1])
-                    
-    
-    def handle_endtag(self, tag):
-        if tag == "div":
-            self.getData = False
-
-    def handle_data(self, data):
-        if self.getData == True:
-            if data != "- ":
-                if " : " in data:
-                    self.result.append(data.split(" : ")[1])
-                else:
-                    self.result.append(data)
-    
-    def getResult(self):
-        nb = int(len(self.result)/8)
-        resultF = []
-        for i in range(nb):
-            resultF.append([])
-            for y in range(8):
-                resultF[i].append(self.result[y])
-            for i in range(8):
-                self.result.remove(self.result[0])
-        return resultF
+try:
+    from files.RR_class import MyHTMLParser
+except ImportError:
+    from RR_class import MyHTMLParser
 
 
 class CommunityFen(Tk):
@@ -53,7 +13,7 @@ class CommunityFen(Tk):
         html = urlopen('http://www.robot-s-revolution.fr.nf/scripts.php').read().decode("utf-8")
         parser = MyHTMLParser()
         parser.feed(html)
-        self.result=parser.getResult()
+        self.result=parser.get("level")
         self.page = 1
         self.listeButton = []
 
