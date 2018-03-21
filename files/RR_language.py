@@ -22,7 +22,7 @@ class Script():
             with open(self.fichier):
                 pass
         except IOError:
-            showerror("Fichier inconnu", "Le fichier n'a pas pu être ouvert.")
+            showerror("Fichier inconnu", "Le fichier "+self.fichier+" n'a pas pu être ouvert.")
             sys.exit()
         else:
             with open(self.fichier, 'r') as fichier:

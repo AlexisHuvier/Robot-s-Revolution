@@ -1,6 +1,6 @@
 setAttack(True)
 shoot()
-left()
-walk()
 right()
+walk()
+left()
 shoot()
