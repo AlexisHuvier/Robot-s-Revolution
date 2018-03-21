@@ -143,7 +143,7 @@ def Multi():
 def Community():
     global FENETRE
     FENETRE.destroy()
-    pygame.mixer.stop()
+    pygame.mixer.pause()
 
     FENETRE = CommunityFen()
     while FENETRE.on:
@@ -161,7 +161,7 @@ def Community():
 def IA() :
     global FENETRE
     FENETRE.destroy()
-    pygame.mixer.stop()
+    pygame.mixer.pause()
 
     FENETRE = Editor("mp", "IA", "mp_1")
     while FENETRE.on:
@@ -209,7 +209,7 @@ def son () :
 def FenScriptP():
     global FENETRE, LEVEL
     FENETRE.destroy()
-    pygame.mixer.stop()
+    pygame.mixer.pause()
 
     FENETRE = Editor(LEVEL, "Parcours")
     while FENETRE.on:
