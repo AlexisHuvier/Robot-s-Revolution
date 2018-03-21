@@ -11,7 +11,7 @@ except ImportError:
     from RR_Game import Game
 
 class Editor(Tk):
-    def __init__(self, level, mode):
+    def __init__(self, level, mode, ia = None):
         super(Editor, self).__init__()
         self.dOn = False
         self.mode = mode
@@ -21,6 +21,10 @@ class Editor(Tk):
         self.on = True
         if self.mode == "IA":
             self.level = "mp_1"
+            if ia == None:
+                self.ia = "mp_1"
+            else:
+                self.ia = ia
         else:
             self.level = level
 
@@ -143,7 +147,10 @@ class Editor(Tk):
                     self.update()
                 self.difficult = v.get()
             
-            game = Game(name.split("\"")[-1], self.mode, self.difficult, self.level)
+            if self.mode == "IA" or self.mode == "Versus":
+                game = Game(name.split("\"")[-1], self.mode, self.difficult, self.level, self.ia)
+            else:
+                game = Game(name.split("\"")[-1], self.mode, self.difficult, self.level)
             temp = game.launch()
             if temp == -12 and self.mode == "IA":
                 showinfo("Bravo !", "Vous avez battu l'IA "+str(self.level))

@@ -7,7 +7,7 @@ except ImportError:
 
 
 class Game():
-    def __init__(self, script, mode, difficult = 0, level=1):
+    def __init__(self, script, mode, difficult = 0, level=1, ia = None):
         self.result = 0
         self.difficult = difficult
         self.easy = 0
@@ -48,7 +48,10 @@ class Game():
                             int(lignes[1].split(", ")[2])
                         ]
                         lignes = lignes[2:]
-                    self.map = Map(lignes, level, self, script)
+                    if self.mode == "IA" or self.mode == "Versus":
+                        self.map = Map(lignes, level, self, script, ia)
+                    else:
+                        self.map = Map(lignes, level, self, script)
             except IOError:
                 showerror("ERREUR", "Le fichier du level "+str(self.level)+" est inaccessible")
                 pygame.quit()

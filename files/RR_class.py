@@ -297,7 +297,7 @@ class Bullet(pygame.sprite.Sprite):
                 self.setPos()
 
 class Map():
-    def __init__(self, objets, level, game, fichier=""):
+    def __init__(self, objets, level, game, fichier="", ia = None):
         self.player_list = pygame.sprite.Group()
         self.finish_list = pygame.sprite.Group()
         self.rock_list = pygame.sprite.Group()
@@ -314,7 +314,7 @@ class Map():
             elif i.split(", ")[0] == "player":
                 if game != "" and game.mode == "IA":
                     if i.split(", ")[4] == "Ennemi":
-                        self.player = Player(i.split(", ")[4], "files/ia/"+str(level)+".rev", game, level, self, int(i.split(", ")[3]))
+                        self.player = Player(i.split(", ")[4], "files/ia/"+str(ia)+".rev", game, level, self, int(i.split(", ")[3]))
                         self.player.posX = int(i.split(", ")[1])
                         self.player.posY = int(i.split(", ")[2])
                         self.player.rect.x = 20 + 70 * (self.player.posX - 1)
