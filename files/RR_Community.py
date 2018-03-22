@@ -1,5 +1,7 @@
 from tkinter import *
 from urllib.request import urlopen
+from urllib.error import HTTPError
+from tkinter.messagebox import showerror
 try:
     from files.RR_class import MyHTMLParser
 except ImportError:
@@ -10,10 +12,18 @@ class CommunityFen(Tk):
     def __init__(self):
         super(CommunityFen, self).__init__()
         self.on = True
-        html = urlopen('http://www.robot-s-revolution.fr.nf/scripts.php').read().decode("utf-8")
-        parser = MyHTMLParser()
-        parser.feed(html)
-        self.result=parser.get("level")
+        try:
+            html = urlopen('http://www.robot-s-revolution.fr.nf/scripts.php').read().decode("utf-8")
+            parser = MyHTMLParser()
+            parser.feed(html)
+            self.result=parser.get("level")
+        except HTTPError:
+            showerror("ERREUR", "Connection au serveur impossible")
+            self.choix = "Quit"
+            self.on = False
+            self.destroy()
+            return;
+            
         self.page = 1
         self.listeButton = []
 
