@@ -1,0 +1,5 @@
+Faites attention à l'obstacle
+15, 10, 5
+finish, 7, 5
+wall, 5, 5, H
+player, 3, 5, 0, Joueur

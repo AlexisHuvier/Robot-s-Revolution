@@ -1,0 +1,5 @@
+Cet objet est sautable ("jump()")
+10, 5, 2
+finish, 6, 5
+rock, 5, 5
+player, 3, 5, 0, Joueur

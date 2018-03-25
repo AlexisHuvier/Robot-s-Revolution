@@ -1,8 +1,4 @@
-Test
+Maintenant, pensez à "left()"
 10, 5, 2
-finish, 6, 6
-rock, 4, 6
-rock, 4, 7
-rock, 4, 5
-rock, 5, 6
-player, 2, 6, 0
+finish, 6, 4
+player, 5, 5, 0, Joueur

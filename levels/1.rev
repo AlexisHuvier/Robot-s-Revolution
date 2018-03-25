@@ -1,7 +1,4 @@
-Pensez a l'instruction walk()
-100, 3, 2
-player, 3, 5, 0
-lava, 5, 4
-lava, 5, 5
-lava, 5, 6
+Pensez à l'instruction "walk()"
+5, 2, 1
 finish, 6, 5
+player, 4, 5, 0, Joueur
