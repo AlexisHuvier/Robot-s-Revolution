@@ -1,0 +1,32 @@
+player, 2, 6, 0, Joueur
+player, 9, 6, 2, Ennemi
+lava, 6, 4
+lava, 5, 4
+lava, 5, 5
+lava, 6, 5
+lava, 6, 6
+lava, 5, 6
+lava, 5, 7
+lava, 6, 7
+wall, 7, 2, V
+wall, 6, 2, V
+wall, 5, 2, V
+wall, 4, 2, V
+wall, 4, 9, V
+wall, 5, 9, V
+wall, 6, 9, V
+wall, 7, 9, V
+wall, 10, 5, H
+wall, 10, 6, H
+wall, 10, 7, H
+wall, 10, 8, +
+wall, 10, 4, +
+wall, 1, 4, +
+wall, 1, 8, +
+wall, 9, 8, V
+wall, 9, 4, V
+wall, 2, 4, V
+wall, 2, 8, V
+wall, 1, 5, H
+wall, 1, 6, H
+wall, 1, 7, H

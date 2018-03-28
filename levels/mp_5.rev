@@ -1,0 +1,22 @@
+player, 6, 1, 1, Joueur
+player, 6, 10, 3, Ennemi
+lava, 3, 8
+lava, 3, 7
+lava, 3, 6
+lava, 3, 4
+lava, 3, 3
+lava, 8, 4
+lava, 8, 3
+lava, 8, 6
+lava, 8, 7
+lava, 8, 8
+rock, 3, 9
+rock, 3, 10
+rock, 8, 9
+rock, 8, 10
+lava, 8, 5
+lava, 3, 5
+rock, 8, 2
+rock, 8, 1
+rock, 3, 2
+rock, 3, 1
