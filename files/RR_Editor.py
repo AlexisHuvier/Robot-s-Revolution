@@ -20,7 +20,11 @@ class Editor(Tk):
         self.aide = ""
         self.on = True
         if self.mode == "IA" or self.mode == "Versus":
-            self.level = "mp_1"
+            nb = len(glob.glob("levels/mp_*.rev"))
+            if nb == 1 or nb == 0:
+                self.level = "mp_1"
+            else:
+                self.level = "mp_"+str(random.randint(1, nb))
             if ia == None:
                 self.ia = "mp_1"
             else:
