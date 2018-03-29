@@ -1,4 +1,4 @@
-import pygame
+import pygame, threading, time
 from tkinter.messagebox import showinfo, showerror, showwarning
 from urllib.request import urlopen
 from html.parser import HTMLParser
@@ -101,6 +101,7 @@ class Player(pygame.sprite.Sprite):
             collision_list = pygame.sprite.spritecollide(
                 self, self.carte.finish_list, False, None)
             for collided_object in collision_list:
+                time.sleep(1)
                 pygame.quit()
                 if self.game.mode == "Parcours":
                     result = self.level + 1
@@ -435,6 +436,52 @@ class MyHTMLParser(HTMLParser):
             for i in range(8):
                 self.result.remove(self.result[0])
         return resultF
+
+
+class PreviewThread(threading.Thread):
+    def __init__(self, level, tkinter):
+        threading.Thread.__init__(self)
+        self.level = level
+        self.tkinter = tkinter
+        self.go = True
+    
+    def run(self):
+        self.tkinter.screen = pygame.display.set_mode((700, 700))
+        self.tkinter.clock = pygame.time.Clock()
+
+        pygame.display.set_caption("Preview - Level "+str(self.level))
+        try:
+            with open("levels/"+str(self.level)+".rev", 'r') as fichier:
+                lignes = fichier.read().split("\n")
+                if self.tkinter.mode == "Parcours" or self.tkinter.mode == "Community": 
+                    while lignes[0] == "" or lignes[0] == "\n":
+                        lignes = lignes[1:]
+                    self.tkinter.aide = "#"+lignes[0]
+                    self.tkinter.code.delete('1.0', 'end')
+                    self.tkinter.code.insert("1.0", self.tkinter.aide)
+                    self.tkinter.coloration()
+                    lignes = lignes[2:]
+                self.tkinter.map = Map(lignes, self.level, "")
+        except IOError:
+            showerror("ERREUR", "Le fichier du level "+str(self.level)+" est inaccessible")
+            pygame.quit()
+        while self.go:
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    pass
+            self.tkinter.screen.fill((0, 0, 0))
+            self.tkinter.screen.blit(pygame.image.load("files/background.png"), [0, 0])
+            self.tkinter.map.player_list.draw(self.tkinter.screen)
+            self.tkinter.map.rock_list.draw(self.tkinter.screen)
+            self.tkinter.map.finish_list.draw(self.tkinter.screen)
+            self.tkinter.map.lava_list.draw(self.tkinter.screen)
+            self.tkinter.map.wall_list.draw(self.tkinter.screen)
+            self.tkinter.clock.tick(60)
+            pygame.display.update()
+        pygame.quit()
+    
+    def stopThread(self):
+        self.go = False
 
 
 def downloadFile(name, info):

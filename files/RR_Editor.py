@@ -5,15 +5,16 @@ from PIL import Image, ImageTk
 import pygame, glob, random
 try:
     from files.RR_Game import Game
-    from files.RR_class import Map
+    from files.RR_class import Map, PreviewThread
 except ImportError:
-    from RR_class import Map
+    from RR_class import Map, PreviewThread
     from RR_Game import Game
 
 class Editor(Tk):
     def __init__(self, level, mode, ia = None):
         super(Editor, self).__init__()
         self.dOn = False
+        self.preview = None
         self.mode = mode
         self.difficultScreen = ""
         self.difficult = "MP"
@@ -80,34 +81,8 @@ class Editor(Tk):
         self.mainloop()
 
     def previewLevel(self, level):
-        self.screen = pygame.display.set_mode((700, 700))
-        self.clock = pygame.time.Clock()
-
-        pygame.display.set_caption("Preview - Level "+str(level))
-        try:
-            with open("levels/"+str(level)+".rev", 'r') as fichier:
-                lignes = fichier.read().split("\n")
-                if self.mode == "Parcours" or self.mode == "Community": 
-                    while lignes[0] == "" or lignes[0] == "\n":
-                        lignes = lignes[1:]
-                    self.aide = "#"+lignes[0]
-                    self.code.delete('1.0', 'end')
-                    self.code.insert("1.0", self.aide)
-                    self.coloration()
-                    lignes = lignes[2:]
-                self.map = Map(lignes, level, "")
-        except IOError:
-            showerror("ERREUR", "Le fichier du level "+str(self.level)+" est inaccessible")
-            pygame.quit()
-        self.screen.fill((0, 0, 0))
-        self.clock.tick(60)
-        self.screen.blit(pygame.image.load("files/background.png"), [0, 0])
-        self.map.player_list.draw(self.screen)
-        self.map.rock_list.draw(self.screen)
-        self.map.finish_list.draw(self.screen)
-        self.map.lava_list.draw(self.screen)
-        self.map.wall_list.draw(self.screen)
-        pygame.display.update()
+        self.preview = PreviewThread(level, self)
+        self.preview.start()
     
     def CloseDifficult(self):
         if self.difficultScreen != "":
@@ -121,7 +96,10 @@ class Editor(Tk):
         except IOError:
             showerror("Fichier inconnu", "Le fichier n'a pas pu être ouvert.")
         else:
-            pygame.quit()
+            if self.preview != None:
+                self.preview.stopThread()
+                self.preview.join()
+                self.preview = None
             if self.mode == "Parcours" or self.mode == "Community":
                 self.difficultScreen = Toplevel()
                 self.difficultScreen.title("Difficulty")
@@ -216,7 +194,10 @@ class Editor(Tk):
                     self.sauvegarde()
             self.on = False
             self.destroy()
-            pygame.quit()
+            if self.preview != None:
+                self.preview.stopThread()
+                self.preview.join()
+                self.preview = None
 
     def execute(self, evt = None):
         file = self.sauvegarde()
@@ -228,7 +209,7 @@ class Editor(Tk):
             filename = asksaveasfilename(title="Sauvegarder votre script",defaultextension = '.rev',filetypes=[('Revolt Files','.rev')])
             if filename != "":
                 file=open(filename,"w")
-                file.write(self.code.get("1.0","end")[:-1])
+                file.write(self.code.get("1.0", "end")[:-1])
                 self.title("Revolt IDLE - "+filename)
                 file.close()
                 return filename
