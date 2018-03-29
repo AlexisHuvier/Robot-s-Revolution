@@ -32,7 +32,7 @@ class CommunityFen(Tk):
 
         self.titre = Label(self, text="Choix du niveau", font=("Comic Sans MS", 20, "bold"))
         self.titre.grid(row = 1, column = 2)
-        if len(self.result) >= 7:
+        if len(self.result) >= 9:
             self.nbPage = int(len(result)/9)+1
         else:
             self.nbPage = 1
