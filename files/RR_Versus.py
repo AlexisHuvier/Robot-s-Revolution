@@ -1,4 +1,5 @@
 from tkinter import *
+from PIL import Image, ImageTk
 from urllib.request import urlopen
 from urllib.error import HTTPError
 from tkinter.messagebox import showerror
@@ -11,6 +12,7 @@ except ImportError:
 class VersusFen(Tk):
     def __init__(self):
         super(VersusFen, self).__init__()
+        self.geometry("675x783")
         self.on = True
         try:
             html = urlopen('http://www.robot-s-revolution.fr.nf/scripts.php').read().decode("utf-8")
@@ -23,15 +25,25 @@ class VersusFen(Tk):
             self.on = False
             self.destroy()
             return;     
+
+        self.titre = Label(self, text="", font=(
+            "Comic Sans MS", 20, "bold"), background="#072D79")
+        self.titre.grid(row=1, column=2)
         
+        self.update_idletasks()
+        width = self.winfo_width()
+        height = self.winfo_height()
+        canvas = Canvas(self, width = width, height = height)
+        backgroundImage = ImageTk.PhotoImage(Image.open("files/fond_intro.jpg"))
+        canvas.create_image(width/2, height/2, image=backgroundImage)
+        canvas.create_text(340, 30, text="Choix de l'IA", font=("Comic Sans MS", 20, "bold"), fill='#FA6C00')
+        canvas.grid(row=1, column=1, columnspan=3, rowspan=5)
         self.page = 1
         self.listeButton = []
 
         self.title("Choix du niveau")
         self.protocol("WM_DELETE_WINDOW", self.quit)
 
-        self.titre = Label(self, text="Choix de l'IA", font=("Comic Sans MS", 20, "bold"))
-        self.titre.grid(row = 1, column = 2)
         if len(self.result) >= 7:
             self.nbPage = int(len(result)/9)+1
         else:
