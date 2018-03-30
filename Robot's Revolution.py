@@ -1,4 +1,4 @@
-import sys, os
+import sys, os, time
 from tkinter import *
 from PIL import Image, ImageTk
 from tkinter.messagebox import showerror, showinfo
@@ -32,7 +32,53 @@ def Quitter():
         pass
     FENETRE.destroy()
 
-def Solo():
+def history(mode):
+    global FENETRE
+    try:
+        FENETRE.destroy()
+    except TclError:
+        pass
+    file = 'files/compo.wav'
+    FENETRE = Tk()
+    canvas = Canvas(FENETRE, width=1100, height=550, bg='black')
+    canvas.pack()
+    if mode == "Parcours":
+        try:
+            with open('files/histoireParcours.txt', 'r') as fichier:
+                texte = fichier.read()
+            canvas.create_text(500, 680, text=texte, font=("Comic Sans MS", 20, "bold"), fill='white')
+        except:
+            showerror("ERREUR", "Impossible de trouver l'histoire. Passage aux modes Parcours.")
+            Solo()
+    else:
+        try:
+            with open('files/histoireVersus.txt', 'r') as fichier:
+                texte = fichier.read()
+            canvas.create_text(500, 680, text=texte, font=("Comic Sans MS", 20, "bold"), fill='white')
+        except:
+            showerror("ERREUR", "Impossible de trouver l'histoire. Passage aux modes Versus.")
+            Multi()
+
+    if mode == "Parcours":
+        FENETRE.bind_all("<KeyPress-F5>", Solo)
+        FENETRE.bind_all("<KeyPress-Return>", Solo)
+    else:
+        FENETRE.bind_all("<KeyPress-F5>", Multi)
+        FENETRE.bind_all("<KeyPress-Return>", Solo)
+    for x in range(0, 200):
+        canvas.move(1, 0, -5)
+        FENETRE.update()
+        time.sleep(0.1)
+    
+    FENETRE.mainloop()
+    if mode == "Parcours":
+        Solo()
+    else:
+        Multi()
+        
+
+
+def Solo(evt=None):
     global FENETRE, LEVEL
     try:
         FENETRE.destroy()
@@ -85,7 +131,7 @@ def Solo():
 
     FENETRE.mainloop()
     
-def Multi():
+def Multi(evt = None):
     global FENETRE
 
     try:
@@ -255,12 +301,12 @@ def Menu():
 
     image = Image.open("files/bouton_parc.png")
     photo = ImageTk.PhotoImage(image)
-    BParcours = Button(FENETRE, image = photo, relief = FLAT, command = Solo,activebackground="grey")
+    BParcours = Button(FENETRE, image = photo, relief = FLAT, command = lambda: history("Parcours"),activebackground="grey")
     BParcours.place(x=10, y=150)
 
     image2 = Image.open("files/bouton_Vers.png")
     photo2 = ImageTk.PhotoImage(image2)
-    BVersus = Button(FENETRE, image=photo2,relief = FLAT, command=Multi,activebackground="grey")
+    BVersus = Button(FENETRE, image=photo2,relief = FLAT, command=lambda: history("Versus"),activebackground="grey")
     BVersus.place(x=265, y=150)
 
 
