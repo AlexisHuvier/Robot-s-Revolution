@@ -64,7 +64,7 @@ def history(mode):
         FENETRE.bind_all("<KeyPress-Return>", Solo)
     else:
         FENETRE.bind_all("<KeyPress-F5>", Multi)
-        FENETRE.bind_all("<KeyPress-Return>", Solo)
+        FENETRE.bind_all("<KeyPress-Return>", Multi)
     for x in range(0, 200):
         canvas.move(1, 0, -5)
         FENETRE.update()
