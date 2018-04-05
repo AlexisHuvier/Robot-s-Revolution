@@ -444,10 +444,11 @@ class PreviewThread(threading.Thread):
         self.level = level
         self.tkinter = tkinter
         self.go = True
+        self.ImageB = pygame.image.load("files/background.png")
     
     def run(self):
-        self.tkinter.screen = pygame.display.set_mode((700, 700))
-        self.tkinter.clock = pygame.time.Clock()
+        self.screen = pygame.display.set_mode((700, 700))
+        self.clock = pygame.time.Clock()
 
         pygame.display.set_caption("Preview - Level "+str(self.level))
         try:
@@ -461,7 +462,7 @@ class PreviewThread(threading.Thread):
                     self.tkinter.code.insert("1.0", self.tkinter.aide)
                     self.tkinter.coloration()
                     lignes = lignes[2:]
-                self.tkinter.map = Map(lignes, self.level, "")
+                self.map = Map(lignes, self.level, "")
         except IOError:
             showerror("ERREUR", "Le fichier du level "+str(self.level)+" est inaccessible")
             pygame.quit()
@@ -469,14 +470,14 @@ class PreviewThread(threading.Thread):
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     pass
-            self.tkinter.screen.fill((0, 0, 0))
-            self.tkinter.screen.blit(pygame.image.load("files/background.png"), [0, 0])
-            self.tkinter.map.player_list.draw(self.tkinter.screen)
-            self.tkinter.map.rock_list.draw(self.tkinter.screen)
-            self.tkinter.map.finish_list.draw(self.tkinter.screen)
-            self.tkinter.map.lava_list.draw(self.tkinter.screen)
-            self.tkinter.map.wall_list.draw(self.tkinter.screen)
-            self.tkinter.clock.tick(60)
+            self.screen.fill((0, 0, 0))
+            self.screen.blit(self.ImageB, [0, 0])
+            self.map.player_list.draw(self.screen)
+            self.map.rock_list.draw(self.screen)
+            self.map.finish_list.draw(self.screen)
+            self.map.lava_list.draw(self.screen)
+            self.map.wall_list.draw(self.screen)
+            self.clock.tick(60)
             pygame.display.update()
         pygame.quit()
     
