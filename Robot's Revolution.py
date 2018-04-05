@@ -1,7 +1,7 @@
 import sys, os, time
 from tkinter import *
 from PIL import Image, ImageTk
-from tkinter.messagebox import showerror, showinfo
+from tkinter.messagebox import showerror, showinfo, showwarning
 import pygame
 from pygame.locals import *
 try:
@@ -136,6 +136,7 @@ def Multi(evt = None):
 
     try:
         FENETRE.destroy()
+         
     except TclError:
         pass
     except AttributeError:
@@ -336,10 +337,23 @@ def Menu():
 
 try:
     with open("files/config.txt", "r") as fichier:
-        lignes = fichier.read().split("\n")
+        pass
 except IOError:
+    t = Tk()
     showwarning("ATTENTION", "Le fichier de config n'a pas été trouvé et va être recréer")
     with open("files/config.txt", "w") as fichier:
         fichier.write("Timer Instruction : 20")
+    t.destroy()
+        
+try:
+    with open("files/saves.txt", "r") as fichier:
+        pass
+except IOError:
+    t = Tk()
+    showwarning("ATTENTION", "Le fichier des sauvegardes n'a pas été trouvé et va être recréer")
+    with open("files/saves.txt", "w") as fichier:
+        fichier.write("Mode - Nom - Difficulté - NombreLigne")
+    t.destroy()
+    
 
 Menu()

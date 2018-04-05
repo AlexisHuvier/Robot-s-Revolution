@@ -1,5 +1,5 @@
 from tkinter.messagebox import showerror, showinfo
-import pygame, sys
+import pygame, sys, os
 try:
     from files.RR_class import Map
 except ImportError:
@@ -15,6 +15,7 @@ class Game():
         self.hard = 0
         self.nbInstruction = 0
         self.mode = mode
+        self.ia = ia
 
         self.screen = pygame.display.set_mode((700, 700))
 
@@ -102,6 +103,14 @@ class Game():
                 or (self.difficult == 2 and self.nbInstruction <= self.medium) 
                 or (self.difficult == 3 and self.nbInstruction <= self.hard)):
                 if self.result > 1:
+                    try:
+                        with open("files/saves.txt", "a") as fichier:
+                            fichier.write("\n"+str(self.mode)+" - "+str(self.level)+" - "+str(self.difficult)+" - "+str(self.nbInstruction))
+                    except IOError:
+                        showwarning("ATTENTION", "Le fichier des sauvegardes n'a pas été trouvé et va être recréer")
+                        with open("files/saves.txt", "w") as fichier:
+                            fichier.write("Mode - Nom - Difficulté - NombreLigne")
+                            fichier.write("\n"+str(self.mode)+" - "+str(self.level)+" - "+str(self.difficult)+" - "+str(self.nbInstruction))
                     showinfo("Gagné", "Votre robot a atteint le point final !\nTemps d'exécution : XXs\nNombre d'instructions : "+str(self.nbInstruction)+"\nNombre minimum d'instruction (d'après le créateur du niveau) : "+str(self.hard))
                     if self.mode == "Community":
                         return -25
@@ -121,6 +130,14 @@ class Game():
                 return self.level
         elif self.mode == "IA" or self.mode == "Versus":
             if len(self.map.player_list) == 1:
+                try:
+                    with open("files/saves.txt", "a") as fichier:
+                        fichier.write("\n"+str(self.mode)+" - "+str(self.ia)+" - "+str(self.difficult)+" - "+str(self.nbInstruction))
+                except IOError:
+                    showwarning("ATTENTION", "Le fichier des sauvegardes n'a pas été trouvé et va être recréer")
+                    with open("files/saves.txt", "w") as fichier:
+                        fichier.write("Mode - Nom - Difficulté - NombreLigne")
+                        fichier.write("\n"+str(self.mode)+" - "+str(self.ia)+" - "+str(self.difficult)+" - "+str(self.nbInstruction))
                 showinfo("Gagné", "Votre robot a tué l'ennemi !\nTemps d'exécution : XXs\nNombre d'instructions : "+str(self.nbInstruction))
                 return -12
             else:

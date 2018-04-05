@@ -20,6 +20,16 @@ class Editor(Tk):
         self.difficult = "MP"
         self.aide = ""
         self.on = True
+        self.levels = []
+        try:
+            with open("files/saves.txt", "r") as fichier:
+                temp = fichier.read().split("\n")
+                for i in temp:
+                    self.levels.append(i.split(" - "))
+        except IOError:
+            showwarning("ATTENTION", "Le fichier des sauvegardes n'a pas été trouvé et va être recréer")
+            with open("files/saves.txt", "w") as fichier:
+                fichier.write("Mode - Nom - Difficulté - NombreLigne")
         if self.mode == "IA" or self.mode == "Versus":
             nb = len(glob.glob("levels/mp_*.rev"))
             if nb == 1 or nb == 0:
@@ -30,8 +40,52 @@ class Editor(Tk):
                 self.ia = "mp_1"
             else:
                 self.ia = ia
+            while True:
+                find = False
+                for i in self.levels:
+                    if i[0] == self.mode:
+                        if str(self.ia) == i[1]:
+                            find = True
+                            if askquestion("Jouer", "Vous avez déjà battu "+i[1]+ "avec "+i[3]+" lignes de codes.\nVoulez vous rejouer ?") == "yes":
+                                break
+                            else:
+                                if "mp_" in self.ia:
+                                    self.ia = "mp_"+str(int(self.ia[3:])+1)
+                                    try:
+                                        with open("files/ia/"+self.ia+".rev"):
+                                            pass
+                                    except:
+                                        showerror("ERREUR", "Il n'y a plus d'IA à battre")
+                                        self.quitter()
+                                else:
+                                    showinfo("Fermeture", "Fermeture du jeu")
+                                    self.quitter()
+                if find == False:
+                    break
+
         else:
             self.level = level
+            while True:
+                find = False
+                for i in self.levels:
+                    if i[0] == self.mode:
+                        if str(self.level) == i[1]:
+                            find = True
+                            if askquestion("Jouer", "Vous avez fini le level "+i[1]+ " avec "+i[3]+" lignes de codes.\nVoulez vous rejouer ?") == "yes":
+                                break
+                            else:
+                                if self.mode == "Parcours":
+                                    self.level = self.level+1
+                                    try:
+                                        with open("levels/"+str(self.level)+".rev"):
+                                            pass
+                                    except:
+                                        showerror("ERREUR", "Il n'y a plus de niveau")
+                                        self.quitter()
+                if find == False:
+                    break
+                                
+                
 
         self.title("Revolt IDE - Untitled")
 
@@ -142,8 +196,8 @@ class Editor(Tk):
                         with open("files/ia/"+str(self.level)+".rev"):
                             pass
                     except IOError:
-                        showinfo("Bravo !", "Vous avez fini tous les niveaux de ce mode !")
-                        if askquestion("Robot's Revolution", "Voulez-vous relancer le niveau 1 ?\nVous pourrez réaffronter la première IA") == "yes":
+                        showinfo("Bravo !", "Vous avez fini tous les IA de ce mode !")
+                        if askquestion("Robot's Revolution", "Voulez-vous relancer l'ia 1 ?") == "yes":
                             self.ia = "mp_1"
                             self.previewLevel(self.level)
                         else:
@@ -153,7 +207,7 @@ class Editor(Tk):
                         showinfo("Suivant", "C'est parti pour l'IA "+str(self.ia))
                         self.previewLevel(self.level)
                 else:
-                    if askquestion("Robot's Revolution", "Voulez-vous relancer ce niveau ?\nVous pourrez réaffronter l'IA") == "yes":
+                    if askquestion("Robot's Revolution", "Voulez-vous relancer cet ia ?") == "yes":
                         self.previewLevel(self.level)
                     else:
                         self.on = False
