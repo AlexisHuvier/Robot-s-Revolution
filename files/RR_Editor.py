@@ -342,8 +342,9 @@ class Editor(Tk):
     def coloration(self):
         nmbChar = IntVar()
         for mot in ["walk", "left", "right", "jump", "getDirection", "setFunc", "callFunc",
-                    "getAttack", "setAttack", "setSprite", "getSprite", "setVar", "getVar",
-                    "loopif", "loop", "sayConsole", "if_", "getPosX", "getPosY"]:
+                "getAttack", "setAttack", "setSprite", "getSprite", "setVar", "getVar",
+                "loopif", "loop", "sayConsole", "if_", "getPosX", "getPosY", "shoot",
+                "getEnnemyPosX", "getEnnemyPosY"]:
             lastPos = "1.0"
             while 1 :
                 lastPos = self.code.search( mot, index = lastPos, stopindex = 'end', regexp = 0, count = nmbChar )
