@@ -101,7 +101,7 @@ class CommunityFen(Tk):
                 texte = ""
                 setButton = False
 
-            infos = Label(frame, text=texte, height = 10, width = 25)
+            infos = Label(frame, text=texte, height = 10, width = 25, background="#ff7f2a")
             frame.grid(row=row, column=column, padx=20, pady=20)
             infos.pack()
             self.button = Button(frame, text="Choisir ce niveau", command=lambda x=nb: self.choisir(x))
