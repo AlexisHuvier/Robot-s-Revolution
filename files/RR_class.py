@@ -326,14 +326,22 @@ class Map():
             if i.split(", ")[0] == "0":
                 pass
             elif i.split(", ")[0] == "player":
-                if game != "" and (game.mode == "IA" or game.mode == "Versus"):
-                    if i.split(", ")[4] == "Ennemi":
-                        self.player = Player(i.split(", ")[4], "files/ia/"+str(ia)+".rev", game, level, self, int(i.split(", ")[3]))
-                        self.player.posX = int(i.split(", ")[1])
-                        self.player.posY = int(i.split(", ")[2])
-                        self.player.rect.x = 20 + 70 * (self.player.posX - 1)
-                        self.player.rect.y = 3 + 70 * (self.player.posY - 1)
-                        self.player_list.add(self.player)
+                try:
+                    if game.mode == "IA" or game.mode == "Versus":
+                        if i.split(", ")[4] == "Ennemi":
+                            self.player = Player("Ennemi", "files/ia/"+str(ia)+".rev", game, level, self, int(i.split(", ")[3]))
+                            self.player.posX = int(i.split(", ")[1])
+                            self.player.posY = int(i.split(", ")[2])
+                            self.player.rect.x = 20 + 70 * (self.player.posX - 1)
+                            self.player.rect.y = 3 + 70 * (self.player.posY - 1)
+                            self.player_list.add(self.player)
+                        else:
+                            self.player = Player("Joueur", fichier, game, level, self, int(i.split(", ")[3]))
+                            self.player.posX = int(i.split(", ")[1])
+                            self.player.posY = int(i.split(", ")[2])
+                            self.player.rect.x = 20 + 70 * (self.player.posX - 1)
+                            self.player.rect.y = 3 + 70 * (self.player.posY - 1)
+                            self.player_list.add(self.player)
                     else:
                         self.player = Player("Joueur", fichier, game, level, self, int(i.split(", ")[3]))
                         self.player.posX = int(i.split(", ")[1])
@@ -341,13 +349,29 @@ class Map():
                         self.player.rect.x = 20 + 70 * (self.player.posX - 1)
                         self.player.rect.y = 3 + 70 * (self.player.posY - 1)
                         self.player_list.add(self.player)
-                else:
-                    self.player = Player("Joueur", fichier, game, level, self, int(i.split(", ")[3]))
-                    self.player.posX = int(i.split(", ")[1])
-                    self.player.posY = int(i.split(", ")[2])
-                    self.player.rect.x = 20 + 70 * (self.player.posX - 1)
-                    self.player.rect.y = 3 + 70 * (self.player.posY - 1)
-                    self.player_list.add(self.player)
+                except:
+                    if game == "IA" or game == "Versus":
+                        if i.split(", ")[4] == "Ennemi":
+                            self.player = Player("Ennemi", fichier, game, level, self, int(i.split(", ")[3]))
+                            self.player.posX = int(i.split(", ")[1])
+                            self.player.posY = int(i.split(", ")[2])
+                            self.player.rect.x = 20 + 70 * (self.player.posX - 1)
+                            self.player.rect.y = 3 + 70 * (self.player.posY - 1)
+                            self.player_list.add(self.player)
+                        else:
+                            self.player = Player("Joueur", fichier, game, level, self, int(i.split(", ")[3]))
+                            self.player.posX = int(i.split(", ")[1])
+                            self.player.posY = int(i.split(", ")[2])
+                            self.player.rect.x = 20 + 70 * (self.player.posX - 1)
+                            self.player.rect.y = 3 + 70 * (self.player.posY - 1)
+                            self.player_list.add(self.player)
+                    else:
+                        self.player = Player("Joueur", fichier, game, level, self, int(i.split(", ")[3]))
+                        self.player.posX = int(i.split(", ")[1])
+                        self.player.posY = int(i.split(", ")[2])
+                        self.player.rect.x = 20 + 70 * (self.player.posX - 1)
+                        self.player.rect.y = 3 + 70 * (self.player.posY - 1)
+                        self.player_list.add(self.player)
             elif i.split(", ")[0] == "finish":
                 self.finish = Finish(
                     [int(i.split(", ")[1]), int(i.split(", ")[2])])
@@ -475,7 +499,7 @@ class PreviewThread(threading.Thread):
                     self.tkinter.code.insert("1.0", self.tkinter.aide)
                     self.tkinter.coloration()
                     lignes = lignes[2:]
-                self.map = Map(lignes, self.level, "")
+                self.map = Map(lignes, self.level, self.tkinter.mode)
         except IOError:
             showerror("ERREUR", "Le fichier du level "+str(self.level)+" est inaccessible")
             pygame.quit()
