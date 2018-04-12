@@ -56,10 +56,21 @@ class Editor(Tk):
                                             pass
                                     except:
                                         showerror("ERREUR", "Il n'y a plus d'IA à battre")
-                                        self.quitter()
+                                        showinfo("Fermeture", "Fermeture du jeu")
+                                        self.on = False
+                                        self.destroy()
+                                        if self.preview != None:
+                                            self.preview.stopThread()
+                                            self.preview.join()
+                                            self.preview = None
                                 else:
                                     showinfo("Fermeture", "Fermeture du jeu")
-                                    self.quitter()
+                                    self.on = False
+                                    self.destroy()
+                                    if self.preview != None:
+                                        self.preview.stopThread()
+                                        self.preview.join()
+                                        self.preview = None
                 if find == False:
                     break
 
