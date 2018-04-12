@@ -1,0 +1,13 @@
+setAttack(True)
+setFunc("shoot","walk()","shoot()")
+callFunc("shoot")
+right()
+callFunc("shoot")
+right()
+callFunc("shoot")
+right()
+callFunc("shoot")
+right()
+callFunc("shoot")
+right()
+
