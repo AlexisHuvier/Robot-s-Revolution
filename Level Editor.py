@@ -84,6 +84,8 @@ def mouseEvent(button, pos):
                                     find = True
                                     pygame.mixer.music.load("files/negative.wav")
                                     pygame.mixer.music.play()
+                        else:
+                            posAndObjects.append([objects[selectPos[0]-1], offset[selectPos[0]-1], [posX, posY]])
                     else:
                         posAndObjects.append([objects[selectPos[0]-1], offset[selectPos[0]-1],  [posX, posY]])
     elif button == 3:
@@ -94,8 +96,8 @@ def mouseEvent(button, pos):
                 if items[2][0] == posX and items[2][1] == posY:
                     if items[0] == "files/robotB.png" or items[0] == "files/robotD.png" or items[0] == "files/robotG.png" or items[0] == "files/robotH.png":
                         nb_temp = 0
-                        for items in posAndObjects:
-                            if items[0] == "files/robotB.png" or items[0] == "files/robotD.png" or items[0] == "files/robotG.png" or items[0] == "files/robotH.png":
+                        for items2 in posAndObjects:
+                            if items2[0] == "files/robotB.png" or items2[0] == "files/robotD.png" or items2[0] == "files/robotG.png" or items2[0] == "files/robotH.png":
                                 nb_temp += 1
                         if nb_temp == 2:
                             if mode == 1:
