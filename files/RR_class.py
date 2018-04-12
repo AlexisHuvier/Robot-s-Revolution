@@ -19,14 +19,26 @@ class Player(pygame.sprite.Sprite):
         else:
             self.script = ""
         self.direction = direction
-        if direction == 0:
-            self.strImage = "files/robotD.png"
-        elif direction == 1:
-            self.strImage = "files/robotB.png"
-        elif direction == 2:
-            self.strImage = "files/robotG.png"
-        elif direction == 3:
-            self.strImage = "files/robotH.png"
+        if self.direction == 0:
+            if self.status == "Joueur":
+                self.strImage = "files/robotD.png"
+            else:
+                self.strImage = "files/RbtFCo2.png"
+        elif self.direction == 1:
+            if self.status == "Joueur":
+                self.strImage = "files/robotB.png"
+            else:
+                self.strImage = "files/RbtF.png"
+        elif self.direction == 2:
+            if self.status == "Joueur":
+                self.strImage = "files/robotG.png"
+            else:
+                self.strImage = "files/RbtFCo.png"
+        elif self.direction == 3:
+            if self.status == "Joueur":
+                self.strImage = "files/robotH.png"
+            else:
+                self.strImage = "files/RbtFAr.png"
         self.image = pygame.image.load(self.strImage)
         self.rect = self.image.get_rect()
         self.attack = False
