@@ -37,7 +37,7 @@ class Editor(Tk):
             else:
                 self.level = "mp_"+str(random.randint(1, nb))
             if ia == None:
-                self.ia = "mp_1"
+                self.ia = "ia_1"
             else:
                 self.ia = ia
             while True:
@@ -46,11 +46,11 @@ class Editor(Tk):
                     if i[0] == self.mode:
                         if str(self.ia) == i[1]:
                             find = True
-                            if askquestion("Jouer", "Vous avez déjà battu "+i[1]+ "avec "+i[3]+" lignes de codes.\nVoulez vous rejouer ?") == "yes":
+                            if askquestion("Jouer", "Vous avez déjà battu "+i[1]+ " avec "+i[3]+" lignes de codes.\nVoulez vous rejouer ?") == "yes":
                                 break
                             else:
-                                if "mp_" in self.ia:
-                                    self.ia = "mp_"+str(int(self.ia[3:])+1)
+                                if "ia_" in self.ia:
+                                    self.ia = "ia_"+str(int(self.ia[3:])+1)
                                     try:
                                         with open("files/ia/"+self.ia+".rev"):
                                             pass

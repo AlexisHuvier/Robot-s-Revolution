@@ -216,7 +216,7 @@ def IA() :
     except:
         pass
 
-    FENETRE = Editor("mp", "IA", "mp_1")
+    FENETRE = Editor("mp", "IA", "ia_1")
     while FENETRE.on:
         pass
     Multi()
