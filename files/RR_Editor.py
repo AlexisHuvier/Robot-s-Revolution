@@ -11,7 +11,9 @@ except ImportError:
     from RR_Game import Game
 
 class Editor(Tk):
+    """Editeur de script"""
     def __init__(self, level, mode, ia = None):
+        """Initiation de la classe"""
         super(Editor, self).__init__()
         self.dOn = False
         self.preview = None
@@ -146,15 +148,18 @@ class Editor(Tk):
         self.mainloop()
 
     def previewLevel(self, level):
+        """ Preview du level <level>"""
         self.preview = PreviewThread(level, self)
         self.preview.start()
     
     def CloseDifficult(self):
+        """ Fermeture du screen de la difficulté"""
         if self.difficultScreen != "":
             self.dOn = False
             self.difficultScreen.destroy()
 
     def Jouer(self, name):
+        """ Lancer le jeu"""
         try:
             with open(name):
                 pass
@@ -253,6 +258,7 @@ class Editor(Tk):
                     self.previewLevel(self.level)
                  
     def quitter(self):
+        """ Quitter l'éditeur (avec confirmation)"""
         if askquestion("Revolt IDE", "Voulez-vous quitter ?") == "yes":
             if self.title().split(" - ")[1] == 'Untitled' or self.title()[0] == "*":
                 if askquestion("Revolt IDE", "Voulez-vous enregistrer ?")=="yes":
@@ -265,11 +271,13 @@ class Editor(Tk):
                 self.preview = None
 
     def execute(self, evt = None):
+        """ Exécuter le script"""
         file = self.sauvegarde()
         if file != "":
             self.Jouer(file)
 
     def sauvegarde(self, evt= None):
+        """ Sauvegarder un script"""
         if self.title().split(" - ")[1] == 'Untitled':
             filename = asksaveasfilename(title="Sauvegarder votre script",defaultextension = '.rev',filetypes=[('Revolt Files','.rev')])
             if filename != "":
@@ -294,6 +302,7 @@ class Editor(Tk):
             return ""
 
     def creer(self, evt=None):
+        """ Créer un nouveau fichier"""
         if self.title().split(" - ")[1] == 'Untitled':
             showerror("Revolt IDE","Vous êtes déjà sur un nouveau fichier !")
         else:
@@ -313,6 +322,7 @@ class Editor(Tk):
                     self.sauvegarde()
 
     def ouvrir(self, evt=None):
+        """ Ouvrir un fichier"""
         global txt, fenetre
         filename = askopenfilename(title="Ouvrir votre script", defaultextension='.rev', filetypes=[('Revolt Files', '.rev')])
         fichier = open(filename, "r", encoding="utf-8")
@@ -324,6 +334,7 @@ class Editor(Tk):
         self.coloration()
 
     def writeEvent(self, evt):
+        """Event lors de l'écriture du joueur"""
         if evt.char == '"':
             self.code.mark_gravity(INSERT, LEFT)
             self.code.insert(INSERT, '"')
@@ -351,6 +362,7 @@ class Editor(Tk):
         self.coloration()
 
     def coloration(self):
+        """ Coloration syntaxique"""
         nmbChar = IntVar()
         for mot in ["walk", "left", "right", "jump", "getDirection", "setFunc", "callFunc",
                 "getAttack", "setAttack", "setSprite", "getSprite", "setVar", "getVar",
@@ -403,4 +415,5 @@ class Editor(Tk):
             lastPos = "%s + 1 chars" % lastPos
 
     def apropos(self, evt=None):
+        """ Informations RP de l'éditeur de script"""
         showinfo("Revolt IDE", "Créé par LN12\nCopyright 2111 - 2112")

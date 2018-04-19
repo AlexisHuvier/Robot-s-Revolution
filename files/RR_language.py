@@ -7,7 +7,9 @@ instructions = ["walk", "left", "right", "jump", "getDirection", "setFunc", "cal
                 "getEnnemyPosX", "getEnnemyPosY"]
 
 class Script():
+    """ Classe du script du robot"""
     def __init__(self, robot, game, fichier):
+        """Initialisation du script"""
         self.fichier = fichier
         self.robot = robot
         self.game = game
@@ -29,6 +31,7 @@ class Script():
                 self.instruction = fichier.read().split("\n")
 
     def launch(self):
+        """Lance une instruction"""
         if len(self.instruction)-1 >= self.avancement:
             if self.instruction[self.avancement].split("(")[0] in instructions:
                 self.temp_instruction = self.instruction[self.avancement].split("(")[0]
@@ -50,17 +53,19 @@ class Script():
             return 1
     
     def getEnnemyPosX(self):
+        """Récupère la position X de l'ennemi"""
         for i in self.robot.carte.player_list:
             if i.status != self.robot.status:
                 return i.posX
     
     def getEnnemyPosY(self):
-        
+        """ Récupère la position Y de l'ennemi"""
         for i in self.robot.carte.player_list:
             if i.status != self.robot.status:
                 return i.posY
     
     def shoot(self):
+        """Fait tirer le robot"""
         if self.robot.attack:
             if self.robot.status == "Joueur":
                 self.robot.carte.createBullet(self.robot.posX, self.robot.posY, self.robot.direction)
@@ -68,6 +73,7 @@ class Script():
                 self.robot.carte.createLazer(self.robot.posX, self.robot.posY, self.robot.direction)
 
     def jump(self):
+        """Fait sauter le robot"""
         if self.last_instruction == "walk" or self.last_instruction == "jump":
             self.robot.tempPosX = self.robot.posX
             self.robot.tempPosY = self.robot.posY
@@ -121,6 +127,7 @@ class Script():
             showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1)+"\nIl n'est pas possible d'utiliser 'jump()' s'il n'y a pas un 'walk()' avant")
 
     def walk(self):
+        """ Faire avancer le robot"""
         self.robot.tempPosX = self.robot.posX
         self.robot.tempPosY = self.robot.posY
         if self.robot.direction == 0:
@@ -149,6 +156,7 @@ class Script():
             self.robot.rect.y = 3 + 70 * (self.robot.posY - 1)
 
     def right(self):
+        """ Tourner le robot à droite """
         self.robot.direction += 1
         if self.robot.direction == 4:
             self.robot.direction = 0
@@ -182,9 +190,11 @@ class Script():
                 self.robot.image = pygame.image.load("files/RbtFAr.png")
 
     def setAttack(self, boolean):
+        """ Activer ou désactiver le mode attaque du robot """
         self.robot.attack = boolean
 
     def setFunc(self, name, *instructions_f):
+        """ Créer une fonction <name> composé des instructions <*instructions_f>"""
         if len(instructions_f) == 0:
             showerror("ERREUR","Erreur sur l'instruction à la ligne n°"+str(self.avancement+1)+"\nLa fonction créée n'a pas d'instructions")
             pygame.quit()
@@ -199,6 +209,7 @@ class Script():
             self.fonctions[name] = instructions_f
 
     def callFunc(self, name):
+        """ Lancer la fonction <name>"""
         try:
             instructions_f = self.fonctions[name]
         except KeyError:
@@ -229,9 +240,11 @@ class Script():
                     pygame.quit()
 
     def getAttack(self):
+        """ Récupère si le robot est en mode attaque """
         return self.robot.attack
 
     def left(self):
+        """ Tourner le robot a gauche """
         self.robot.direction -= 1
         if self.robot.direction == -1:
             self.robot.direction = 3
@@ -253,13 +266,16 @@ class Script():
                 self.robot.image = pygame.image.load("files/robotH.png")
 
     def setSprite(self, sprite= "files/robotD.png"):
+        """ Changer le sprite du robot"""
         self.robot.strImage = sprite
         self.robot.image = pygame.image.load(sprite)
 
     def getSprite(self):
+        """ Récupérer le sprite du robot"""
         return self.robot.strImage
 
     def getDirection(self):
+        """ Récupérer la direction du robot"""
         if self.robot.direction == 0:
             return "droite"
         elif self.robot.direction == 1:
@@ -270,12 +286,15 @@ class Script():
             return "haut"
 
     def getPosX(self):
+        """ Récupérer la position X du robot"""
         return self.robot.posX
 
     def getPosY(self):
+        """ Récupérer la position Y du robot"""
         return self.robot.posY
 
     def getVar(self, name):
+        """ Récupérer la variable <name>"""
         if name in self.variables.keys():
             return self.variables[name]
         else:
@@ -283,6 +302,7 @@ class Script():
             pygame.quit()
 
     def setVar(self, name, value, sorte = "str"):
+        """ Créer la variable <name> avec la valeur <value> et de type <sorte>"""
         if sorte == "str":
             try:
                 for i in value.split(" "):
@@ -373,12 +393,14 @@ class Script():
             pygame.quit()
 
     def sayConsole(self, txt = "Bonjour"):
+        """ Print quelque chose"""
         for i in str(txt).split(" "):
             if i.split("(")[0] in instructions:
                 txt = txt.replace(i, str(eval("self."+i)))
         print(txt)
 
     def loop(self, instruction = "walk()", nb = 1):
+        """ Créer une boucle qui fait <instruction> <nb> fois"""
         if self.temp_boucle_a_faire == 0:
             if instruction.split("(")[0] in instructions:
                 self.temp_instruction = instruction.split("(")[0]
@@ -403,6 +425,7 @@ class Script():
                 pygame.quit()
 
     def loopif(self, instruction = "walk()", condition = "True"):
+        """ Créer une boucle qui fait <instruction> tant que <condition> vraie"""
         if condition.split("(")[0] in instructions:
             if eval("self."+condition):
                 if instruction.split("(")[0] in instructions:
@@ -442,6 +465,7 @@ class Script():
                 self.temp_boucle_a_faire = -1
                 return 1
     def if_(self, instruction, condition = "True"):
+        """ Faire <instruction> si <condition> vraie"""
         if condition.split("(")[0] in instructions:
             if eval("self."+condition):
                 if instruction.split("(")[0] in instructions:
