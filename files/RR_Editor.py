@@ -49,6 +49,7 @@ class Editor(Tk):
                         if str(self.ia) == i[1]:
                             find = True
                             if askquestion("Jouer", "Vous avez déjà battu "+i[1]+ " avec "+i[3]+" lignes de codes.\nVoulez vous rejouer ?") == "yes":
+                                find = False
                                 break
                             else:
                                 if "ia_" in self.ia:
@@ -85,6 +86,7 @@ class Editor(Tk):
                         if str(self.level) == i[1]:
                             find = True
                             if askquestion("Jouer", "Vous avez fini le level "+i[1]+ " avec "+i[3]+" lignes de codes.\nVoulez vous rejouer ?") == "yes":
+                                find = False
                                 break
                             else:
                                 if self.mode == "Parcours":
