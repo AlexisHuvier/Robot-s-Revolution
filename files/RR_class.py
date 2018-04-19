@@ -14,8 +14,11 @@ class Player(pygame.sprite.Sprite):
 
         self.game = game
         self.status = status
+        self.timeThread = None
         if fichier != "":
             self.script = Script(self, game, fichier)
+            self.timeThread = TimeThread(self.game)
+            self.timeThread.start()
         else:
             self.script = ""
         self.direction = direction
@@ -88,6 +91,10 @@ class Player(pygame.sprite.Sprite):
             self, self.carte.lazer_list, False, None)
         for collided_object in collision_list:
             if self.status == "Joueur":
+                if self.timeThread != None:
+                    self.timeThread.stopThread()
+                    self.timeThread.join()
+                    self.timeThread = None
                 pygame.quit()
                 showinfo("Perdu", "Votre robot a percuté un lazer !")
         collision_list = pygame.sprite.spritecollide(
@@ -97,6 +104,10 @@ class Player(pygame.sprite.Sprite):
             if self.status == "Joueur":
                 pass
             else:
+                if self.timeThread != None:
+                    self.timeThread.stopThread()
+                    self.timeThread.join()
+                    self.timeThread = None
                 pygame.quit()
                 self.carte.player_list.remove(self)
                 result = self.level.split("_")[0] + str(int(self.level.split("_")[1])+1)
@@ -104,9 +115,17 @@ class Player(pygame.sprite.Sprite):
             self, self.carte.lava_list, False, None)
         for collided_object in collision_list:
             if self.status == "Joueur":
+                if self.timeThread != None:
+                    self.timeThread.stopThread()
+                    self.timeThread.join()
+                    self.timeThread = None
                 pygame.quit()
                 showinfo("Perdu", "Votre robot a fondu dans la lave !")
             else:
+                if self.timeThread != None:
+                    self.timeThread.stopThread()
+                    self.timeThread.join()
+                    self.timeThread = None
                 pygame.quit()
                 self.carte.player_list.remove(self)
                 result = self.level.split("_")[0] + str(int(self.level.split("_")[1])+1)
@@ -114,7 +133,10 @@ class Player(pygame.sprite.Sprite):
             collision_list = pygame.sprite.spritecollide(
                 self, self.carte.finish_list, False, None)
             for collided_object in collision_list:
-                time.sleep(1)
+                if self.timeThread != None:
+                    self.timeThread.stopThread()
+                    self.timeThread.join()
+                    self.timeThread = None
                 pygame.quit()
                 if self.game.mode == "Parcours":
                     result = self.level + 1
@@ -520,6 +542,23 @@ class PreviewThread(threading.Thread):
     
     def stopThread(self):
         self.go = False
+
+class TimeThread(threading.Thread):
+    def __init__(self, game):
+        threading.Thread.__init__(self)
+        self.game = game
+        self.time = 0
+        self.go = True
+    
+    def run(self):
+        while self.go:
+            time.sleep(1)
+            self.time += 1
+            print(self.time)
+    
+    def stopThread(self):
+        self.go = False
+        self.game.time = self.time
 
 
 def downloadFile(name, info):

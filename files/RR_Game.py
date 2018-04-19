@@ -16,6 +16,7 @@ class Game():
         self.nbInstruction = 0
         self.mode = mode
         self.ia = ia
+        self.time = 0
 
         self.screen = pygame.display.set_mode((700, 700))
 
@@ -111,7 +112,7 @@ class Game():
                         with open("files/saves.txt", "w") as fichier:
                             fichier.write("Mode - Nom - Difficulté - NombreLigne")
                             fichier.write("\n"+str(self.mode)+" - "+str(self.level)+" - "+str(self.difficult)+" - "+str(self.nbInstruction))
-                    showinfo("Gagné", "Votre robot a atteint le point final !\nTemps d'exécution : XXs\nNombre d'instructions : "+str(self.nbInstruction)+"\nNombre minimum d'instruction (d'après le créateur du niveau) : "+str(self.hard))
+                    showinfo("Gagné", "Votre robot a atteint le point final !\nTemps d'exécution : "+str(self.time)+"s\nNombre d'instructions : "+str(self.nbInstruction)+"\nNombre minimum d'instruction (d'après le créateur du niveau) : "+str(self.hard))
                     if self.mode == "Community":
                         return -25
                     return self.result
@@ -138,7 +139,7 @@ class Game():
                     with open("files/saves.txt", "w") as fichier:
                         fichier.write("Mode - Nom - Difficulté - NombreLigne")
                         fichier.write("\n"+str(self.mode)+" - "+str(self.ia)+" - "+str(self.difficult)+" - "+str(self.nbInstruction))
-                showinfo("Gagné", "Votre robot a tué l'ennemi !\nTemps d'exécution : XXs\nNombre d'instructions : "+str(self.nbInstruction))
+                showinfo("Gagné", "Votre robot a tué l'ennemi !\nTemps d'exécution : "+str(self.time)+"s\nNombre d'instructions : "+str(self.nbInstruction))
                 return -12
             else:
                 showinfo("Perdu", "Le robot ennemi n'a pas été tué")
