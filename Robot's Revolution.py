@@ -8,11 +8,13 @@ try:
     from files.RR_Editor import Editor
     from files.RR_Community import CommunityFen
     from files.RR_Versus import VersusFen
+    from files.RR_VEditor import VEditor
     from files.RR_class import downloadFile
 except ImportError:
     sys.path.append("files")
     from RR_Editor import Editor
     from RR_Community import CommunityFen
+    from RR_VEditor import VEditor
     from RR_Versus import VersusFen
     from RR_class import downloadFile
 
@@ -194,16 +196,25 @@ def Community():
         pygame.mixer.pause()
     except:
         pass
-
     FENETRE = CommunityFen()
     while FENETRE.on:
         pass
     if FENETRE.choix != "Quit":
         result = downloadFile(FENETRE.choix[3], "level")
         if result:
-            FENETRE = Editor(FENETRE.choix[3], "Community")
-            while FENETRE.on:
-                pass
+            window = True
+            while window:
+                FENETRE = Editor(FENETRE.choix[3], "Community")
+                while FENETRE.on:
+                        pass
+                if FENETRE.visuel:
+                    FENETRE = VEditor(FENETRE.choix[3], "Community")
+                    while FENETRE.on:
+                        pass
+                    if FENETRE.visuel:
+                        window = False
+                else:
+                    window = False
         else:
             showerror("ERREUR", "Le téléchargement n'a pu être fait.\nVeuillez vérifier votre connection et l'existance du niveau")
     Solo()
@@ -215,10 +226,19 @@ def IA() :
         pygame.mixer.pause()
     except:
         pass
-
-    FENETRE = Editor("mp", "IA", "ia_1")
-    while FENETRE.on:
-        pass
+    window = True
+    while window:
+        FENETRE = Editor("mp", "IA", "ia_1")
+        while FENETRE.on:
+                pass
+        if FENETRE.visuel:
+            FENETRE = VEditor("mp", "IA", "ia_1")
+            while FENETRE.on:
+                pass
+            if FENETRE.visuel:
+                window = False
+        else:
+            window = False
     Multi()
     
 def Serveur() :
@@ -235,9 +255,19 @@ def Serveur() :
     if FENETRE.choix != "Quit":
         result = downloadFile(FENETRE.choix[3], "ia")
         if result:
-            FENETRE = Editor("mp", "Versus", FENETRE.choix[3])
-            while FENETRE.on:
-                pass
+            window = True
+            while window:
+                FENETRE = Editor("mp", "Versus", FENETRE.choix[3])
+                while FENETRE.on:
+                        pass
+                if FENETRE.visuel:
+                    FENETRE = VEditor("mp", "Versus", FENETRE.choix[3])
+                    while FENETRE.on:
+                        pass
+                    if FENETRE.visuel:
+                        window = False
+                else:
+                    window = False
         else:
             showerror(
                 "ERREUR", "Le téléchargement n'a pu être fait.\nVeuillez vérifier votre connection et l'existance du niveau")
@@ -269,10 +299,19 @@ def FenScriptP():
         pygame.mixer.pause()
     except:
         pass
-
-    FENETRE = Editor(LEVEL, "Parcours")
-    while FENETRE.on:
-            pass
+    window = True
+    while window:
+        FENETRE = Editor(LEVEL, "Parcours")
+        while FENETRE.on:
+                pass
+        if FENETRE.visuel:
+            FENETRE = VEditor(LEVEL, "Parcours")
+            while FENETRE.on:
+                pass
+            if FENETRE.visuel:
+                window = False
+        else:
+            window = False
     Solo()
 
 def popen():

@@ -15,6 +15,7 @@ class Editor(Tk):
     def __init__(self, level, mode, ia = None):
         """Initiation de la classe"""
         super(Editor, self).__init__()
+        self.visuel = False
         self.dOn = False
         self.preview = None
         self.mode = mode
@@ -114,6 +115,7 @@ class Editor(Tk):
         self.menu1.add_command(label="Ouvrir", command=self.ouvrir)
         self.menu1.add_command(label="Sauvegarder", command=self.sauvegarde)
         self.menu1.add_command(label="Exécuter", command=self.execute)
+        self.menu1.add_command(label="Mode Visuel", command=self.visuelMode)
         self.menubar.add_cascade(label="Fichier", menu=self.menu1)
         self.menu2 = Menu(self.menubar, tearoff=0)
         self.menu2.add_command(label="A propos", command=self.apropos)
@@ -139,6 +141,7 @@ class Editor(Tk):
         self.bind_all("<Control-KeyPress-n>", self.creer)
         self.bind_all("<Control-KeyPress-i>", self.apropos)
         self.bind_all("<Control-KeyPress-s>", self.sauvegarde)
+        self.bind_all("<Control-KeyPress-m>", self.visuelMode)
         self.bind_all("<KeyPress-F5>", self.execute)
         self.protocol("WM_DELETE_WINDOW", self.quitter)
         self.config(menu=self.menubar)
@@ -153,6 +156,18 @@ class Editor(Tk):
         """ Preview du level <level>"""
         self.preview = PreviewThread(level, self)
         self.preview.start()
+    
+    def visuelMode(self, evt = None):
+        """ Passage en mode Visuel"""
+        if askquestion("Revolt IDE", "Voulez-vous enregistrer ?\nNe pas enregistrer vous fera perdre ce script")=="yes":
+            self.sauvegarde() 
+        self.on = False
+        self.visuel = True
+        self.destroy()
+        if self.preview != None:
+            self.preview.stopThread()
+            self.preview.join()
+            self.preview = None
     
     def CloseDifficult(self):
         """ Fermeture du screen de la difficulté"""

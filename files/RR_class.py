@@ -554,7 +554,6 @@ class TimeThread(threading.Thread):
         while self.go:
             time.sleep(1)
             self.time += 1
-            print(self.time)
     
     def stopThread(self):
         self.go = False
