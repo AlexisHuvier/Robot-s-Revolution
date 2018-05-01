@@ -1,26 +1,2 @@
 player, 2, 5, 0, Joueur
 player, 9, 5, 2, Ennemi
-rock, 3, 3
-rock, 3, 4
-rock, 3, 5
-rock, 3, 6
-rock, 3, 7
-rock, 3, 8
-rock, 5, 8
-rock, 5, 7
-rock, 4, 6
-rock, 5, 5
-rock, 5, 4
-rock, 4, 3
-lava, 6, 8
-lava, 6, 7
-lava, 6, 6
-lava, 7, 6
-lava, 8, 7
-lava, 8, 8
-lava, 8, 5
-lava, 8, 4
-lava, 7, 3
-lava, 6, 3
-lava, 6, 4
-lava, 6, 5
