@@ -498,10 +498,11 @@ class MyHTMLParser(HTMLParser):
 
 
 class PreviewThread(threading.Thread):
-    def __init__(self, level, tkinter):
+    def __init__(self, level, tkinter, mode = "Textuel"):
         threading.Thread.__init__(self)
         self.level = level
         self.tkinter = tkinter
+        self.mode = mode
         self.go = True
         self.ImageB = pygame.image.load("files/background.png")
     
@@ -516,10 +517,11 @@ class PreviewThread(threading.Thread):
                 if self.tkinter.mode == "Parcours" or self.tkinter.mode == "Community": 
                     while lignes[0] == "" or lignes[0] == "\n":
                         lignes = lignes[1:]
-                    self.tkinter.aide = "#"+lignes[0]
-                    self.tkinter.code.delete('1.0', 'end')
-                    self.tkinter.code.insert("1.0", self.tkinter.aide)
-                    self.tkinter.coloration()
+                    if self.mode == "Textuel":
+                        self.tkinter.aide = "#"+lignes[0]
+                        self.tkinter.code.delete('1.0', 'end')
+                        self.tkinter.code.insert("1.0", self.tkinter.aide)
+                        self.tkinter.coloration()
                     lignes = lignes[2:]
                 self.map = Map(lignes, self.level, self.tkinter.mode)
         except IOError:
