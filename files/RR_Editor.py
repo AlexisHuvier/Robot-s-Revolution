@@ -433,4 +433,4 @@ class Editor(Tk):
 
     def apropos(self, evt=None):
         """ Informations RP de l'éditeur de script"""
-        showinfo("Revolt IDE", "Créé par LN12\nCopyright 2111 - 2112")
+        showinfo("Revolt IDE", "Créé par LN12\nCopyright 2111 - 2113")
