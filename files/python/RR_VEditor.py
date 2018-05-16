@@ -1,29 +1,36 @@
 from tkinter import *
-from tkinter.messagebox import showerror, showinfo, askquestion
+from tkinter.messagebox import showerror, showinfo, askquestion, showwarning
 from tkinter.filedialog import askopenfilename, asksaveasfilename
 from PIL import Image, ImageTk
 import pygame, glob, random
 try:
-    from files.RR_Game import Game
-    from files.RR_class import Map, PreviewThread
+    from files.python.RR_Game import Game
+    from files.python.RR_Utils import PreviewThread, Map
 except ImportError:
-    from RR_class import Map, PreviewThread
+    from RR_Utils import PreviewThread, Map
     from RR_Game import Game
 
-class Editor(Tk):
+class VEditor(Tk):
     """Editeur de script"""
     def __init__(self, level, mode, ia = None):
-        """Initiation de la classe"""
-        super(Editor, self).__init__()
-        self.visuel = False
+        super(VEditor, self).__init__()
+        self.visuel = True
         self.dOn = False
         self.preview = None
         self.mode = mode
         self.difficultScreen = ""
         self.difficult = "MP"
         self.aide = ""
+        self.blockInit = [["walk", ImageTk.PhotoImage(Image.open("files/images/bloc.png"))],
+                        ["left", ImageTk.PhotoImage(Image.open("files/images/bloc.png"))],
+                        ["right", ImageTk.PhotoImage(Image.open("files/images/bloc.png"))],
+                        ["jump", ImageTk.PhotoImage(Image.open("files/images/bloc.png"))]
+        ]
+        self.blockList = [["blockD", ImageTk.PhotoImage(Image.open("files/images/blocD.png"))]]
         self.on = True
         self.levels = []
+        self.xInit = 75
+        self.yInit = 45
         try:
             with open("files/saves.txt", "r") as fichier:
                 temp = fichier.read().split("\n")
@@ -100,14 +107,9 @@ class Editor(Tk):
                                         self.quitter()
                 if find == False:
                     break
-                                
-                
-
         self.title("Revolt IDE - Untitled")
 
-        self.code = Text(self, font=("Comic Sans MS", 14),
-                    wrap='none', tabs=('1c', '2c'))
-        self.coloration()
+        self.show = Canvas(self, width=926, height=624, bg='black')
         self.menubar = Menu(self)
 
         self.menu1 = Menu(self.menubar, tearoff=0)
@@ -115,54 +117,66 @@ class Editor(Tk):
         self.menu1.add_command(label="Ouvrir", command=self.ouvrir)
         self.menu1.add_command(label="Sauvegarder", command=self.sauvegarde)
         self.menu1.add_command(label="Exécuter", command=self.execute)
-        self.menu1.add_command(label="Mode Visuel", command=self.visuelMode)
+        self.menu1.add_command(label="Mode Textuel", command=self.textMode)
         self.menubar.add_cascade(label="Fichier", menu=self.menu1)
         self.menu2 = Menu(self.menubar, tearoff=0)
         self.menu2.add_command(label="A propos", command=self.apropos)
         self.menubar.add_cascade(label="Info", menu=self.menu2)
-        self.s1 = Scrollbar(self)
-        self.s2 = Scrollbar(self)
-        self.code.config(yscrollcommand=self.s1.set,
-                         xscrollcommand=self.s2.set)
-        self.code.tag_config("Mots", foreground="#800000")
-        self.code.tag_config("Nombre", foreground="#0000FF")
-        self.code.tag_config("Texte", foreground="#156f11")
-        self.code.tag_config("Commentaire", foreground="#808080")
-        self.s2.config(orient="horizontal")
-        self.s2.config(command=self.code.xview)
-        self.s1.config(command=self.code.yview)
+        
+        self.show.grid(row=0, column=0, sticky="NSEW")
 
-        self.code.grid(row=0, column=0, sticky="NSEW")
-        self.s1.grid(row=0, column=1, stick="NSEW")
-        self.s2.grid(row=1, column=0, columnspan=2, stick="NSEW")
-
-        self.bind_all('<Key>', self.writeEvent)
         self.bind_all("<Control-KeyPress-o>", self.ouvrir)
         self.bind_all("<Control-KeyPress-n>", self.creer)
         self.bind_all("<Control-KeyPress-i>", self.apropos)
         self.bind_all("<Control-KeyPress-s>", self.sauvegarde)
-        self.bind_all("<Control-KeyPress-m>", self.visuelMode)
+        self.bind_all("<Control-KeyPress-m>", self.textMode)
         self.bind_all("<KeyPress-F5>", self.execute)
+        self.show.bind("<Button-1>", lambda x: self.selectBlock(x))
         self.protocol("WM_DELETE_WINDOW", self.quitter)
         self.config(menu=self.menubar)
 
-        self.code.focus_set()
+        self.showBlocks()
 
         self.previewLevel(self.level)
 
         self.mainloop()
-
-    def previewLevel(self, level):
-        """ Preview du level <level>"""
-        self.preview = PreviewThread(level, self)
-        self.preview.start()
     
-    def visuelMode(self, evt = None):
+    def selectBlock(self, evt):
+        bloc = ""
+        if evt.x >= 509 and evt.x <= 642:
+            if evt.y >= 28 and evt.y <= 62:
+                bloc = "walk"
+            elif evt.y >= 74 and evt.y <= 108:
+                bloc = "left"
+            elif evt.y >= 118 and evt.y <= 154:
+                bloc = "right"
+            elif evt.y >= 166 and evt.y <= 196:
+                bloc = "jump"
+        elif evt.x >= 811 and evt.x <= 890 and evt.y >= 504 and evt.y <= 595:
+            if len(self.blockList) > 1:
+                if self.title()[0] != "*":
+                    self.title("*"+self.title())
+                if len(self.blockList) > 2:
+                    self.blockList[len(self.blockList)-2] = [self.blockList[len(self.blockList)-2][0],ImageTk.PhotoImage(Image.open("files/images/blocF.png"))]
+                del self.blockList[len(self.blockList)-1]
+                self.showBlocks()
+        if bloc != "":
+            if self.title()[0] != "*":
+                self.title("*"+self.title())
+            if len(self.blockList) == 1:
+                self.blockList.append([bloc, ImageTk.PhotoImage(Image.open("files/images/blocF.png"))])
+            else:
+                self.blockList[len(self.blockList)-1] = [self.blockList[len(self.blockList)-1][0],ImageTk.PhotoImage(Image.open("files/images/blocM.png"))]
+                self.blockList.append([bloc, ImageTk.PhotoImage(Image.open("files/images/blocF.png"))])
+            self.showBlocks()
+    
+
+    def textMode(self, evt = None):
         """ Passage en mode Visuel"""
         if askquestion("Revolt IDE", "Voulez-vous enregistrer ?\nNe pas enregistrer vous fera perdre ce script")=="yes":
             self.sauvegarde() 
         self.on = False
-        self.visuel = True
+        self.visuel = False
         self.destroy()
         if self.preview != None:
             self.preview.stopThread()
@@ -174,6 +188,51 @@ class Editor(Tk):
         if self.difficultScreen != "":
             self.dOn = False
             self.difficultScreen.destroy()
+    
+    def previewLevel(self, level):
+        """ Preview du level <level>"""
+        self.preview = PreviewThread(level, self, "Visuel")
+        self.preview.start()
+    
+    def showBlocks(self):
+        self.bgVisuel=ImageTk.PhotoImage(Image.open("files/images/visuel.png"))
+        self.show.create_image(463, 312, image = self.bgVisuel)
+        self.poub=ImageTk.PhotoImage(Image.open("files/images/poubelle.png"))
+        self.show.create_image(850, 550, image = self.poub)
+        for i in range(0, len(self.blockInit)):
+            self.show.create_image(self.xInit+500, self.yInit*(i+1), image = self.blockInit[i][1])
+            self.show.create_text(self.xInit+500, self.yInit*(i+1), text=self.blockInit[i][0], font=("Times New Roman", 25, "bold"), fill = '#000000')
+        for i in range(0,len(self.blockList)):
+            if i>= 45:
+                showerror("ERREUR", "Le nombre de bloc dépasse 45. A partir de maintenant, les blocs ne seront plus affiché.")
+            elif i>=30:
+                self.show.create_image(self.xInit+300, self.yInit*(i+1-30)-5*(i+1-30), image = self.blockList[i][1])
+                if self.blockList[i][0] != "blockD":
+                    self.show.create_text(self.xInit+300, self.yInit*(i+1-30)-5*(i+1-30), text=self.blockList[i][0], font=("Times New Roman", 25, "bold"), fill = '#000000')
+            elif i>=15:
+                self.show.create_image(self.xInit+150, self.yInit*(i+1-15)-5*(i+1-15), image = self.blockList[i][1])
+                if self.blockList[i][0] != "blockD":
+                    self.show.create_text(self.xInit+150, self.yInit*(i+1-15)-5*(i+1-15), text=self.blockList[i][0], font=("Times New Roman", 25, "bold"), fill = '#000000')
+            else:
+                self.show.create_image(self.xInit, self.yInit*(i+1)-5*(i+1), image = self.blockList[i][1])
+                if self.blockList[i][0] != "blockD":
+                    self.show.create_text(self.xInit, self.yInit*(i+1)-5*(i+1), text=self.blockList[i][0], font=("Times New Roman", 25, "bold"), fill = '#000000')
+    
+    def convertToText(self, liste):
+        text = ''
+        for i in liste:
+            if i[0] != "blockD":
+                text += i[0]+"()\n"
+        return text[:-1]
+    
+    def convertToVisuel(self, content):
+        self.blockList = [["blockD", ImageTk.PhotoImage(Image.open("files/images/blocD.png"))]]
+        listContent = content.split("\n")
+        for i in range(len(listContent)):
+            if i == len(listContent)-1:
+                self.blockList.append([listContent[i].split("(")[0], ImageTk.PhotoImage(Image.open("files/images/blocF.png"))])
+            else:
+                self.blockList.append([listContent[i].split("(")[0], ImageTk.PhotoImage(Image.open("files/images/blocM.png"))])
 
     def Jouer(self, name):
         """ Lancer le jeu"""
@@ -299,7 +358,7 @@ class Editor(Tk):
             filename = asksaveasfilename(title="Sauvegarder votre script",defaultextension = '.rev',filetypes=[('Revolt Files','.rev')])
             if filename != "":
                 file=open(filename,"w")
-                file.write(self.code.get("1.0", "end")[:-1])
+                file.write(self.convertToText(self.blockList))
                 self.title("Revolt IDLE - "+filename)
                 file.close()
                 return filename
@@ -310,7 +369,7 @@ class Editor(Tk):
                 filename = asksaveasfilename(title="Sauvegarder votre script",defaultextension = '.rev',filetypes=[('Revolt Files','.rev')], initialfile = liste[len(liste)-1])
                 if filename != "":
                     file = open(filename, "w")
-                    file.write(self.code.get("1.0", "end")[:-1])
+                    file.write(self.convertToText(self.blockList))
                     self.title("Revolt IDLE - "+filename)
                     file.close()
                     return filename
@@ -323,114 +382,22 @@ class Editor(Tk):
         if self.title().split(" - ")[1] == 'Untitled':
             showerror("Revolt IDE","Vous êtes déjà sur un nouveau fichier !")
         else:
-            fichier = open(self.title().split(" - ")[1], "r")
-            content = fichier.read()
-            fichier.close()
-            if self.code.get("1.0","end") == content:
+            if askquestion("Revolt IDE", "Voulez-vous enregistrer ?")=="no":
                 self.title("Revolt IDE - Untitled")
-                self.code.delete('1.0','end')
-                self.code.insert("1.0",self.aide)
+                self.blockList = [["blockD", ImageTk.PhotoImage(Image.open("files/blocD.png"))]]
             else:
-                if askquestion("Revolt IDE", "Voulez-vous enregistrer ?")=="no":
-                    self.title("Revolt IDE - Untitled")
-                    self.code.delete('1.0','end')
-                    self.code.insert("1.0", self.aide)
-                else:
-                    self.sauvegarde()
+                self.sauvegarde()
 
     def ouvrir(self, evt=None):
         """ Ouvrir un fichier"""
-        global txt, fenetre
         filename = askopenfilename(title="Ouvrir votre script", defaultextension='.rev', filetypes=[('Revolt Files', '.rev')])
         fichier = open(filename, "r", encoding="utf-8")
         content = fichier.read()
         fichier.close()
-        self.code.delete('1.0', 'end')
-        self.code.insert('1.0',content)
+        self.convertToVisuel(content)
+        self.showBlocks()
         self.title("Revolt IDE - "+filename)
-        self.coloration()
-
-    def writeEvent(self, evt):
-        """Event lors de l'écriture du joueur"""
-        if evt.char == '"':
-            self.code.mark_gravity(INSERT, LEFT)
-            self.code.insert(INSERT, '"')
-            self.code.mark_gravity(INSERT, RIGHT)
-        elif evt.char == '{':
-            self.code.mark_gravity(INSERT, LEFT)
-            self.code.insert(INSERT,'}')
-            self.code.mark_gravity(INSERT, RIGHT)
-        elif evt.char == '(':
-            self.code.mark_gravity(INSERT, LEFT)
-            self.code.insert(INSERT, ')')
-            self.code.mark_gravity(INSERT, RIGHT)
-        elif evt.char == '[':
-            self.code.mark_gravity(INSERT, LEFT)
-            self.code.insert(INSERT, ']')
-            self.code.mark_gravity(INSERT, RIGHT)
-        elif evt.char == "'":
-            self.code.mark_gravity(INSERT, LEFT)
-            self.code.insert(INSERT, "'")
-            self.code.mark_gravity(INSERT, RIGHT)
-        elif evt.char == "}" or evt.char == ")" or evt.char == "]":
-            self.code.delete(INSERT)
-        if self.title()[0] != "*":
-            self.title("*"+self.title())
-        self.coloration()
-
-    def coloration(self):
-        """ Coloration syntaxique"""
-        nmbChar = IntVar()
-        for mot in ["walk", "left", "right", "jump", "getDirection", "setFunc", "callFunc",
-                "getAttack", "setAttack", "setSprite", "getSprite", "setVar", "getVar",
-                "loopif", "loop", "sayConsole", "if_", "getPosX", "getPosY", "shoot",
-                "getEnnemyPosX", "getEnnemyPosY"]:
-            lastPos = "1.0"
-            while 1 :
-                lastPos = self.code.search( mot, index = lastPos, stopindex = 'end', regexp = 0, count = nmbChar )
-                if lastPos == "" :
-                    break
-                self.code.tag_add('Mots', lastPos, "%s + %d chars" %
-                                  (lastPos, nmbChar.get()))
-                lastPos = "%s + 1 chars" % lastPos
-        for mot in ["1", "2", "3", "4", "5", "6", "7", "8", "9", "0"]:
-            lastPos = "1.0"
-            while 1:
-                lastPos = self.code.search(
-                    mot, index=lastPos, stopindex='end', regexp=0, count=nmbChar)
-                if lastPos == "":
-                    break
-                self.code.tag_add('Nombre', lastPos,
-                                  "%s + %d chars" % (lastPos, nmbChar.get()))
-                lastPos = "%s + 1 chars" % lastPos
-        lastPos = "1.0"
-        while 1:
-            lastPos = self.code.search(
-                r'".*"', index=lastPos, stopindex='end', regexp=True, count=nmbChar)
-            if lastPos == "":
-                break
-            self.code.tag_add('Texte', lastPos, "%s + %d chars" %
-                              (lastPos, nmbChar.get()))
-            lastPos = "%s + 1 chars" % lastPos
-        lastPos = "1.0"
-        while 1:
-            lastPos = self.code.search(
-                r"'.*'", index=lastPos, stopindex='end', regexp=True, count=nmbChar)
-            if lastPos == "":
-                break
-            self.code.tag_add('Texte', lastPos, "%s + %d chars" %
-                              (lastPos, nmbChar.get()))
-            lastPos = "%s + 1 chars" % lastPos
-        lastPos = "1.0"
-        while 1:
-            lastPos = self.code.search(
-                r'#.*', index=lastPos, stopindex='end', regexp=True, count=nmbChar)
-            if lastPos == "":
-                break
-            self.code.tag_add('Commentaire', lastPos,
-                              "%s + %d chars" % (lastPos, nmbChar.get()))
-            lastPos = "%s + 1 chars" % lastPos
 
     def apropos(self, evt=None):
         """ Informations RP de l'éditeur de script"""
-        showinfo("Revolt IDE", "Créé par LN12\nCopyright 2111 - 2113")
+        showinfo("Revolt IDE", "Créé par LN12\nCopyright 2112 - 2113")

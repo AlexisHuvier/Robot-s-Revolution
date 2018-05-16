@@ -1,9 +1,9 @@
-from tkinter.messagebox import showerror, showinfo
+from tkinter.messagebox import showerror, showinfo, showwarning
 import pygame, sys, os
 try:
-    from files.RR_class import Map
+    from files.python.RR_Utils import Map
 except ImportError:
-    from RR_class import Map
+    from RR_Utils import Map
 
 
 class Game():
@@ -66,7 +66,7 @@ class Game():
         try:
             self.screen.fill((0, 0, 0))
             self.clock.tick(60)
-            self.screen.blit(pygame.image.load("files/background.png"), [0, 0])
+            self.screen.blit(pygame.image.load("files/images/background.png"), [0, 0])
             self.map.rock_list.draw(self.screen)
             self.map.finish_list.draw(self.screen)
             self.map.lava_list.draw(self.screen)

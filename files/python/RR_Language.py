@@ -161,33 +161,33 @@ class Script():
         if self.robot.direction == 4:
             self.robot.direction = 0
         if self.robot.direction == 0:
-            if self.robot.strImage in ["files/robotD.png","files/robotB.png","files/robotG.png","files/robotH.png"]:
-                self.robot.strImage = "files/robotD.png"
-                self.robot.image = pygame.image.load("files/robotD.png")
+            if self.robot.strImage in ["files/images/robotD.png","files/images/robotB.png","files/images/robotG.png","files/images/robotH.png"]:
+                self.robot.strImage = "files/images/robotD.png"
+                self.robot.image = pygame.image.load("files/images/robotD.png")
             else:
-                self.robot.strImage = "files/RbtFCo2.png"
-                self.robot.image = pygame.image.load("files/RbtFCo2.png")
+                self.robot.strImage = "files/images/RbtFCo2.png"
+                self.robot.image = pygame.image.load("files/images/RbtFCo2.png")
         elif self.robot.direction == 1:
-            if self.robot.strImage in ["files/robotD.png", "files/robotB.png", "files/robotG.png", "files/robotH.png"]:
-                self.robot.strImage = "files/robotB.png"
-                self.robot.image = pygame.image.load("files/robotB.png")
+            if self.robot.strImage in ["files/images/robotD.png", "files/images/robotB.png", "files/images/robotG.png", "files/images/robotH.png"]:
+                self.robot.strImage = "files/images/robotB.png"
+                self.robot.image = pygame.image.load("files/images/robotB.png")
             else:
-                self.robot.strImage = "files/RbtF.png"
-                self.robot.image = pygame.image.load("files/RbtF.png")
+                self.robot.strImage = "files/images/RbtF.png"
+                self.robot.image = pygame.image.load("files/images/RbtF.png")
         elif self.robot.direction == 2:
-            if self.robot.strImage in ["files/robotD.png","files/robotB.png","files/robotG.png","files/robotH.png"]:
-                self.robot.strImage = "files/robotG.png"
-                self.robot.image = pygame.image.load("files/robotG.png")
+            if self.robot.strImage in ["files/images/robotD.png","files/images/robotB.png","files/images/robotG.png","files/images/robotH.png"]:
+                self.robot.strImage = "files/images/robotG.png"
+                self.robot.image = pygame.image.load("files/images/robotG.png")
             else:
-                self.robot.strImage = "files/RbtFCo.png"
-                self.robot.image = pygame.image.load("files/RbtFCo.png")
+                self.robot.strImage = "files/images/RbtFCo.png"
+                self.robot.image = pygame.image.load("files/images/RbtFCo.png")
         elif self.robot.direction == 3:
-            if self.robot.strImage in ["files/robotD.png","files/robotB.png","files/robotG.png","files/robotH.png"]:
-                self.robot.strImage = "files/robotH.png"
-                self.robot.image = pygame.image.load("files/robotH.png")
+            if self.robot.strImage in ["files/images/robotD.png","files/images/robotB.png","files/images/robotG.png","files/images/robotH.png"]:
+                self.robot.strImage = "files/images/robotH.png"
+                self.robot.image = pygame.image.load("files/images/robotH.png")
             else:
-                self.robot.strImage = "files/RbtFAr.png"
-                self.robot.image = pygame.image.load("files/RbtFAr.png")
+                self.robot.strImage = "files/images/RbtFAr.png"
+                self.robot.image = pygame.image.load("files/images/RbtFAr.png")
 
     def setAttack(self, boolean):
         """ Activer ou désactiver le mode attaque du robot """
@@ -249,23 +249,23 @@ class Script():
         if self.robot.direction == -1:
             self.robot.direction = 3
         if self.robot.direction == 0:
-            if self.robot.strImage in ["files/robotD.png", "files/robotB.png", "files/robotG.png", "files/robotH.png"]:
-                self.robot.strImage = "files/robotD.png"
-                self.robot.image = pygame.image.load("files/robotD.png")
+            if self.robot.strImage in ["files/images/robotD.png", "files/images/robotB.png", "files/images/robotG.png", "files/images/robotH.png"]:
+                self.robot.strImage = "files/images/robotD.png"
+                self.robot.image = pygame.image.load("files/images/robotD.png")
         elif self.robot.direction == 1:
-            if self.robot.strImage in ["files/robotD.png", "files/robotB.png", "files/robotG.png", "files/robotH.png"]:
-                self.robot.strImage = "files/robotB.png"
-                self.robot.image = pygame.image.load("files/robotB.png")
+            if self.robot.strImage in ["files/images/robotD.png", "files/images/robotB.png", "files/images/robotG.png", "files/images/robotH.png"]:
+                self.robot.strImage = "files/images/robotB.png"
+                self.robot.image = pygame.image.load("files/images/robotB.png")
         elif self.robot.direction == 2:
-            if self.robot.strImage in ["files/robotD.png", "files/robotB.png", "files/robotG.png", "files/robotH.png"]:
-                self.robot.strImage = "files/robotG.png"
-                self.robot.image = pygame.image.load("files/robotG.png")
+            if self.robot.strImage in ["files/images/robotD.png", "files/images/robotB.png", "files/images/robotG.png", "files/images/robotH.png"]:
+                self.robot.strImage = "files/images/robotG.png"
+                self.robot.image = pygame.image.load("files/images/robotG.png")
         elif self.robot.direction == 3:
-            if self.robot.strImage in ["files/robotD.png", "files/robotB.png", "files/robotG.png", "files/robotH.png"]:
-                self.robot.strImage = "files/robotH.png"
-                self.robot.image = pygame.image.load("files/robotH.png")
+            if self.robot.strImage in ["files/images/robotD.png", "files/images/robotB.png", "files/images/robotG.png", "files/images/robotH.png"]:
+                self.robot.strImage = "files/images/robotH.png"
+                self.robot.image = pygame.image.load("files/images/robotH.png")
 
-    def setSprite(self, sprite= "files/robotD.png"):
+    def setSprite(self, sprite= "files/images/robotD.png"):
         """ Changer le sprite du robot"""
         self.robot.strImage = sprite
         self.robot.image = pygame.image.load(sprite)
